@@ -1,8 +1,16 @@
-# fpga-projects
+# :space_invader: fpga-projects
 
-XC7A35TICSG324-1L
+A collection of projects using an Arty A7-35T FPGA (XC7A35TICSG324-1L).
 
-# Structure
+## Projects
+
+- [:rotating_light: blink](/blink/)
+- [:1234: decoder](/decoder/)
+- [template](/template/)
+
+## Structure
+
+The structure of this repository is inspired on:
 
 - https://github.com/fpgadeveloper/microzed-base
 - https://github.com/jhallen/vivado_setup
