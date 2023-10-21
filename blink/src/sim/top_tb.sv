@@ -1,8 +1,9 @@
 `timescale 1ns / 10ps
 
 module top_tp;
-    logic clk = 0;
-    logic reset_n = 1;
+    localparam T=10; // 100 Mhz, 10 ns
+    logic clk;
+    logic reset_n;
     logic out;
 
     // N = 100 Mhz / 200 kHz - 1
@@ -14,5 +15,18 @@ module top_tp;
         .led0_b(out)
     );
     
-    always #5 clk = ~clk; // Simulate a 100 Mhz signal.
+    // Simulate a 100 Mhz clock signal.
+    always begin
+        clk = 1'b0;
+        #(T/2);
+        clk = 1'b1;
+        #(T/2);
+    end
+
+    // Reset at the start of the simulation.
+    initial begin
+        reset_n = 1'b0;
+        #(T/2);
+        reset_n = 1'b1;
+    end
 endmodule
