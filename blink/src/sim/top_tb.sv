@@ -6,10 +6,8 @@ module top_tp;
     logic reset_n;
     logic out;
 
-    // N = 100 Mhz / 200 kHz - 1
-    // N = 1e8 / 2e5 - 1
-    // N = 500 - 1
-    top #(.N(499)) uut(
+    // 1 MHz
+    top #(.OUTPUT_FREQ(1_000_000)) uut(
         .clk(clk),
         .reset_n(reset_n),
         .led0_b(out)
