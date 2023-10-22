@@ -11,23 +11,24 @@ module top
 
     localparam CLK_DIVIDE = CLK_FREQ / OUTPUT_FREQ;
     
-    logic [$clog2(CLK_DIVIDE)-1:0] c_reg = 0;
-    logic t_reg = 0;
+    logic c_tick;
+    logic [$clog2(CLK_DIVIDE)-1:0] c_reg, c_next;
+    logic t, t_next; 
         
     always_ff @(posedge clk, negedge reset_n) begin
         if (~reset_n) begin
             c_reg <= 0;
-            t_reg <= 0; 
+            t <= 0;
         end
         else begin
-            if (c_reg == (CLK_DIVIDE/2)-1) begin
-                c_reg <= 0;
-                t_reg <= ~t_reg;
-            end
-            else
-                c_reg <= c_reg + 1;
+            c_reg <= c_next;
+            t <= t_next;
         end
     end
 
-    assign led0_b = t_reg;
+    assign c_tick = (c_reg == CLK_DIVIDE/2 - 1) ? 1'b1 : 1'b0;
+    assign c_next = (c_tick) ? 1'b0 : c_reg + 1;
+    assign t_next = (c_tick) ? ~t : t;
+
+    assign led0_b = t;
 endmodule
