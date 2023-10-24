@@ -1,7 +1,7 @@
 module decoder_3_to_8
     (
-     input logic [2:0] in,
-     output logic [7:0] out
+        input logic [2:0] in,
+        output logic [7:0] out
     );
     
     always_comb
