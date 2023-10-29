@@ -1,4 +1,7 @@
 module top
+    #(
+        parameter   DB_TIME = 0.500 // 500 ms
+    )
     (
         input logic clk,
         input logic reset_n,
@@ -6,17 +9,18 @@ module top
         output logic [3:0] led
     );
  
+    // ~~ Create debouncer_fsm unit ~~ //
+
     logic btn_db;
 
-    debouncer debouncer_unit(
+    debouncer_fsm #(.DB_TIME(DB_TIME)) debouncer_fsm_unit(
         .clk(clk),
         .reset_n(reset_n),
         .sw(btn),
         .db(btn_db)
     );
     
-    // Count the number of button presses and display
-    // and display it on the LEDs.
+    // ~~ Debounced button press counter ~~ //
 
     logic [3:0] q_reg, q_next;
     logic btn_reg, btn_next;
@@ -37,7 +41,7 @@ module top
     assign btn_tick = ~btn_reg && btn_next;
     assign q_next = (btn_tick) ? q_reg + 1 : q_reg;
     
-    // Assignment of outputs
+    // ~~ Assignment of outputs ~~ //
  
     assign led = q_reg;
 endmodule

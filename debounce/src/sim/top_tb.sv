@@ -2,12 +2,13 @@
 
 module top_tp;
     localparam T=10; // 100 Mhz, 10 ns
+    localparam DB_TIME=0.000005; // 5 us
     logic clk;
     logic reset_n;
     logic btn;
     logic [3:0] led;
 
-    top uut(
+    top #(.DB_TIME(DB_TIME)) uut(
         .clk(clk),
         .reset_n(reset_n),
         .btn(btn),
@@ -21,24 +22,30 @@ module top_tp;
         clk = 1'b1;
         #(T/2);
     end
-
+    
     // Reset at the start of the simulation.
     initial begin
-        btn = 1'b0;
         reset_n = 1'b0;
         #(T/2);
         reset_n = 1'b1;
         #(T);
+    end
+ 
+    initial begin
+        btn = 1'b0;
+        @(posedge reset_n); // Wait for the reset.
+        @(negedge clk);
+        
+        repeat(10) begin
+            btn = 1'b1;
+            #(T*2); // 20 ns
+            btn = 1'b0;
+            #(T*2); // 20 ns
+        end
         
         btn = 1'b1;
-        #(T*5);
+        wait(led == 1); // ~10 us 
         btn = 1'b0;
-        #(T);
-        
-        btn = 1'b1;
-        #(T*5);
-        btn = 1'b0;
-        #(T);
         
         $stop;
     end
