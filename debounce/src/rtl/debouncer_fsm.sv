@@ -1,3 +1,10 @@
+/*
+ * debouncer_fsm
+ *
+ * Debounce input signal "sw" to output signal "db".
+ * The debounce time is between DB_TIME and 2*DB_TIME.
+ */
+
 module debouncer_fsm
     #(
         parameter   CLK_FREQ = 100_000_000, // 100 Mhz, 10 ns
@@ -10,22 +17,15 @@ module debouncer_fsm
         output logic db
     );
     
-    /* ~~ Free running DB_TIME tick generator ~~ */
+    /* ~~ Create mod_m_counter_unit ~~ */
     
-    localparam Q_MAX = $rtoi(CLK_FREQ * DB_TIME) - 1;
-     
-    logic [$clog2(Q_MAX)-1:0] q_reg, q_next;
     logic m_tick;
-    
-    always_ff @(posedge clk, negedge reset_n) begin
-        if (~reset_n)
-            q_reg <= 0;
-        else
-            q_reg <= q_next;
-    end
-    
-    assign q_next = (q_reg == Q_MAX) ? 1'b0 : q_reg + 1;
-    assign m_tick = (q_reg == 0) ? 1'b1 : 1'b0;
+
+    mod_m_counter #(.M($rtoi(CLK_FREQ * DB_TIME))) mod_m_counter_unit(
+        .clk(clk),
+        .reset_n(reset_n),
+        .max_tick(m_tick)
+    );
     
     /* ~~ Debouncer using a FSM ~~ */
     
@@ -65,6 +65,4 @@ module debouncer_fsm
                     db = 1'b1;
        endcase
     end
-    
-    // ~~ Assignment of outputs ~~ //
 endmodule

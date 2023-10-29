@@ -1,6 +1,6 @@
 module top
     #(
-        parameter   DB_TIME = 0.500 // 500 ms
+        parameter   DB_TIME = 0.100 // 100 ms
     )
     (
         input logic clk,
