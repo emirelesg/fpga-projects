@@ -6,6 +6,8 @@ module top_tp;
     logic reset_n;
 
     top uut(
+        .clk(clk),
+        .reset_n(reset_n)
     );
     
     // Simulate a 100 Mhz clock signal.
@@ -28,6 +30,10 @@ module top_tp;
         @(posedge reset_n); // Wait for the reset.
         @(negedge clk);
         
+        repeat(54) @(negedge clk);
+        repeat(54) @(negedge clk);
+        repeat(54) @(negedge clk);
+                        
         $stop;
     end
 endmodule
