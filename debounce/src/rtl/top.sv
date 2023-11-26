@@ -8,40 +8,33 @@ module top
         input logic btn,
         output logic [3:0] led
     );
- 
+
     /* ~~ Create debouncer_fsm unit ~~ */
 
-    logic btn_db;
+    logic btn_db, btn_db_tick;
 
     debouncer_fsm #(.DB_TIME(DB_TIME)) debouncer_fsm_unit(
         .clk(clk),
         .reset_n(reset_n),
         .sw(btn),
-        .db(btn_db)
+        .db(btn_db),
+        .db_tick(btn_db_tick)
     );
-    
+
     /* ~~ Debounced button press counter ~~ */
 
     logic [3:0] q_reg, q_next;
-    logic btn_reg, btn_next;
 
-    always_ff @(posedge clk, negedge reset_n)
-    begin
-        if (~reset_n) begin
+    always_ff @(posedge clk, negedge reset_n) begin
+        if (~reset_n)
             q_reg <= 0;
-            btn_reg <= 0;
-        end
-        else begin
+        else
             q_reg <= q_next;
-            btn_reg <= btn_next;
-        end
     end
- 
-    assign btn_next = btn_db;
-    assign btn_tick = ~btn_reg && btn_next;
-    assign q_next = (btn_tick) ? q_reg + 1 : q_reg;
-    
+
+    assign q_next = (btn_db_tick) ? q_reg + 1 : q_reg;
+
     /* ~~ Assignment of outputs ~~ */
- 
+
     assign led = q_reg;
 endmodule
