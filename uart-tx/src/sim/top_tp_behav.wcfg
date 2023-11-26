@@ -11,46 +11,87 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="721000001fs"></ZoomEndTime>
-      <Cursor1Time time="525000000fs"></Cursor1Time>
+      <ZoomStartTime time="94957083333fs"></ZoomStartTime>
+      <ZoomEndTime time="95080583334fs"></ZoomEndTime>
+      <Cursor1Time time="95060000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="175"></NameColumnWidth>
-      <ValueColumnWidth column_width="135"></ValueColumnWidth>
+      <ValueColumnWidth column_width="131"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="5" />
-   <wave_markers>
-      <marker time="13005000000" label="" />
-      <marker time="6495000000" label="" />
-      <marker time="5000000" label="" />
-      <marker time="545000000" label="" />
-   </wave_markers>
+   <WVObjectSize size="7" />
    <wvobject fp_name="/top_tp/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/top_tp/reset_n" type="logic">
       <obj_property name="ElementShortName">reset_n</obj_property>
       <obj_property name="ObjectShortName">reset_n</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_tp/T" type="array">
-      <obj_property name="ElementShortName">T[31:0]</obj_property>
-      <obj_property name="ObjectShortName">T[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_tp/uut/uart_baudrate_gen_unit/tick" type="logic">
-      <obj_property name="ElementShortName">tick</obj_property>
-      <obj_property name="ObjectShortName">tick</obj_property>
-      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="CustomSignalColor">#F0E68C</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/top_tp/uut/uart_baudrate_gen_unit/q_reg" type="array">
-      <obj_property name="ElementShortName">q_reg[5:0]</obj_property>
-      <obj_property name="ObjectShortName">q_reg[5:0]</obj_property>
-      <obj_property name="WaveformStyle">STYLE_ANALOG</obj_property>
-      <obj_property name="CellHeight">100</obj_property>
-      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+   <wvobject fp_name="group17" type="group">
+      <obj_property name="label">uart_baudrate_gen</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/top_tp/uut/s_tick" type="logic">
+         <obj_property name="ElementShortName">s_tick</obj_property>
+         <obj_property name="ObjectShortName">s_tick</obj_property>
+         <obj_property name="CustomSignalColor">#FF0080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group16" type="group">
+      <obj_property name="label">uart_tx</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/top_tp/uut/uart_tx_unit/state_reg" type="array">
+         <obj_property name="ElementShortName">state_reg[31:0]</obj_property>
+         <obj_property name="ObjectShortName">state_reg[31:0]</obj_property>
+         <obj_property name="CustomSignalColor">#008080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/top_tp/uut/uart_tx_unit/s_reg" type="array">
+         <obj_property name="ElementShortName">s_reg[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_reg[3:0]</obj_property>
+         <obj_property name="CustomSignalColor">#008080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/top_tp/uut/uart_tx_unit/n_reg" type="array">
+         <obj_property name="ElementShortName">n_reg[2:0]</obj_property>
+         <obj_property name="ObjectShortName">n_reg[2:0]</obj_property>
+         <obj_property name="CustomSignalColor">#008080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/top_tp/uut/uart_tx_unit/b_reg" type="array">
+         <obj_property name="ElementShortName">b_reg[7:0]</obj_property>
+         <obj_property name="ObjectShortName">b_reg[7:0]</obj_property>
+         <obj_property name="CustomSignalColor">#008080</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/top_tp/tx_start" type="logic">
+         <obj_property name="ElementShortName">tx_start</obj_property>
+         <obj_property name="ObjectShortName">tx_start</obj_property>
+         <obj_property name="CustomSignalColor">#FFA500</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/top_tp/tx_data" type="array">
+      <obj_property name="ElementShortName">tx_data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_data[7:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FFA500</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_tp/uut/uart_tx_unit/tx" type="logic">
+      <obj_property name="ElementShortName">tx</obj_property>
+      <obj_property name="ObjectShortName">tx</obj_property>
+      <obj_property name="CustomSignalColor">#008080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_tp/uut/tx_done_tick" type="logic">
+      <obj_property name="ElementShortName">tx_done_tick</obj_property>
+      <obj_property name="ObjectShortName">tx_done_tick</obj_property>
    </wvobject>
 </wave_config>

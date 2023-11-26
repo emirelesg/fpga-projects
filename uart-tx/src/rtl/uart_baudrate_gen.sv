@@ -1,6 +1,6 @@
 /*
  * uart_baudrate_gen
- * 
+ *
  */
 
 module uart_baudrate_gen
@@ -11,9 +11,9 @@ module uart_baudrate_gen
     (
         input logic clk,
         input logic reset_n,
-        output logic tick
+        output logic s_tick
     );
-    
+
     localparam DVSR = $rtoi(CLK_FREQ / BAUDRATE / 16) - 1;
 
     logic [$clog2(DVSR)-1:0] q_reg, q_next;
@@ -29,5 +29,5 @@ module uart_baudrate_gen
 
     /* ~~ Assignment of outputs ~~ */
 
-    assign tick = q_reg == 1;
+    assign s_tick = q_reg == 1;
 endmodule
