@@ -14,7 +14,8 @@ module debouncer_fsm
         input logic clk,
         input logic reset_n,
         input logic sw,
-        output logic db
+        output logic db,
+        output logic db_tick
     );
     
     /* ~~ Create mod_m_counter_unit ~~ */
@@ -43,7 +44,8 @@ module debouncer_fsm
         // Default values:
         state_next = state_reg; // Stay in state_reg
         db = 1'b0;
-        
+        db_tick = 1'b0;
+
         case (state_reg)
             zero:
                 if (sw)
@@ -56,8 +58,10 @@ module debouncer_fsm
             wait1_2:
                 if (~sw)
                     state_next = zero; // On release -> zero
-                else if (m_tick)
+                else if (m_tick) begin
                     state_next = one; // On hold and after DB_TIME -> one
+                    db_tick = 1'b1;
+                end
             one:
                 if (~sw)
                     state_next = zero; // On release -> zero
