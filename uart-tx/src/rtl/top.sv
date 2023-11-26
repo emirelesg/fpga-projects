@@ -7,11 +7,12 @@ module top
         input logic clk,
         input logic reset_n,
         input logic btn,
+        input logic [3:0] sw,
         input logic uart_txd_in,
         output logic uart_rxd_out
     );
 
-    logic [7:0] tx_data = 'h58; // X
+    logic [7:0] tx_data = 'h30 + sw; // 0 -> ? in ASCII
 
     /* ~~ Create debouncer_fsm unit ~~ */
 
@@ -33,5 +34,4 @@ module top
         .tx_data(tx_data),
         .tx(uart_rxd_out)
     );
-
 endmodule
