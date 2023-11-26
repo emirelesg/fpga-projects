@@ -1,6 +1,6 @@
 `timescale 1ns / 10ps
 
-module top_tp;
+module uart_tb;
     localparam T=10; // 100 Mhz, 10 ns
     localparam S_TICK=54; // Amount of clock cycles for an s_tick.
 
@@ -10,12 +10,12 @@ module top_tp;
     logic tx_start;
     logic [7:0] tx_data;
 
-    top uut(
+    uart uut(
         .clk(clk),
         .reset_n(reset_n),
         .tx_start(tx_start),
         .tx_data(tx_data),
-        .uart_rxd_out(tx)
+        .tx(tx)
     );
 
     // Simulate a 100 Mhz clock signal.

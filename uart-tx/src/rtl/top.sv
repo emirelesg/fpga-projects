@@ -6,32 +6,31 @@ module top
     (
         input logic clk,
         input logic reset_n,
-        input logic tx_start,
-        input logic [7:0] tx_data,
+        input logic btn,
         input logic uart_txd_in,
         output logic uart_rxd_out
     );
 
-    // ~~ Create uart_baudrate_gen unit ~~ //
+    logic [7:0] tx_data = 'h58; // X
 
-    logic s_tick;
+    // ~~ Create debouncer_fsm unit ~~ //
 
-    uart_baudrate_gen #(.CLK_FREQ(CLK_FREQ), .BAUDRATE(BAUDRATE)) uart_baudrate_gen_unit(
+    logic btn_db;
+
+    debouncer_fsm #(.DB_TIME(0.100)) debouncer_fsm_unit(
         .clk(clk),
         .reset_n(reset_n),
-        .s_tick(s_tick)
+        .sw(btn),
+        .db(btn_db)
     );
 
-    // ~~ Create uart_tx unit //
-    logic tx_done_tick;
+    // ~~ Create uart unit ~~ //
 
-    uart_tx uart_tx_unit(
+    uart uart_unit(
         .clk(clk),
         .reset_n(reset_n),
-        .s_tick(s_tick),
-        .tx_start(tx_start),
+        .tx_start(btn_db),
         .tx_data(tx_data),
-        .tx_done_tick(tx_done_tick),
         .tx(uart_rxd_out)
     );
 

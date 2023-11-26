@@ -104,4 +104,5 @@ module uart_tx
     // ~~ Assignment of outputs ~~ //
 
     assign tx = tx_reg;
+
 endmodule
