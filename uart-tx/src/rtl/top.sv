@@ -13,27 +13,25 @@ module top
 
     logic [7:0] tx_data = 'h58; // X
 
-    // ~~ Create debouncer_fsm unit ~~ //
+    /* ~~ Create debouncer_fsm unit ~~ */
 
-    logic btn_db;
+    logic btn_db_tick;
 
-    debouncer_fsm #(.DB_TIME(0.100)) debouncer_fsm_unit(
+    debouncer_fsm #(.DB_TIME(0.05)) debouncer_fsm_unit(
         .clk(clk),
         .reset_n(reset_n),
         .sw(btn),
-        .db(btn_db)
+        .db_tick(btn_db_tick)
     );
 
-    // ~~ Create uart unit ~~ //
+    /* ~~ Create uart unit ~~ */
 
     uart uart_unit(
         .clk(clk),
         .reset_n(reset_n),
-        .tx_start(btn_db),
+        .tx_start(btn_db_tick),
         .tx_data(tx_data),
         .tx(uart_rxd_out)
     );
-
-    // ~~ Assignment of outputs ~~ //
 
 endmodule

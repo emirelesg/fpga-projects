@@ -44,6 +44,7 @@ module uart_tx
 
     always_comb
     begin
+        // Default values:
         tx_done_tick = 1'b0;
         state_next = state_reg;
         s_next = s_reg;
@@ -101,7 +102,7 @@ module uart_tx
         endcase
     end
 
-    // ~~ Assignment of outputs ~~ //
+    /* ~~ Assignment of outputs ~~ */
 
     assign tx = tx_reg;
 

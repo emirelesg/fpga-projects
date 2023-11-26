@@ -9,7 +9,7 @@ module top
         output logic [3:0] led
     );
  
-    // ~~ Create debouncer_fsm unit ~~ //
+    /* ~~ Create debouncer_fsm unit ~~ */
 
     logic btn_db;
 
@@ -20,7 +20,7 @@ module top
         .db(btn_db)
     );
     
-    // ~~ Debounced button press counter ~~ //
+    /* ~~ Debounced button press counter ~~ */
 
     logic [3:0] q_reg, q_next;
     logic btn_reg, btn_next;
@@ -41,7 +41,7 @@ module top
     assign btn_tick = ~btn_reg && btn_next;
     assign q_next = (btn_tick) ? q_reg + 1 : q_reg;
     
-    // ~~ Assignment of outputs ~~ //
+    /* ~~ Assignment of outputs ~~ */
  
     assign led = q_reg;
 endmodule

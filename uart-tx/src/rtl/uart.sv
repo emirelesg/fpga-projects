@@ -12,7 +12,7 @@ module uart
         output logic tx
     );
 
-    // ~~ Create uart_baudrate_gen unit ~~ //
+    /* ~~ Create uart_baudrate_gen unit ~~ */
 
     logic s_tick;
 
@@ -22,7 +22,7 @@ module uart
         .s_tick(s_tick)
     );
 
-    // ~~ Create uart_tx unit //
+    /* ~~ Create uart_tx unit ~~ */
 
     logic tx_done_tick;
 
@@ -35,7 +35,5 @@ module uart
         .tx_done_tick(tx_done_tick),
         .tx(tx)
     );
-
-    // ~~ Assignment of outputs ~~ //
 
 endmodule
