@@ -10,11 +10,11 @@ module top
     );
 
     localparam CLK_DIVIDE = CLK_FREQ / OUTPUT_FREQ;
-    
+
     logic c_tick;
     logic [$clog2(CLK_DIVIDE)-1:0] c_reg, c_next;
-    logic t, t_next; 
-        
+    logic t, t_next;
+
     always_ff @(posedge clk, negedge reset_n) begin
         if (~reset_n) begin
             c_reg <= 0;

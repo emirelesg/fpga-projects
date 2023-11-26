@@ -42,8 +42,7 @@ module uart_tx
         end
     end
 
-    always_comb
-    begin
+    always_comb begin
         // Default values:
         tx_done_tick = 1'b0;
         state_next = state_reg;
