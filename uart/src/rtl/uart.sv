@@ -1,3 +1,9 @@
+/*
+ * uart
+ *
+ * Wrapper for all UART related modules.
+ */
+
 module uart
     #(
         parameter real  CLK_FREQ = 100_000_000, // 100 Mhz, 10 ns

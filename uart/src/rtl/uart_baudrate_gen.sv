@@ -1,6 +1,7 @@
 /*
  * uart_baudrate_gen
  *
+ * Generates 16 s_ticks per bit.
  */
 
 module uart_baudrate_gen

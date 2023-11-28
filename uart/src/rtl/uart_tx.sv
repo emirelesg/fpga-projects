@@ -1,6 +1,9 @@
 /*
  * uart_tx
  *
+ * Transmit data serially following the UART protocol.
+ * On idle, tx is held HIGH.
+ * Parity support is not implemented.
  */
 
 module uart_tx
