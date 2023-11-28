@@ -29,13 +29,13 @@
 #
 #    "C:/Users/emire/work/fpga-projects/debounce/src/rtl/debouncer_fsm.sv"
 #    "C:/Users/emire/work/fpga-projects/debounce/src/rtl/mod_m_counter.sv"
-#    "C:/Users/emire/work/fpga-projects/uart-tx/src/rtl/uart.sv"
-#    "C:/Users/emire/work/fpga-projects/uart-tx/src/rtl/uart_baudrate_gen.sv"
-#    "C:/Users/emire/work/fpga-projects/uart-tx/src/rtl/uart_tx.sv"
-#    "C:/Users/emire/work/fpga-projects/uart-tx/src/rtl/top.sv"
-#    "C:/Users/emire/work/fpga-projects/uart-tx/src/cons/Arty-A7-35-Master.xdc"
-#    "C:/Users/emire/work/fpga-projects/uart-tx/src/sim/top_tb.sv"
-#    "C:/Users/emire/work/fpga-projects/uart-tx/src/sim/top_tb_behav.wcfg"
+#    "C:/Users/emire/work/fpga-projects/uart/src/rtl/uart.sv"
+#    "C:/Users/emire/work/fpga-projects/uart/src/rtl/uart_baudrate_gen.sv"
+#    "C:/Users/emire/work/fpga-projects/uart/src/rtl/uart_tx.sv"
+#    "C:/Users/emire/work/fpga-projects/uart/src/rtl/top.sv"
+#    "C:/Users/emire/work/fpga-projects/uart/src/cons/Arty-A7-35-Master.xdc"
+#    "C:/Users/emire/work/fpga-projects/uart/src/sim/top_tb.sv"
+#    "C:/Users/emire/work/fpga-projects/uart/src/sim/top_tb_behav.wcfg"
 #
 #*****************************************************************************************
 
