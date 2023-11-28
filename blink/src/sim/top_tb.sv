@@ -12,7 +12,7 @@ module top_tp;
         .reset_n(reset_n),
         .led0_b(out)
     );
-    
+
     // Simulate a 100 Mhz clock signal.
     always begin
         clk = 1'b0;

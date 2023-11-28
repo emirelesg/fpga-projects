@@ -3,12 +3,12 @@
 module decoder_3_to_8_tb;
     logic [2:0] test_in;
     logic [7:0] test_out;
-    
+
     decoder_3_to_8 uut(
         .in(test_in),
         .out(test_out)
     );
-    
+
     initial
     begin
         test_in = 3'b000; // in = 0

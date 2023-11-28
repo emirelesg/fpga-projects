@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="9827666666fs"></ZoomStartTime>
-      <ZoomEndTime time="10016466667fs"></ZoomEndTime>
-      <Cursor1Time time="9866667000fs"></Cursor1Time>
+      <ZoomStartTime time="9980966667fs"></ZoomStartTime>
+      <ZoomEndTime time="10125166668fs"></ZoomEndTime>
+      <Cursor1Time time="9995000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="175"></NameColumnWidth>
-      <ValueColumnWidth column_width="139"></ValueColumnWidth>
+      <ValueColumnWidth column_width="135"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="7" />
+   <WVObjectSize size="8" />
    <wave_markers>
       <marker time="4985000000" label="" />
       <marker time="9985000000" label="" />
@@ -52,6 +52,12 @@
    <wvobject fp_name="/top_tp/uut/debouncer_fsm_unit/db" type="logic">
       <obj_property name="ElementShortName">db</obj_property>
       <obj_property name="ObjectShortName">db</obj_property>
+      <obj_property name="CustomSignalColor">#FFD700</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_tp/uut/debouncer_fsm_unit/db_tick" type="logic">
+      <obj_property name="ElementShortName">db_tick</obj_property>
+      <obj_property name="ObjectShortName">db_tick</obj_property>
       <obj_property name="CustomSignalColor">#FFD700</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>

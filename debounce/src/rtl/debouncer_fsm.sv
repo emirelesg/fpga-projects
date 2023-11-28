@@ -14,11 +14,12 @@ module debouncer_fsm
         input logic clk,
         input logic reset_n,
         input logic sw,
-        output logic db
+        output logic db,
+        output logic db_tick
     );
-    
+
     /* ~~ Create mod_m_counter_unit ~~ */
-    
+
     logic m_tick;
 
     mod_m_counter #(.M($rtoi(CLK_FREQ * DB_TIME))) mod_m_counter_unit(
@@ -26,24 +27,25 @@ module debouncer_fsm
         .reset_n(reset_n),
         .max_tick(m_tick)
     );
-    
+
     /* ~~ Debouncer using a FSM ~~ */
-    
+
     typedef enum { zero, wait1_1, wait1_2, one } state_type;
     state_type state_reg, state_next;
-    
+
     always_ff @(posedge clk, negedge reset_n) begin
         if (~reset_n)
             state_reg <= zero;
         else
             state_reg <= state_next;
     end
- 
+
     always_comb begin
         // Default values:
         state_next = state_reg; // Stay in state_reg
         db = 1'b0;
-        
+        db_tick = 1'b0;
+
         case (state_reg)
             zero:
                 if (sw)
@@ -52,12 +54,14 @@ module debouncer_fsm
                 if (~sw)
                     state_next = zero; // On release -> zero
                 else if (m_tick)
-                    state_next = wait1_2; // On hold and after DB_TIME -> wait1_2    
+                    state_next = wait1_2; // On hold and after DB_TIME -> wait1_2
             wait1_2:
                 if (~sw)
                     state_next = zero; // On release -> zero
-                else if (m_tick)
+                else if (m_tick) begin
                     state_next = one; // On hold and after DB_TIME -> one
+                    db_tick = 1'b1;
+                end
             one:
                 if (~sw)
                     state_next = zero; // On release -> zero
