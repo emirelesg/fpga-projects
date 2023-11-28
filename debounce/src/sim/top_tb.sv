@@ -1,6 +1,6 @@
 `timescale 1ns / 10ps
 
-module top_tp;
+module top_tb;
     localparam T=10; // 100 Mhz, 10 ns
     localparam DB_TIME=0.000005; // 5 us
     logic clk;
@@ -45,7 +45,9 @@ module top_tp;
 
         btn = 1'b1;
         wait(led == 1); // ~10 us
+        #(T*500) // 5000 ns
         btn = 1'b0;
+        #(T*500) // 5000 ns
 
         $stop;
     end
