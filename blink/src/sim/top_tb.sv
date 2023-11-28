@@ -1,6 +1,6 @@
 `timescale 1ns / 10ps
 
-module top_tp;
+module top_tb;
     localparam T=10; // 100 Mhz, 10 ns
     logic clk;
     logic reset_n;
