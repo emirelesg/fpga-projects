@@ -6,7 +6,7 @@
 module uart_baudrate_gen
     #(
         parameter real  CLK_FREQ = 100_000_000, // 100 Mhz, 10 ns
-                  real  BAUDRATE = 115_200
+                        BAUDRATE = 115_200
     )
     (
         input logic clk,

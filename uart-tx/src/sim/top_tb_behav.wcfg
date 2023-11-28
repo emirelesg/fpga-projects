@@ -12,14 +12,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="97317011175fs"></ZoomEndTime>
+      <ZoomEndTime time="95060000001fs"></ZoomEndTime>
       <Cursor1Time time="95060000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="175"></NameColumnWidth>
-      <ValueColumnWidth column_width="123"></ValueColumnWidth>
+      <NameColumnWidth column_width="166"></NameColumnWidth>
+      <ValueColumnWidth column_width="119"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="5" />
+   <WVObjectSize size="6" />
    <wvobject fp_name="/uart_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -39,6 +39,13 @@
       <obj_property name="CustomSignalColor">#FF0080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
+   <wvobject fp_name="/uart_tb/uut/uart_tx_unit/s_reg" type="array">
+      <obj_property name="ElementShortName">s_reg[4:0]</obj_property>
+      <obj_property name="ObjectShortName">s_reg[4:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF0080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
    <wvobject fp_name="group16" type="group">
       <obj_property name="label">uart_tx</obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -56,8 +63,8 @@
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
       <wvobject fp_name="/uart_tb/uut/uart_tx_unit/s_reg" type="array">
-         <obj_property name="ElementShortName">s_reg[3:0]</obj_property>
-         <obj_property name="ObjectShortName">s_reg[3:0]</obj_property>
+         <obj_property name="ElementShortName">s_reg[4:0]</obj_property>
+         <obj_property name="ObjectShortName">s_reg[4:0]</obj_property>
          <obj_property name="CustomSignalColor">#008080</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>

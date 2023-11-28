@@ -1,8 +1,4 @@
 module top
-    #(
-        parameter real  CLK_FREQ = 100_000_000, // 100 Mhz, 10 ns
-                  real  BAUDRATE = 115_200
-    )
     (
         input logic clk,
         input logic reset_n,
@@ -12,7 +8,7 @@ module top
         output logic uart_rxd_out
     );
 
-    logic [7:0] tx_data = 'h30 + sw; // 0 -> ? in ASCII
+    logic [7:0] tx_data = 8'h30 | sw; // 0 -> ? in ASCII
 
     /* ~~ Create debouncer_fsm unit ~~ */
 

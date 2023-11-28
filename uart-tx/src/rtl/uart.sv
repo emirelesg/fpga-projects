@@ -1,7 +1,9 @@
 module uart
     #(
         parameter real  CLK_FREQ = 100_000_000, // 100 Mhz, 10 ns
-                  real  BAUDRATE = 115_200
+                        BAUDRATE = 115_200,
+        parameter       DATA_BIT = 8,
+                        STOP_BIT = 1
     )
     (
         input logic clk,
@@ -26,7 +28,7 @@ module uart
 
     logic tx_done_tick;
 
-    uart_tx uart_tx_unit(
+    uart_tx #(.DATA_BIT(DATA_BIT), .STOP_BIT(STOP_BIT)) uart_tx_unit(
         .clk(clk),
         .reset_n(reset_n),
         .s_tick(s_tick),

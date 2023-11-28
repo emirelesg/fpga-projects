@@ -5,22 +5,25 @@
 
 module uart_tx
     #(
-        parameter   DBIT = 8 // Data bits
+        parameter   DATA_BIT = 8,
+                    STOP_BIT = 1
     )
     (
         input logic clk,
         input logic reset_n,
-        input logic s_tick,
+        input logic s_tick, // All bits should be held for 16 s_ticks.
         input logic tx_start,
         input logic [7:0] tx_data,
         output logic tx_done_tick,
         output logic tx
     );
 
+    localparam S_TICK_STOP = (STOP_BIT * 16) - 1;
+
     typedef enum {idle, start, data, stop} state_type;
 
     state_type state_reg, state_next;
-    logic [3:0] s_reg, s_next; // Counts s_tick from 0-15.
+    logic [4:0] s_reg, s_next; // Counts s_tick from 0-31.
     logic [2:0] n_reg, n_next; // Counts transmitted bits from 0-7.
     logic [7:0] b_reg, b_next;
     logic tx_reg, tx_next;
@@ -79,7 +82,7 @@ module uart_tx
                     if (s_reg == 15) begin
                         s_next = 0;
                         b_next = b_reg >> 1;
-                        if (n_reg == (DBIT-1))
+                        if (n_reg == (DATA_BIT-1))
                             state_next = stop;
                         else
                             n_next = n_reg + 1;
@@ -91,7 +94,7 @@ module uart_tx
                 tx_next = 1'b1;
                 // Hold tx HIGH for 15 s_ticks.
                 if (s_tick)
-                    if (s_reg == 15) begin
+                    if (s_reg == S_TICK_STOP) begin
                         state_next = idle;
                         tx_done_tick = 1'b1;
                     end
