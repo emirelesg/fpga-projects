@@ -4,7 +4,9 @@ module top
         output logic [7:0] led
     );
 
-    decoder_3_to_8 decoder1(
+    /* ~~ Create decoder_3_to_8 unit ~~ */
+
+    decoder_3_to_8 decoder_unit(
         .in(sw[2:0]),
         .out(led)
     );

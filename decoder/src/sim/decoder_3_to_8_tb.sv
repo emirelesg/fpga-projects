@@ -9,8 +9,7 @@ module decoder_3_to_8_tb;
         .out(test_out)
     );
 
-    initial
-    begin
+    initial begin
         test_in = 3'b000; // in = 0
         # 200;
         test_in = 3'b001; // in = 1
@@ -27,6 +26,7 @@ module decoder_3_to_8_tb;
         # 200;
         test_in = 3'b111; // in = 7
         # 200;
+
         $stop;
     end
 endmodule

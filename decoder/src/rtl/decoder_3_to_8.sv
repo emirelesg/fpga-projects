@@ -1,11 +1,14 @@
+/*
+ * decoder_3_to_8
+ */
+
 module decoder_3_to_8
     (
         input logic [2:0] in,
         output logic [7:0] out
     );
 
-    always_comb
-    begin
+    always_comb begin
         case (in)
             3'b000: out = 8'b0000_0001;
             3'b001: out = 8'b0000_0010;
