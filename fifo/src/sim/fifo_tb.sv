@@ -54,7 +54,7 @@ module fifo_tb;
         rd = 1'b1;
         for (logic [DATA_WIDTH-1:0] i=0; i < 2**ADDR_WIDTH; i++) begin
             @(posedge clk);
-            assert(r_data == 8'hf0 + i) else $fatal("Test failed! Data mismatch.");
+            assert(r_data == 8'hf0 + i) else $fatal("Expected r_data to be 0x%2h.", 8'hf0 + i);
         end
         rd = 1'b0;
 
