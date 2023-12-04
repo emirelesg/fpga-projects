@@ -34,8 +34,8 @@
 #    "C:/Users/emire/work/fpga-projects/uart/src/rtl/uart_tx.sv"
 #    "C:/Users/emire/work/fpga-projects/uart/src/rtl/top.sv"
 #    "C:/Users/emire/work/fpga-projects/uart/src/cons/Arty-A7-35-Master.xdc"
-#    "C:/Users/emire/work/fpga-projects/uart/src/sim/top_tb.sv"
-#    "C:/Users/emire/work/fpga-projects/uart/src/sim/top_tb_behav.wcfg"
+#    "C:/Users/emire/work/fpga-projects/uart/src/sim/uart_tb.sv"
+#    "C:/Users/emire/work/fpga-projects/uart/src/sim/uart_tb_behav.wcfg"
 #
 #*****************************************************************************************
 
@@ -222,13 +222,13 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
 set files [list \
- [file normalize "${origin_dir}/src/sim/top_tb.sv"] \
- [file normalize "${origin_dir}/src/sim/top_tb_behav.wcfg"] \
+ [file normalize "${origin_dir}/src/sim/uart_tb.sv"] \
+ [file normalize "${origin_dir}/src/sim/uart_tb_behav.wcfg"] \
 ]
 add_files -norecurse -fileset $obj $files
 
 # Set 'sim_1' fileset file properties for remote files
-set file "$origin_dir/src/sim/top_tb.sv"
+set file "$origin_dir/src/sim/uart_tb.sv"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sim_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
