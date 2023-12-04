@@ -1,5 +1,7 @@
 /*
  *  reg_file
+ *
+ * Basic register file with dynamic indexing.
  */
 
 module reg_file
@@ -11,18 +13,18 @@ module reg_file
         input logic clk,
         input logic reset_n,
         input logic wr_en,
-        input logic [ADDR_WIDTH-1:0] wr_addr, rd_addr,
-        input logic [DATA_WIDTH-1:0] wr_data,
-        output logic [DATA_WIDTH-1:0] rd_data
+        input logic [ADDR_WIDTH-1:0] w_addr, r_addr,
+        input logic [DATA_WIDTH-1:0] w_data,
+        output logic [DATA_WIDTH-1:0] r_data
     );
 
     logic [DATA_WIDTH-1:0] array_reg [0:2**ADDR_WIDTH-1];
 
     always_ff @(posedge clk)
         if (wr_en)
-            array_reg[wr_addr] <= wr_data;
+            array_reg[w_addr] <= w_data;
 
     /* ~~ Assignment of outputs ~~ */
 
-    assign rd_data = array_reg[rd_addr];
+    assign r_data = array_reg[r_addr];
 endmodule
