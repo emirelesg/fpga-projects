@@ -107,7 +107,5 @@ module uart_tx
         endcase
     end
 
-    /* ~~ Assignment of outputs ~~ */
-
     assign tx = tx_reg;
 endmodule

@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="15845000000fs"></ZoomStartTime>
-      <ZoomEndTime time="110915000000fs"></ZoomEndTime>
-      <Cursor1Time time="95070000000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="95080000001fs"></ZoomEndTime>
+      <Cursor1Time time="95080000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="166"></NameColumnWidth>
-      <ValueColumnWidth column_width="115"></ValueColumnWidth>
+      <ValueColumnWidth column_width="111"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="7" />
    <wvobject fp_name="/uart_tb/clk" type="logic">
@@ -27,12 +27,6 @@
    <wvobject fp_name="/uart_tb/reset_n" type="logic">
       <obj_property name="ElementShortName">reset_n</obj_property>
       <obj_property name="ObjectShortName">reset_n</obj_property>
-   </wvobject>
-   <wvobject fp_name="/uart_tb/tx_start" type="logic">
-      <obj_property name="ElementShortName">tx_start</obj_property>
-      <obj_property name="ObjectShortName">tx_start</obj_property>
-      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="group17" type="group">
       <obj_property name="label">uart_baudrate_gen</obj_property>
@@ -90,6 +84,47 @@
          <obj_property name="ElementShortName">tx_done_tick</obj_property>
          <obj_property name="ObjectShortName">tx_done_tick</obj_property>
          <obj_property name="CustomSignalColor">#FFA500</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group145" type="group">
+      <obj_property name="label">fifo_tx</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/uart_tb/uut/fifo_tx_not_empty" type="logic">
+         <obj_property name="ElementShortName">fifo_tx_not_empty</obj_property>
+         <obj_property name="ObjectShortName">fifo_tx_not_empty</obj_property>
+         <obj_property name="CustomSignalColor">#808000</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/uart_tb/uut/fifo_tx_unit/wr_en" type="logic">
+         <obj_property name="ElementShortName">wr_en</obj_property>
+         <obj_property name="ObjectShortName">wr_en</obj_property>
+         <obj_property name="CustomSignalColor">#808000</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/uart_tb/uut/fifo_tx_unit/w_addr" type="array">
+         <obj_property name="ElementShortName">w_addr[3:0]</obj_property>
+         <obj_property name="ObjectShortName">w_addr[3:0]</obj_property>
+         <obj_property name="CustomSignalColor">#808000</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/uart_tb/uut/fifo_tx_unit/w_data" type="array">
+         <obj_property name="ElementShortName">w_data[7:0]</obj_property>
+         <obj_property name="ObjectShortName">w_data[7:0]</obj_property>
+         <obj_property name="CustomSignalColor">#808000</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/uart_tb/uut/fifo_tx_unit/r_addr" type="array">
+         <obj_property name="ElementShortName">r_addr[3:0]</obj_property>
+         <obj_property name="ObjectShortName">r_addr[3:0]</obj_property>
+         <obj_property name="CustomSignalColor">#808000</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/uart_tb/uut/fifo_tx_unit/r_data" type="array">
+         <obj_property name="ElementShortName">r_data[7:0]</obj_property>
+         <obj_property name="ObjectShortName">r_data[7:0]</obj_property>
+         <obj_property name="CustomSignalColor">#808000</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
    </wvobject>

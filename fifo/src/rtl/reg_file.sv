@@ -1,5 +1,5 @@
 /*
- *  reg_file
+ * reg_file
  *
  * Basic register file with dynamic indexing.
  */
@@ -23,8 +23,6 @@ module reg_file
     always_ff @(posedge clk)
         if (wr_en)
             array_reg[w_addr] <= w_data;
-
-    /* ~~ Assignment of outputs ~~ */
 
     assign r_data = array_reg[r_addr];
 endmodule

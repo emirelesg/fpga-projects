@@ -27,8 +27,5 @@ module uart_baudrate_gen
     end
 
     assign q_next = (q_reg == DVSR) ? 0 : q_reg + 1;
-
-    /* ~~ Assignment of outputs ~~ */
-
     assign s_tick = q_reg == 1;
 endmodule

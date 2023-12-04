@@ -15,7 +15,7 @@ module fifo_tb;
     logic empty, full;
     logic [DATA_WIDTH-1:0] w_data, r_data;
 
-    fifo #(DATA_WIDTH, ADDR_WIDTH) uut(.*);
+    fifo #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH)) uut(.*);
 
     // Simulate a 100 Mhz clock signal.
     always begin

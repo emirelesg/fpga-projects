@@ -8,11 +8,11 @@ module uart_tb;
 
     // Parameters and signals for UUT
 
-    localparam S_TICK=54; // Amount of clock cycles for an s_tick.
+    localparam S_TICK = 54; // Amount of clock cycles for an s_tick.
 
-    logic rx, tx;
-    logic tx_start;
-    logic [7:0] tx_data;
+    logic tx;
+    logic wr;
+    logic [7:0] w_data;
 
     uart uut(.*);
 
@@ -37,9 +37,9 @@ module uart_tb;
     end
 
     initial begin
-        tx_start = 0'b0;
-        tx_data = 8'b10101010;
-        payload = {1'b1, tx_data, 1'b0}; // Including start and stop bits.
+        wr = 1'b0;
+        w_data = 8'b10101010;
+        payload = {1'b1, w_data, 1'b0}; // Including start and stop bits.
 
         @(posedge reset_n); // Wait for the reset.
         @(negedge clk);
@@ -48,15 +48,16 @@ module uart_tb;
 
         // state_reg = idle
 
-        tx_start = 1'b1;
+        wr = 1'b1;
 
         @(negedge clk);
 
         // state_reg = start
 
-        tx_start = 0'b0;
+        wr = 1'b0;
 
-        @(negedge clk);
+        @(negedge clk); // Wait for data to be stored.
+        @(negedge clk); // Wait for fifo_tx_not_empty to be 1.
 
         for (int i = 0; i < 10; i++) begin
             $display("[payload] %d: %b", i, payload[i]);

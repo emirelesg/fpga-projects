@@ -23,10 +23,11 @@ module fifo
 
     /* ~~ Initialize fifo_ctrl unit ~~ */
 
-    fifo_ctrl #(ADDR_WIDTH) fifo_ctrl_unit(
+    fifo_ctrl #(.ADDR_WIDTH(ADDR_WIDTH)) fifo_ctrl_unit(
         .*,
         .rd(rd),
         .wr(wr),
+        // Outputs
         .empty(empty),
         .full(full),
         .w_addr(w_addr),
@@ -37,13 +38,13 @@ module fifo
 
     assign wr_en = wr & ~full;
 
-    reg_file #(DATA_WIDTH, ADDR_WIDTH) reg_file_unit(
+    reg_file #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH)) reg_file_unit(
         .*,
         .wr_en(wr_en),
         .w_addr(w_addr),
         .r_addr(r_addr),
         .w_data(w_data),
+        // Outputs
         .r_data(r_data)
     );
-
 endmodule

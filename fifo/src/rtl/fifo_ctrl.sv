@@ -74,8 +74,6 @@ module fifo_ctrl
         endcase
     end
 
-    /* ~~ Assignment of outputs ~~ */
-
     assign w_addr = w_ptr_reg;
     assign r_addr = r_ptr_reg;
     assign full = full_reg;
