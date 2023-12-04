@@ -6,6 +6,7 @@ A collection of projects using an Arty A7-35T FPGA (XC7A35TICSG324-1L).
 
 - [:rotating_light: blink](/blink/)
 - [:1234: decoder](/decoder/)
+- [:file_folder: fifo](/fifo/)
 - [:sparkler: debounce](/debounce/)
 - [template](/template/)
 - [:lips: uart](/uart/)
