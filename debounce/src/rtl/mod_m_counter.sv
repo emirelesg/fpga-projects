@@ -24,8 +24,5 @@ module mod_m_counter
     end
 
     assign q_next = (q_reg == M-1) ? 1'b0 : q_reg + 1;
-
-    /* ~~ Assignment of outputs ~~ */
-
     assign max_tick = (q_reg == M-1) ? 1'b1 : 1'b0;
 endmodule

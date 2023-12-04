@@ -33,8 +33,5 @@ module top
     end
 
     assign q_next = (btn_db_tick) ? q_reg + 1 : q_reg;
-
-    /* ~~ Assignment of outputs ~~ */
-
     assign led = q_reg;
 endmodule
