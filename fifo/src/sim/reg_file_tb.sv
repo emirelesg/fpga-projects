@@ -6,6 +6,8 @@ module reg_file_tb;
     logic clk;
     logic reset_n;
 
+    // Parameters and signals for UUT
+
     localparam DATA_WIDTH = 8;
     localparam ADDR_WIDTH = 3;
 

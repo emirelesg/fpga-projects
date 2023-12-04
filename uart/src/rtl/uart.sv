@@ -24,7 +24,7 @@ module uart
 
     logic s_tick;
 
-    uart_baudrate_gen #(.CLK_FREQ(CLK_FREQ), .BAUDRATE(BAUDRATE)) uart_baudrate_gen_unit(
+    uart_baudrate_gen #(CLK_FREQ, BAUDRATE) uart_baudrate_gen_unit(
         .clk(clk),
         .reset_n(reset_n),
         .s_tick(s_tick)
@@ -34,7 +34,7 @@ module uart
 
     logic tx_done_tick;
 
-    uart_tx #(.DATA_BIT(DATA_BIT), .STOP_BIT(STOP_BIT)) uart_tx_unit(
+    uart_tx #(DATA_BIT, STOP_BIT) uart_tx_unit(
         .clk(clk),
         .reset_n(reset_n),
         .s_tick(s_tick),

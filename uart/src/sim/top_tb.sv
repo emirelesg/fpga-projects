@@ -2,21 +2,23 @@
 
 module uart_tb;
     localparam T=10; // 100 Mhz, 10 ns
-    localparam S_TICK=54; // Amount of clock cycles for an s_tick.
 
     logic clk;
     logic reset_n;
-    logic tx;
+
+    // Parameters and signals for UUT
+
+    localparam S_TICK=54; // Amount of clock cycles for an s_tick.
+
+    logic rx, tx;
     logic tx_start;
     logic [7:0] tx_data;
 
-    uart uut(
-        .clk(clk),
-        .reset_n(reset_n),
-        .tx_start(tx_start),
-        .tx_data(tx_data),
-        .tx(tx)
-    );
+    uart uut(.*);
+
+    // Parameters and signals for Test
+
+    logic [9:0] payload;
 
     // Simulate a 100 Mhz clock signal.
     always begin
@@ -28,8 +30,6 @@ module uart_tb;
 
     // Reset at the start of the simulation.
     initial begin
-        tx_start = 0'b0;
-        tx_data = 8'b10101010;
         reset_n = 1'b0;
         #(T/2);
         reset_n = 1'b1;
@@ -37,10 +37,15 @@ module uart_tb;
     end
 
     initial begin
+        tx_start = 0'b0;
+        tx_data = 8'b10101010;
+        payload = {1'b1, tx_data, 1'b0}; // Including start and stop bits.
+
         @(posedge reset_n); // Wait for the reset.
         @(negedge clk);
 
-        assert(tx == 1);
+        assert(tx == 1) else $fatal("Expected tx to be 1.");
+
         // state_reg = idle
 
         tx_start = 1'b1;
@@ -51,36 +56,13 @@ module uart_tb;
 
         tx_start = 0'b0;
 
-        @(posedge clk);
-        assert(tx == 0);
+        @(negedge clk);
 
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 0);
-
-        // state_reg = data
-
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 1);
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 0);
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 1);
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 0);
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 1);
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 0);
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 1);
-
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 1);
-
-        // state_reg = stop
-
-        repeat(16*S_TICK) @(negedge clk);
-        assert(tx == 1);
+        for (int i = 0; i < 10; i++) begin
+            $display("[payload] %d: %b", i, payload[i]);
+            assert(tx == payload[i]) else $fatal("Expected tx to be %b.", payload[i]);
+            repeat(16*S_TICK) @(negedge clk);
+        end
 
         // state_reg = idle
 
