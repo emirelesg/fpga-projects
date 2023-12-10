@@ -12,16 +12,16 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="874110000001fs"></ZoomEndTime>
-      <Cursor1Time time="874110000000fs"></Cursor1Time>
+      <ZoomEndTime time="1133310000001fs"></ZoomEndTime>
+      <Cursor1Time time="1133310000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="166"></NameColumnWidth>
-      <ValueColumnWidth column_width="99"></ValueColumnWidth>
+      <ValueColumnWidth column_width="95"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="6" />
    <wave_markers>
-      <marker time="45170489000" label="" />
+      <marker time="9985000000" label="" />
    </wave_markers>
    <wvobject fp_name="/top_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
@@ -53,14 +53,32 @@
          <obj_property name="CustomSignalColor">#FFA500</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
+      <wvobject fp_name="/top_tb/uut/wr_reg" type="logic">
+         <obj_property name="ElementShortName">wr_reg</obj_property>
+         <obj_property name="ObjectShortName">wr_reg</obj_property>
+         <obj_property name="CustomSignalColor">#FFA500</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/top_tb/uut/w_reg" type="array">
+         <obj_property name="ElementShortName">w_reg[7:0]</obj_property>
+         <obj_property name="ObjectShortName">w_reg[7:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FFA500</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/top_tb/uut/addr_reg" type="array">
+         <obj_property name="ElementShortName">addr_reg[7:0]</obj_property>
+         <obj_property name="ObjectShortName">addr_reg[7:0]</obj_property>
+         <obj_property name="CustomSignalColor">#FFA500</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject fp_name="group231" type="group">
       <obj_property name="label">dual_bram_file_unit</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
       <wvobject fp_name="/top_tb/uut/dual_bram_file_unit/r_addr" type="array">
-         <obj_property name="ElementShortName">r_addr[3:0]</obj_property>
-         <obj_property name="ObjectShortName">r_addr[3:0]</obj_property>
+         <obj_property name="ElementShortName">r_addr[7:0]</obj_property>
+         <obj_property name="ObjectShortName">r_addr[7:0]</obj_property>
          <obj_property name="CustomSignalColor">#D2691E</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
@@ -128,6 +146,7 @@
          <obj_property name="ObjectShortName">array_reg[0:15][7:0]</obj_property>
          <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[0]" type="array">
             <obj_property name="ElementShortName">[0][7:0]</obj_property>
             <obj_property name="ObjectShortName">[0][7:0]</obj_property>
