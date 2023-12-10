@@ -8,6 +8,7 @@ A collection of projects using an Arty A7-35T FPGA (XC7A35TICSG324-1L).
 - [:1234: decoder](/decoder/)
 - [:file_folder: fifo](/fifo/)
 - [:sparkler: debounce](/debounce/)
+- [:floppy_disk: ram](/ram/)
 - [template](/template/)
 - [:lips: uart](/uart/)
 
