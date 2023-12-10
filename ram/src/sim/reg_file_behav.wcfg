@@ -12,12 +12,12 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="264664806fs"></ZoomEndTime>
-      <Cursor1Time time="170000000fs"></Cursor1Time>
+      <ZoomEndTime time="170000001fs"></ZoomEndTime>
+      <Cursor1Time time="100000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="166"></NameColumnWidth>
-      <ValueColumnWidth column_width="107"></ValueColumnWidth>
+      <ValueColumnWidth column_width="103"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="7" />
    <wvobject fp_name="/reg_file_tb/clk" type="logic">
@@ -31,19 +31,19 @@
    <wvobject fp_name="/reg_file_tb/wr_en" type="logic">
       <obj_property name="ElementShortName">wr_en</obj_property>
       <obj_property name="ObjectShortName">wr_en</obj_property>
-      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="CustomSignalColor">#FF0080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/reg_file_tb/w_addr" type="array">
       <obj_property name="ElementShortName">w_addr[2:0]</obj_property>
       <obj_property name="ObjectShortName">w_addr[2:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="CustomSignalColor">#FF0080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/reg_file_tb/w_data" type="array">
       <obj_property name="ElementShortName">w_data[7:0]</obj_property>
       <obj_property name="ObjectShortName">w_data[7:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="CustomSignalColor">#FF0080</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject fp_name="/reg_file_tb/r_addr" type="array">

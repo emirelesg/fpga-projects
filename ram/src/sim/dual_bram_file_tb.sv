@@ -1,6 +1,6 @@
 `timescale 1ns / 10ps
 
-module reg_file_tb;
+module dual_bram_file_tb;
     localparam T=10; // 100 Mhz, 10 ns
 
     logic clk;
@@ -15,7 +15,7 @@ module reg_file_tb;
     logic [ADDR_WIDTH-1:0] w_addr, r_addr;
     logic [DATA_WIDTH-1:0] w_data, r_data;
 
-    reg_file #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH)) uut(.*);
+    dual_bram_file #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH)) uut(.*);
 
     // Simulate a 100 Mhz clock signal.
     always begin
