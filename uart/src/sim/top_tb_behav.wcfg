@@ -12,16 +12,16 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="874110000000fs"></ZoomEndTime>
-      <Cursor1Time time="5000000fs"></Cursor1Time>
+      <ZoomEndTime time="874110000001fs"></ZoomEndTime>
+      <Cursor1Time time="874110000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="166"></NameColumnWidth>
-      <ValueColumnWidth column_width="103"></ValueColumnWidth>
+      <ValueColumnWidth column_width="99"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="5" />
+   <WVObjectSize size="6" />
    <wave_markers>
-      <marker time="9985000000" label="" />
+      <marker time="45170489000" label="" />
    </wave_markers>
    <wvobject fp_name="/top_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
@@ -53,10 +53,21 @@
          <obj_property name="CustomSignalColor">#FFA500</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject fp_name="/top_tb/uut/c_reg" type="array">
-         <obj_property name="ElementShortName">c_reg[3:0]</obj_property>
-         <obj_property name="ObjectShortName">c_reg[3:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FFA500</obj_property>
+   </wvobject>
+   <wvobject fp_name="group231" type="group">
+      <obj_property name="label">dual_bram_file_unit</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/top_tb/uut/dual_bram_file_unit/r_addr" type="array">
+         <obj_property name="ElementShortName">r_addr[3:0]</obj_property>
+         <obj_property name="ObjectShortName">r_addr[3:0]</obj_property>
+         <obj_property name="CustomSignalColor">#D2691E</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject fp_name="/top_tb/uut/dual_bram_file_unit/r_data" type="array">
+         <obj_property name="ElementShortName">r_data[7:0]</obj_property>
+         <obj_property name="ObjectShortName">r_data[7:0]</obj_property>
+         <obj_property name="CustomSignalColor">#D2691E</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
    </wvobject>
@@ -115,102 +126,102 @@
       <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg" type="array">
          <obj_property name="ElementShortName">array_reg[0:15][7:0]</obj_property>
          <obj_property name="ObjectShortName">array_reg[0:15][7:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[0]" type="array">
             <obj_property name="ElementShortName">[0][7:0]</obj_property>
             <obj_property name="ObjectShortName">[0][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[1]" type="array">
             <obj_property name="ElementShortName">[1][7:0]</obj_property>
             <obj_property name="ObjectShortName">[1][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[2]" type="array">
             <obj_property name="ElementShortName">[2][7:0]</obj_property>
             <obj_property name="ObjectShortName">[2][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[3]" type="array">
             <obj_property name="ElementShortName">[3][7:0]</obj_property>
             <obj_property name="ObjectShortName">[3][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[4]" type="array">
             <obj_property name="ElementShortName">[4][7:0]</obj_property>
             <obj_property name="ObjectShortName">[4][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[5]" type="array">
             <obj_property name="ElementShortName">[5][7:0]</obj_property>
             <obj_property name="ObjectShortName">[5][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[6]" type="array">
             <obj_property name="ElementShortName">[6][7:0]</obj_property>
             <obj_property name="ObjectShortName">[6][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[7]" type="array">
             <obj_property name="ElementShortName">[7][7:0]</obj_property>
             <obj_property name="ObjectShortName">[7][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[8]" type="array">
             <obj_property name="ElementShortName">[8][7:0]</obj_property>
             <obj_property name="ObjectShortName">[8][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[9]" type="array">
             <obj_property name="ElementShortName">[9][7:0]</obj_property>
             <obj_property name="ObjectShortName">[9][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[10]" type="array">
             <obj_property name="ElementShortName">[10][7:0]</obj_property>
             <obj_property name="ObjectShortName">[10][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[11]" type="array">
             <obj_property name="ElementShortName">[11][7:0]</obj_property>
             <obj_property name="ObjectShortName">[11][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[12]" type="array">
             <obj_property name="ElementShortName">[12][7:0]</obj_property>
             <obj_property name="ObjectShortName">[12][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[13]" type="array">
             <obj_property name="ElementShortName">[13][7:0]</obj_property>
             <obj_property name="ObjectShortName">[13][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[14]" type="array">
             <obj_property name="ElementShortName">[14][7:0]</obj_property>
             <obj_property name="ObjectShortName">[14][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject fp_name="/top_tb/uut/uart_unit/fifo_tx_unit/reg_file_unit/array_reg[15]" type="array">
             <obj_property name="ElementShortName">[15][7:0]</obj_property>
             <obj_property name="ObjectShortName">[15][7:0]</obj_property>
-            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
             <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
       </wvobject>

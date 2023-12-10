@@ -9,7 +9,8 @@
 module dual_bram_file
     #(
         parameter   DATA_WIDTH = 8,
-                    ADDR_WIDTH = 2
+                    ADDR_WIDTH = 2,
+                    MEM_FILE = "dual_bram_file.mem"
     )
     (
         input logic clk,
@@ -22,9 +23,9 @@ module dual_bram_file
     // For small ADDR_WIDTH sizes, the array_reg is synthesized with LUTs.
     // Force the usage of BRAM with the following directive:
     (* ram_style = "block" *) logic [DATA_WIDTH-1:0] array_reg [0:2**ADDR_WIDTH-1];
-    
+
     initial begin
-        $readmemh("dual_bram_file.mem", array_reg);
+        $readmemh(MEM_FILE, array_reg);
     end
 
     always_ff @(posedge clk) begin

@@ -22,50 +22,58 @@ module top
         .db_tick(btn_db_tick)
     );
 
-    /* ~~ Send digits 0-9 when the button is pressed ~~ */
+    /* ~~ Send payload.mem contents when the button is pressed ~~ */
 
-    localparam N_BYTES = 10; // Number of bytes to send.
+    localparam N_BYTES = 13; // Number of bytes to send.
+    localparam ADDR_WIDTH = $clog2(N_BYTES);
 
     logic wr;
     logic [7:0] w_data;
 
     typedef enum {idle, load} state_type;
 
-    logic [$clog2(N_BYTES)-1:0] c_reg, c_next;
+    logic [ADDR_WIDTH-1:0] addr_reg, addr_next;
     state_type state_reg, state_next;
 
     always_ff @(posedge clk, negedge reset_n) begin
         if (~reset_n) begin
-            c_reg <= 0;
+            addr_reg <= 0;
             state_reg <= idle;
         end
         else begin
-            c_reg <= c_next;
+            addr_reg <= addr_next;
             state_reg <= state_next;
         end
     end
 
     always_comb begin
         // Default values:
-        c_next = c_reg;
+        addr_next = addr_reg;
         state_next = state_reg;
 
         unique case (state_reg)
             idle:
-                if (btn_db_tick) begin
-                    c_next = 0;
+                if (btn_db_tick)
                     state_next = load;
-                end
+                else
+                    addr_next = 0;
             load:
-                if (c_reg == N_BYTES - 1)
+                if (addr_reg == N_BYTES - 1)
                     state_next = idle;
                 else
-                    c_next = c_reg + 1;
+                    addr_next = addr_reg + 1;
         endcase
     end
 
-    assign wr = state_reg == load; // Write bytes to FIFO while loading.
-    assign w_data = 8'h30 | c_reg;
+    assign wr = addr_reg > 0; // Write bytes to FIFO while loading.
+
+     /* ~~ Create dual_bram_file unit ~~ */
+
+    dual_bram_file #(.MEM_FILE("payload.mem"), .ADDR_WIDTH(ADDR_WIDTH)) dual_bram_file_unit(
+        .clk(clk),
+        .r_addr(addr_reg),
+        .r_data(w_data)
+    );
 
     /* ~~ Create uart unit ~~ */
 

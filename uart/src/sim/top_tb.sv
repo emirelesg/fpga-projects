@@ -55,7 +55,7 @@ module top_tb;
 
         // Wait for 10 bytes to send.
         // 10 bytes * 10 bits * T_BIT
-        repeat(10) repeat(10) repeat(16*S_TICK) @(negedge clk);
+        repeat(13) repeat(10) repeat(16*S_TICK) @(negedge clk);
 
         $stop;
     end
