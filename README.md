@@ -10,8 +10,8 @@ A collection of projects using an Arty A7-35T FPGA (XC7A35TICSG324-1L).
 - [:sound: ddfs](/ddfs/)
 - [:sparkler: debounce](/debounce/)
 - [:floppy_disk: ram](/ram/)
+- [:aquarius: i2s](/i2s/)
 - [template](/template/)
-- [:lips: uart](/uart/)
 
 ## Structure
 
