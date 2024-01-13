@@ -2,3 +2,6 @@
 *.log
 */project
 */.Xil
+*/ip/*/*
+!*/ip/*/hdl
+!*/ip/*/*.bd
