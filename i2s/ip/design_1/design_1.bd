@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x7FFDA7842D8E588E",
+      "boundary_crc": "0xA126A55C11F321AE",
       "device": "xc7a35ticsg324-1L",
       "name": "design_1",
       "synth_flow_mode": "Hierarchical",
@@ -9,7 +9,7 @@
       "validated": "true"
     },
     "design_tree": {
-      "clk_wiz_0": ""
+      "clk_wiz_i2s": ""
     },
     "ports": {
       "reset_n": {
@@ -45,33 +45,94 @@
             "value_src": "default"
           }
         }
+      },
+      "clk_i2s": {
+        "type": "clk",
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "/clk_wiz_i2s_clk_out1",
+            "value_src": "ip_prop"
+          },
+          "FREQ_HZ": {
+            "value": "10000000",
+            "value_src": "ip_prop"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "ip_prop"
+          }
+        }
       }
     },
     "components": {
-      "clk_wiz_0": {
+      "clk_wiz_i2s": {
         "vlnv": "xilinx.com:ip:clk_wiz:6.0",
         "xci_name": "design_1_clk_wiz_0_0",
         "parameters": {
+          "CLKIN2_JITTER_PS": {
+            "value": "130.20000000000002"
+          },
+          "CLKOUT1_JITTER": {
+            "value": "290.478"
+          },
+          "CLKOUT1_PHASE_ERROR": {
+            "value": "133.882"
+          },
+          "CLKOUT1_REQUESTED_OUT_FREQ": {
+            "value": "10.000"
+          },
+          "CLK_OUT1_PORT": {
+            "value": "clk_i2s"
+          },
+          "MMCM_CLKFBOUT_MULT_F": {
+            "value": "15.625"
+          },
+          "MMCM_CLKIN2_PERIOD": {
+            "value": "10.000"
+          },
+          "MMCM_CLKOUT0_DIVIDE_F": {
+            "value": "78.125"
+          },
+          "MMCM_DIVCLK_DIVIDE": {
+            "value": "2"
+          },
           "RESET_PORT": {
             "value": "resetn"
           },
           "RESET_TYPE": {
             "value": "ACTIVE_LOW"
+          },
+          "SECONDARY_SOURCE": {
+            "value": "Single_ended_clock_capable_pin"
+          },
+          "USE_INCLK_SWITCHOVER": {
+            "value": "false"
           }
         }
       }
     },
     "nets": {
-      "reset_n_1": {
+      "reset_n": {
         "ports": [
           "reset_n",
-          "clk_wiz_0/resetn"
+          "clk_wiz_i2s/resetn"
         ]
       },
-      "clk_1": {
+      "clk": {
         "ports": [
           "clk",
-          "clk_wiz_0/clk_in1"
+          "clk_wiz_i2s/clk_in1"
+        ]
+      },
+      "clk_i2s": {
+        "ports": [
+          "clk_wiz_i2s/clk_i2s",
+          "clk_i2s"
         ]
       }
     }
