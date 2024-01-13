@@ -14,4 +14,11 @@ module top
         // Outputs
         .clk_i2s(clk_i2s)
     );
+    
+    /* ~~ Create i2s unit ~~ */
+    
+    i2s i2s_unit(
+        .clk_i2s(clk_i2s),
+        .reset_n(reset_n)
+    );
 endmodule
