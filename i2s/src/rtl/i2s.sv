@@ -1,4 +1,23 @@
+/*
+ * i2s
+ *
+ * Implements an i2s transmitter for the CS5343 chip.
+ *
+ * mclk: 12.288 MHz = 48 kHz * 256    
+ * sclk: 3.072 MHz = 48 kHz * 64
+ *
+ * The default ratios are for a 48 kHz sampling rate.
+ * See section 4.1.1 for other options
+ * https://statics.cirrus.com/pubs/proDatasheet/CS5343-44_F5.pdf
+ */
+
 module i2s
+    #(
+        parameter   MCLK_LRCK_RATIO = 256,
+                    SCLK_LRCK_RATIO = 64,
+                    DATA_BIT = 24           // The number of bits to transmit via i2s.
+                                            // The CS5343 chip requires 24 bits per channel.
+    )
     (
         input logic clk_i2s, // 12.288 Mhz
         input logic reset_n,
@@ -9,58 +28,45 @@ module i2s
         output logic tx_sd
     );
     
-    // Generate sclk from clk_i2s.
-    
-    // The following ratios are required for 48 kHz: 
-    // mclk/lrck = 256
-    // sclk/lrck = 64
-    // See section 4.1.1  https://statics.cirrus.com/pubs/proDatasheet/CS5343-44_F5.pdf
-    
-    // mclk: 12.288 MHz = 48 kHz * 256    
-    // sclk: 3.072 MHz = 48 kHz * 64 
-    // SCLK_DVSR: 12.288 MHz / 3.072 MHz = 4
-    
-    localparam SCLK_DVSR = 4;
+    // Generate sclk and sclk_tick.
+        
+    localparam SCLK_DVSR = MCLK_LRCK_RATIO / SCLK_LRCK_RATIO;
     
     logic [$clog2(SCLK_DVSR)-1:0] cnt, cnt_next;
-    
+ 
     logic sclk, sclk_tick;
     
     always_ff @(posedge clk_i2s, negedge reset_n) begin
         if (~reset_n)
             cnt = 0;
         else
-            cnt <= cnt_next;
+            cnt <= cnt + 1;
     end
-    
-    always_comb begin
-        cnt_next = cnt + 1;
-        sclk = cnt[1];
-        sclk_tick = cnt == SCLK_DVSR - 1;
-    end
+
+    assign sclk = cnt[1];
+    assign sclk_tick = cnt == SCLK_DVSR - 1;
     
     // Generate lrclk and sd.
     
-    localparam D_BIT = 24;
+    typedef enum {load, start} state_type;
+    state_type state_reg, state_next;
+    
+    logic sd_reg, sd_next;
+    logic [DATA_BIT-1:0] w_reg, w_next;
+    logic [$clog2(DATA_BIT*2 - 1):0] sclk_cnt, sclk_cnt_next;
     
     logic lrclk;
-    logic sd;
-    
-    typedef enum {load, start} state_type;
-    
-    logic [D_BIT-1:0] w_reg, w_next;
-    logic [$clog2(D_BIT*2)-1:0] sclk_cnt, sclk_cnt_next;
-    
-    state_type state_reg, state_next;
         
     always_ff @(posedge clk_i2s, negedge reset_n) begin
         if (~reset_n) begin
             state_reg <= load;
+            sd_reg <= 1'b0;
             sclk_cnt = 0;
             w_reg = 0;
         end
         else begin
             state_reg <= state_next;
+            sd_reg <= sd_next;
             sclk_cnt <= sclk_cnt_next;
             w_reg <= w_next;
         end
@@ -69,22 +75,24 @@ module i2s
     always_comb begin
         // Default values:
         state_next = state_reg;
+        sd_next = sd_reg;
         sclk_cnt_next = sclk_cnt;
         w_next = w_reg;
-
-        lrclk = sclk_cnt > D_BIT - 1;
-        sd = w_reg[D_BIT-1];
         
         case (state_reg)
             load: begin
                 state_next = start;
-                w_next = {1'b0, tx_data, 7'b0};
+                w_next = {tx_data, 8'h00}; // Convert 16 data bits to 24 data bits.
             end
-            start: begin 
+            start: begin
                 if (sclk_tick) begin
+                    // The i2s protocol specifies that the MSB of a word to be clocked on the second sclk_tick.
+                    // sd is delayed using sd_reg and sd_next.
+                    sd_next = w_reg[DATA_BIT-1];
                     w_next = w_reg << 1;
                     
-                    if (sclk_cnt < D_BIT * 2 - 1)
+                    // For 24 data bits, count from 0 to 37.
+                    if (sclk_cnt < DATA_BIT*2 - 1)
                         sclk_cnt_next = sclk_cnt + 1;
                     else begin
                         sclk_cnt_next = 0;
@@ -94,9 +102,12 @@ module i2s
             end
         endcase
     end
+    
+    // For 24 data bits, toggle lrclk from 24 to 37.
+    assign lrclk = sclk_cnt > DATA_BIT - 1;
      
     assign tx_mclk = clk_i2s;
     assign tx_sclk = sclk;
     assign tx_lrclk = lrclk;
-    assign tx_sd = sd;
+    assign tx_sd = sd_reg;
 endmodule

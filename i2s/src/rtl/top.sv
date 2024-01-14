@@ -27,8 +27,8 @@ module top
     logic [15:0] pcm_out;
     
     initial begin
-        // 34952 = 400 Hz
-        fccw = 34952; // (2 ^ PHASE_WIDTH * freq / 12_288_000)
+        // 38447 = 440 Hz
+        fccw = 38447; // (2 ^ PHASE_WIDTH * freq / 12_288_000)
         focw = 0;
         pha = 0;
         // 1.0
