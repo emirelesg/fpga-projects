@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="20960784600fs"></ZoomStartTime>
-      <ZoomEndTime time="30590784601fs"></ZoomEndTime>
-      <Cursor1Time time="23260785000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="10590000001fs"></ZoomEndTime>
+      <Cursor1Time time="30010000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="196"></NameColumnWidth>
-      <ValueColumnWidth column_width="99"></ValueColumnWidth>
+      <NameColumnWidth column_width="170"></NameColumnWidth>
+      <ValueColumnWidth column_width="63"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="3" />
    <wvobject fp_name="/top_tb/clk" type="logic">
@@ -48,21 +48,9 @@
          <obj_property name="CustomSignalColor">#FF0080</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject fp_name="/top_tb/uut/i2s_unit/sclk_tick" type="logic">
-         <obj_property name="ElementShortName">sclk_tick</obj_property>
-         <obj_property name="ObjectShortName">sclk_tick</obj_property>
-         <obj_property name="CustomSignalColor">#FF0080</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
       <wvobject fp_name="/top_tb/uut/i2s_unit/tx_lrclk" type="logic">
          <obj_property name="ElementShortName">tx_lrclk</obj_property>
          <obj_property name="ObjectShortName">tx_lrclk</obj_property>
-         <obj_property name="CustomSignalColor">#00FF00</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/top_tb/uut/i2s_unit/lrclk_tick" type="logic">
-         <obj_property name="ElementShortName">lrclk_tick</obj_property>
-         <obj_property name="ObjectShortName">lrclk_tick</obj_property>
          <obj_property name="CustomSignalColor">#00FF00</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
@@ -72,24 +60,10 @@
          <obj_property name="CustomSignalColor">#00FFFF</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject fp_name="/top_tb/uut/i2s_unit/ctr_reg" type="array">
-         <obj_property name="ElementShortName">ctr_reg[8:0]</obj_property>
-         <obj_property name="ObjectShortName">ctr_reg[8:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FFA500</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/top_tb/uut/i2s_unit/state_reg" type="array">
-         <obj_property name="ElementShortName">state_reg[31:0]</obj_property>
-         <obj_property name="ObjectShortName">state_reg[31:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FFA500</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/top_tb/uut/i2s_unit/word_reg" type="array">
-         <obj_property name="ElementShortName">word_reg[15:0]</obj_property>
-         <obj_property name="ObjectShortName">word_reg[15:0]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-         <obj_property name="CustomSignalColor">#FFA500</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="/top_tb/uut/i2s_unit/sclk_cnt" type="array">
+         <obj_property name="ElementShortName">sclk_cnt[5:0]</obj_property>
+         <obj_property name="ObjectShortName">sclk_cnt[5:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
    </wvobject>
 </wave_config>

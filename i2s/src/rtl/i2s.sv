@@ -1,79 +1,96 @@
 module i2s
-    #(
-        parameter   DATA_BIT = 16
-    )
     (
         input logic clk_i2s, // 12.288 Mhz
         input logic reset_n,
-        input logic [DATA_BIT-1:0] tx_data,
+        input logic [15:0] tx_data,
         output logic tx_mclk,
         output logic tx_sclk,
         output logic tx_lrclk,
         output logic tx_sd
     );
-
-    // The mclk/lrclk ratio must be 256 times.
-    // See section 4.1.1: https://statics.cirrus.com/pubs/proDatasheet/CS5343-44_F5.pdf
-    localparam RATIO = 256;
-        
+    
+    // Generate sclk from clk_i2s.
+    
+    // The following ratios are required for 48 kHz: 
+    // mclk/lrck = 256
+    // sclk/lrck = 64
+    // See section 4.1.1  https://statics.cirrus.com/pubs/proDatasheet/CS5343-44_F5.pdf
+    
+    // mclk: 12.288 MHz = 48 kHz * 256    
+    // sclk: 3.072 MHz = 48 kHz * 64 
+    // SCLK_DVSR: 12.288 MHz / 3.072 MHz = 4
+    
+    localparam SCLK_DVSR = 4;
+    
+    logic [$clog2(SCLK_DVSR)-1:0] cnt, cnt_next;
+    
     logic sclk, sclk_tick;
-    logic lrclk, lrclk_tick;
-    logic [$clog2(RATIO - 1):0] ctr_reg, ctr_next;
     
     always_ff @(posedge clk_i2s, negedge reset_n) begin
         if (~reset_n)
-            ctr_reg <= 0;
+            cnt = 0;
         else
-            ctr_reg <= ctr_next;
+            cnt <= cnt_next;
     end
     
     always_comb begin
-        ctr_next = ctr_reg + 1;
-        
-        // sclk: 1.536 Mhz = 12.288 Mhz / 8
-        sclk = ctr_reg[2]; // 0 - 3
-        sclk_tick = ctr_reg[2:0] == 7;
-        
-        // lrclk: 48 khz = 1.536 Mhz / 16 bits / 2 channels
-        lrclk = ctr_reg[7]; // 0 - 255
-        lrclk_tick = ctr_reg[7:0] == 255;
+        cnt_next = cnt + 1;
+        sclk = cnt[1];
+        sclk_tick = cnt == SCLK_DVSR - 1;
     end
     
-    // Transmit
+    // Generate lrclk and sd.
+    
+    localparam D_BIT = 24;
+    
+    logic lrclk;
+    logic sd;
     
     typedef enum {load, start} state_type;
     
+    logic [D_BIT-1:0] w_reg, w_next;
+    logic [$clog2(D_BIT*2)-1:0] sclk_cnt, sclk_cnt_next;
+    
     state_type state_reg, state_next;
-    logic [DATA_BIT-1:0] word_reg, word_next;
-    logic sd;
         
     always_ff @(posedge clk_i2s, negedge reset_n) begin
         if (~reset_n) begin
             state_reg <= load;
-            word_reg <= 0;
+            sclk_cnt = 0;
+            w_reg = 0;
         end
         else begin
             state_reg <= state_next;
-            word_reg <= word_next;
+            sclk_cnt <= sclk_cnt_next;
+            w_reg <= w_next;
         end
     end
     
     always_comb begin
         // Default values:
         state_next = state_reg;
-        word_next = word_reg;
-        sd = word_reg[DATA_BIT-1]; // The MSB of word_reg.
+        sclk_cnt_next = sclk_cnt;
+        w_next = w_reg;
+
+        lrclk = sclk_cnt > D_BIT - 1;
+        sd = w_reg[D_BIT-1];
         
         case (state_reg)
             load: begin
                 state_next = start;
-                word_next = tx_data;
+                w_next = {1'b0, tx_data, 7'b0};
             end
             start: begin 
-                if (lrclk_tick)
-                    state_next = load;
-                else if (sclk_tick)
-                    word_next = word_reg << 1;
+                if (sclk_tick) begin
+                    w_next = w_reg << 1;
+                    
+                    if (sclk_cnt < D_BIT * 2 - 1)
+                        sclk_cnt_next = sclk_cnt + 1;
+                    else begin
+                        sclk_cnt_next = 0;
+                        state_next = load;
+                    end
+                end
             end
         endcase
     end
