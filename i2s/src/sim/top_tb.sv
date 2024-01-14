@@ -5,10 +5,14 @@ module top_tb;
 
     logic clk;
     logic reset_n;
+    
+    logic tx_mclk;
 
     top uut(
         .clk(clk),
-        .reset_n(reset_n)
+        .reset_n(reset_n),
+        // Outputs
+        .tx_mclk(tx_mclk)
     );
 
     // Simulate a 100 Mhz clock signal.
