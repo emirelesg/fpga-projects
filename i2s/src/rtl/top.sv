@@ -10,10 +10,6 @@ module top
     
     /* ~~ Create design_1_wrapper unit ~~ */
     
-    // clk_i2s: 12.288 MHz = 44.8 kHz * 256
-    // MCLK/LRCK ration must be 256 times.
-    // See section 4.1.1: https://statics.cirrus.com/pubs/proDatasheet/CS5343-44_F5.pdf
-    
     logic clk_i2s;
     
     design_1_wrapper design_1_wrapper_unit (

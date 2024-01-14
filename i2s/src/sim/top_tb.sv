@@ -8,13 +8,15 @@ module top_tb;
     
     logic tx_mclk;
     logic tx_sclk;
+    logic tx_lrclk;
 
     top uut(
         .clk(clk),
         .reset_n(reset_n),
         // Outputs
         .tx_mclk(tx_mclk),
-        .tx_sclk(tx_sclk)
+        .tx_sclk(tx_sclk),
+        .tx_lrclk(tx_lrclk)
     );
 
     // Simulate a 100 Mhz clock signal.
@@ -37,7 +39,7 @@ module top_tb;
         @(posedge reset_n); // Wait for the reset.
         @(negedge clk);
         
-        #5000ns;
+        #20us;
 
         $stop;
     end
