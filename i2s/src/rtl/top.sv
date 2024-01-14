@@ -3,8 +3,8 @@ module top
         input logic clk,
         input logic reset_n,
         output logic tx_mclk,
-        output logic tx_lrclk,
         output logic tx_sclk,
+        output logic tx_lrclk,
         output logic tx_data
     );
     
@@ -30,10 +30,8 @@ module top
         .reset_n(reset_n),
         // Outputs
         .tx_mclk(tx_mclk),
-        .tx_lrclk(tx_lrclk),
         .tx_sclk(tx_sclk),
+        .tx_lrclk(tx_lrclk),
         .tx_data(tx_data)
     );
-    
-    assign tx_mclk = clk_i2s;
 endmodule
