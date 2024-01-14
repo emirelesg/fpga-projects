@@ -39,7 +39,7 @@ module top_tb;
         @(posedge reset_n); // Wait for the reset.
         @(negedge clk);
         
-        #20us;
+        #30us;
 
         $stop;
     end
