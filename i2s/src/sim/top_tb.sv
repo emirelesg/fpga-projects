@@ -1,11 +1,11 @@
 `timescale 1ns / 10ps
 
 module top_tb;
-    localparam T=10; // 100 Mhz, 10 ns
+    localparam T=10; // 100 Mhz
 
     logic clk;
     logic reset_n;
-    
+
     logic tx_mclk;
     logic tx_sclk;
     logic tx_lrclk;
@@ -20,27 +20,24 @@ module top_tb;
     );
 
     // Simulate a 100 Mhz clock signal.
-    always begin
-        clk = 1'b0;
-        #(T/2);
-        clk = 1'b1;
-        #(T/2);
-    end
+    initial clk = 0;
+    always clk = #(T/2) ~clk;
 
     // Reset at the start of the simulation.
     initial begin
         reset_n = 1'b0;
-        #(T/2);
+        @(negedge clk)
         reset_n = 1'b1;
-        #(T);
+    end
+
+    // Initial values for signals.
+    initial begin
+        // Stop the test after this delay in case of a bug.
+        #2ms
+        $finish;
     end
 
     initial begin
-        @(posedge reset_n); // Wait for the reset.
-        @(negedge clk);
-        
-        #30us;
-
-        $stop;
+        @(posedge reset_n);
     end
 endmodule
