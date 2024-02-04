@@ -4,6 +4,7 @@ A collection of projects using an Arty A7-35T FPGA (XC7A35TICSG324-1L).
 
 ## Projects
 
+- [:notes: adsr](/adsr/)
 - [:rotating_light: blink](/blink/)
 - [:1234: decoder](/decoder/)
 - [:file_folder: fifo](/fifo/)
