@@ -2,6 +2,14 @@
 *.log
 */project
 */.Xil
+
+# SW
+*/src/sw/*/*
+!*/src/sw/main/src
+!*/src/sw/main/.cproject
+!*/src/sw/main/.project
+
+# IP
 */ip/*/*
 !*/ip/*/hdl
 !*/ip/*/*.bd

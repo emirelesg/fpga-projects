@@ -1,0 +1,117 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0x7A4168992C166C80",
+      "device": "xc7a35ticsg324-1L",
+      "name": "design_1",
+      "synth_flow_mode": "Hierarchical",
+      "tool_version": "2019.1",
+      "validated": "true"
+    },
+    "design_tree": {
+      "microblaze_mcs_0": ""
+    },
+    "ports": {
+      "clk": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "reset_n"
+          },
+          "CLK_DOMAIN": {
+            "value": "design_1_clk",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.000",
+            "value_src": "default"
+          }
+        }
+      },
+      "reset_n": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
+      },
+      "rx": {
+        "direction": "I"
+      },
+      "tx": {
+        "direction": "O"
+      }
+    },
+    "components": {
+      "microblaze_mcs_0": {
+        "vlnv": "xilinx.com:ip:microblaze_mcs:3.0",
+        "xci_name": "design_1_microblaze_mcs_0_0",
+        "parameters": {
+          "MEMSIZE": {
+            "value": "32768"
+          },
+          "USE_IO_BUS": {
+            "value": "1"
+          },
+          "USE_UART_RX": {
+            "value": "1"
+          },
+          "USE_UART_TX": {
+            "value": "1"
+          }
+        },
+        "interface_ports": {
+          "IO": {
+            "mode": "Master",
+            "vlnv": "xilinx.com:interface:mcsio_bus_rtl:1.0"
+          },
+          "UART": {
+            "mode": "Master",
+            "vlnv": "xilinx.com:interface:uart_rtl:1.0"
+          }
+        }
+      }
+    },
+    "nets": {
+      "clk_1": {
+        "ports": [
+          "clk",
+          "microblaze_mcs_0/Clk"
+        ]
+      },
+      "reset_n_1": {
+        "ports": [
+          "reset_n",
+          "microblaze_mcs_0/Reset"
+        ]
+      },
+      "rx_1": {
+        "ports": [
+          "rx",
+          "microblaze_mcs_0/UART_rxd"
+        ]
+      },
+      "tx_1": {
+        "ports": [
+          "microblaze_mcs_0/UART_txd",
+          "tx"
+        ]
+      }
+    }
+  }
+}
