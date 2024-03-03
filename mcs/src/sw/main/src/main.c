@@ -48,13 +48,37 @@
 #include <stdio.h>
 #include "platform.h"
 #include "xil_printf.h"
+#include "xiomodule.h"
+#include "microblaze_sleep.h"
 
+// #include "xiomodule_l.h"
+// #include "xil_io.h"
 
 int main()
 {
     init_platform();
 
+    u8 data;
+    // XIOModule io;
+
+    // XIOModule_Initialize(&io, XPAR_IOMODULE_0_DEVICE_ID);
+    // XIOModule_Start(&io);
+
+    // XIOModule_IoWriteWord(&io, XUL_TX_OFFSET, '!');
+
+    // Same as XIOModule_RecvByte
+    Xil_Out32(XPAR_IOMODULE_0_BASEADDR + XUL_TX_OFFSET, '@');
+
     xil_printf("Hello World %d\n\r", 20);
+
+    usleep(500000);
+
+    xil_printf("Hey!");
+
+    while(1) {
+    	data = XIOModule_RecvByte(XPAR_IOMODULE_0_BASEADDR);
+    	XIOModule_SendByte(XPAR_IOMODULE_0_BASEADDR, data);
+    }
 
     cleanup_platform();
     return 0;
