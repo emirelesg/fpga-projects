@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x7A4168992C166C80",
+      "boundary_crc": "0x47A8A4F72A68E65F",
       "device": "xc7a35ticsg324-1L",
       "name": "design_1",
       "synth_flow_mode": "Hierarchical",
@@ -55,6 +55,38 @@
       },
       "tx": {
         "direction": "O"
+      },
+      "IO_addr_strobe": {
+        "direction": "O"
+      },
+      "IO_address": {
+        "direction": "O",
+        "left": "31",
+        "right": "0"
+      },
+      "IO_byte_enable": {
+        "direction": "O",
+        "left": "3",
+        "right": "0"
+      },
+      "IO_read_data": {
+        "direction": "I",
+        "left": "31",
+        "right": "0"
+      },
+      "IO_read_strobe": {
+        "direction": "O"
+      },
+      "IO_ready": {
+        "direction": "I"
+      },
+      "IO_write_data": {
+        "direction": "O",
+        "left": "31",
+        "right": "0"
+      },
+      "IO_write_strobe": {
+        "direction": "O"
       }
     },
     "components": {
@@ -88,28 +120,76 @@
       }
     },
     "nets": {
-      "clk_1": {
+      "microblaze_mcs_0_clk": {
         "ports": [
           "clk",
           "microblaze_mcs_0/Clk"
         ]
       },
-      "reset_n_1": {
+      "microblaze_mcs_0_reset_n": {
         "ports": [
           "reset_n",
           "microblaze_mcs_0/Reset"
         ]
       },
-      "rx_1": {
+      "microblaze_mcs_0_uart_rxd": {
         "ports": [
           "rx",
           "microblaze_mcs_0/UART_rxd"
         ]
       },
-      "tx_1": {
+      "microblaze_mcs_0_uart_txd": {
         "ports": [
           "microblaze_mcs_0/UART_txd",
           "tx"
+        ]
+      },
+      "microblaze_mcs_0_IO_addr_strobe": {
+        "ports": [
+          "microblaze_mcs_0/IO_addr_strobe",
+          "IO_addr_strobe"
+        ]
+      },
+      "microblaze_mcs_0_IO_address": {
+        "ports": [
+          "microblaze_mcs_0/IO_address",
+          "IO_address"
+        ]
+      },
+      "microblaze_mcs_0_IO_byte_enable": {
+        "ports": [
+          "microblaze_mcs_0/IO_byte_enable",
+          "IO_byte_enable"
+        ]
+      },
+      "microblaze_mcs_0_IO_read_data": {
+        "ports": [
+          "IO_read_data",
+          "microblaze_mcs_0/IO_read_data"
+        ]
+      },
+      "microblaze_mcs_0_IO_read_strobe": {
+        "ports": [
+          "microblaze_mcs_0/IO_read_strobe",
+          "IO_read_strobe"
+        ]
+      },
+      "microblaze_mcs_0_IO_ready": {
+        "ports": [
+          "IO_ready",
+          "microblaze_mcs_0/IO_ready"
+        ]
+      },
+      "microblaze_mcs_0_IO_write_data": {
+        "ports": [
+          "microblaze_mcs_0/IO_write_data",
+          "IO_write_data"
+        ]
+      },
+      "microblaze_mcs_0_IO_write_strobe": {
+        "ports": [
+          "microblaze_mcs_0/IO_write_strobe",
+          "IO_write_strobe"
         ]
       }
     }
