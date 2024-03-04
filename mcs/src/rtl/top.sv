@@ -2,20 +2,22 @@ module top
     (
         input logic clk,
         input logic reset_n,
+        // External
         input logic uart_txd_in,
-        output logic uart_rxd_out
+        output logic uart_rxd_out,
+        output logic [3:0] led
     );
-    
+
     // uBlaze MCS I/O bus
     logic io_addr_strobe;
     logic io_read_strobe;
     logic io_write_strobe;
     logic [3:0] io_byte_enable;
     logic [31:0] io_address;
-    logic [31:0] io_write_data;    
+    logic [31:0] io_write_data;
     logic [31:0] io_read_data;
     logic io_ready;
-    
+
     // MMIO bus
     logic mmio_cs;
     logic mmio_write;
@@ -40,7 +42,7 @@ module top
         .IO_write_data(io_write_data),
         .IO_write_strobe(io_write_strobe)
     );
-    
+
     io_mmio_bridge io_mmio_bridge_unit(
         // uBlaze MCS I/O bus
         .io_addr_strobe(io_addr_strobe),
@@ -59,7 +61,7 @@ module top
         .mmio_write_data(mmio_write_data),
         .mmio_read_data(mmio_read_data)
     );
-    
+
     mmio_top mmio_top_unit(
         .clk(clk),
         .reset_n(reset_n),
@@ -69,7 +71,9 @@ module top
         .mmio_read(mmio_read),
         .mmio_addr(mmio_addr),
         .mmio_write_data(mmio_write_data),
-        .mmio_read_data(mmio_read_data)
+        .mmio_read_data(mmio_read_data),
+        // External
+        .led(led)
     );
-    
+
 endmodule

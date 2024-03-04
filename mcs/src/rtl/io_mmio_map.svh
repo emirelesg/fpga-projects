@@ -2,6 +2,6 @@
 `define _IO_MMIO_MAP_INCLUDED
 
 // Slot definition
-`define S0_LED 0
+`define IO_S0_GPO 0
 
 `endif

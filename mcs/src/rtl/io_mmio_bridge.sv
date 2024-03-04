@@ -1,6 +1,6 @@
 module io_mmio_bridge
     #(
-        parameter BRIDGE_BASE = 32'hc000_0000
+        parameter IO_BRIDGE_BASE = 32'hc000_0000
     )
     (
         // uBlaze MCS I/O bus
@@ -27,7 +27,7 @@ module io_mmio_bridge
     // bit 23: not used
     // bit 22 to 2: used to identify a memory location in the mmio
     // bit 1 to 0: not used
-    assign mmio_cs = io_address[31:24] == BRIDGE_BASE[31:24];
+    assign mmio_cs = io_address[31:24] == IO_BRIDGE_BASE[31:24];
     assign mmio_addr = io_address[22:2]; // 2 LSBs are used for the word alignment.
 
     assign mmio_write = io_write_strobe;
