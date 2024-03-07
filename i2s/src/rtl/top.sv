@@ -11,7 +11,8 @@ module top
 
     /* ~~ Create design_1_wrapper unit ~~ */
 
-    localparam CLK_I2S = 12_288_000;
+    localparam CLK_SYS = 100_000_000;
+    localparam CLK_I2S = 24_576_000;
 
     logic clk_i2s;
 
@@ -29,7 +30,7 @@ module top
     logic btn_db, btn_db_tick;
 
     debouncer_fsm #(.DB_TIME(DB_MS), .CLK_FREQ(CLK_I2S)) debouncer_fsm_unit(
-        .clk(clk_i2s),
+        .clk(clk),
         .reset_n(reset_n),
         .sw(btn != 0), // OR all buttons
         .db(btn_db),
@@ -39,7 +40,7 @@ module top
     /* ~~ Create adsr unit ~~ */
 
     localparam ADSR_MAX = 32'h7fff_ffff;
-    localparam CLK_PER_MS = 0.001 / (1.0 / CLK_I2S);
+    localparam CLK_PER_MS = 0.001 / (1.0 / CLK_SYS);
     localparam ATTACK_MS = 5;
     localparam DECAY_MS = 100;
     localparam SUSTAIN_MS = 50;
@@ -59,7 +60,7 @@ module top
     end
 
     adsr adsr_unit(
-        .clk(clk_i2s),
+        .clk(clk),
         .reset_n(reset_n),
         .start(btn_db_tick),
         .attack_step(attack_step),
@@ -70,42 +71,28 @@ module top
         // Outputs
         .env(env)
     );
-
+    
     /* ~~ Create ddfs unit ~~ */
-
-    logic [29:0] fccw_reg, fccw_next;
-
-    always_ff @(posedge clk_i2s) begin
-        fccw_reg <= fccw_next;
-    end
-
-    always_comb begin
-        // Default values:
-        fccw_next = fccw_reg;
-
-        if (btn_db_tick)
-            case (btn)
-                // (2 ^ PHASE_WIDTH * freq / 12_288_000)
-                4'b1000: fccw_next = 30513; // F4 349.2 Hz
-                4'b0100: fccw_next = 28800; // E4 329.6 Hz
-                4'b0010: fccw_next = 25664; // D4 293.7 Hz
-                default: fccw_next = 22859; // C4 261.6 Hz
-            endcase
-    end
-
+ 
+    logic [29:0] fccw;
     logic [29:0] focw;
     logic [29:0] pha;
     logic [15:0] pcm_out;
 
     initial begin
+        // (2 ^ PHASE_WIDTH * freq / 100_000_000)
+        // fccw = 30513; // F4 349.2 Hz
+        // fccw = 28800; // E4 329.6 Hz
+        // fccw = 25664; // D4 293.7 Hz
+        fccw = 4295; // 400 Hz
         focw = 0;
         pha = 0;
     end
 
     ddfs ddfs_unit(
-        .clk(clk_i2s),
+        .clk(clk),
         .reset_n(reset_n),
-        .fccw(fccw_reg),
+        .fccw(fccw),
         .focw(focw),
         .pha(pha),
         .env(env),
@@ -114,12 +101,13 @@ module top
     );
 
     /* ~~ Create i2s unit ~~ */
-
+    
     i2s i2s_unit(
+        .clk(clk),
         .clk_i2s(clk_i2s),
         .reset_n(reset_n),
-        .tx_data_l(pcm_out),
-        .tx_data_r(pcm_out),
+        .audio_l(pcm_out),
+        .audio_r(pcm_out),
         // Outputs
         .tx_mclk(tx_mclk),
         .tx_sclk(tx_sclk),

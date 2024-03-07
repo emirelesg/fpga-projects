@@ -6,7 +6,7 @@ module top_tb;
     logic clk;
     logic reset_n;
 
-    logic btn;
+    logic [3:0] btn;
     logic tx_mclk;
     logic tx_sclk;
     logic tx_lrclk;
@@ -28,24 +28,24 @@ module top_tb;
     // Reset at the start of the simulation.
     initial begin
         reset_n = 1'b0;
-        @(negedge clk)
+        @(negedge clk);
         reset_n = 1'b1;
     end
 
     // Initial values for signals.
     initial begin
-        btn = 1'b0;
+        btn = 4'b0000;
 
         // Stop the test after this delay in case of a bug.
-        #500ms
+        #5ms;
         $finish;
     end
 
     initial begin
         @(posedge reset_n);
 
-        btn = 1'b1;
-        #50ms;
-        btn = 1'b0;
+        btn = 4'b0001;
+        #1ms;
+        btn = 4'b0000;
     end
 endmodule

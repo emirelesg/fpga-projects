@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xA126A55C934B1F9E",
+      "boundary_crc": "0xA126A55C1C096C0E",
       "device": "xc7a35ticsg324-1L",
       "name": "design_1",
       "synth_flow_mode": "Hierarchical",
@@ -55,7 +55,7 @@
             "value_src": "ip_prop"
           },
           "FREQ_HZ": {
-            "value": "12288000",
+            "value": "24573991",
             "value_src": "ip_prop"
           },
           "INSERT_VIP": {
@@ -78,25 +78,25 @@
             "value": "130.20000000000002"
           },
           "CLKOUT1_JITTER": {
-            "value": "360.948"
+            "value": "448.322"
           },
           "CLKOUT1_PHASE_ERROR": {
-            "value": "301.601"
+            "value": "335.207"
           },
           "CLKOUT1_REQUESTED_OUT_FREQ": {
-            "value": "12.288"
+            "value": "24.576"
           },
           "CLK_OUT1_PORT": {
             "value": "clk_i2s"
           },
           "MMCM_CLKFBOUT_MULT_F": {
-            "value": "48.000"
+            "value": "34.250"
           },
           "MMCM_CLKIN2_PERIOD": {
             "value": "10.000"
           },
           "MMCM_CLKOUT0_DIVIDE_F": {
-            "value": "78.125"
+            "value": "27.875"
           },
           "MMCM_DIVCLK_DIVIDE": {
             "value": "5"
