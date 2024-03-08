@@ -22,5 +22,6 @@
 // Slots
 #define io_s0_gpo get_slot_addr(IO_BASE_ADDR, IO_S0_GPO)
 #define io_s1_ddfs get_slot_addr(IO_BASE_ADDR, IO_S1_DDFS)
+#define io_s2_adsr get_slot_addr(IO_BASE_ADDR, IO_S2_ADSR)
 
 #endif /* SRC_IO_INIT_H_ */

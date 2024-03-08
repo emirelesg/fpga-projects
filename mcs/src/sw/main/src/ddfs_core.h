@@ -11,18 +11,16 @@
 #include <stdio.h>
 #include "io_rw.h"
 
-enum {
-	FCCW_REG = 0,
-	FOCW_REG = 1,
-	PHA_REG = 2
-};
+#define PW 30 // Phase width
 
 enum {
-	PW = 30
+	REG_FCCW = 0,
+	REG_FOCW = 1,
+	REG_PHA = 2
 };
 
-void Ddfs_set_carrier_freq(uint32_t slot_addr, int freq);
-void Ddfs_set_offset_freq(uint32_t slot_addr, int freq);
-void Ddfs_set_phase_degree(uint32_t slot_addr, int phase);
+void ddfs_set_carrier_freq(uint32_t ddfs_addr, int freq);
+void ddfs_set_offset_freq(uint32_t ddfs_addr, int freq);
+void ddfs_set_phase_degree(uint32_t ddfs_addr, int phase);
 
 #endif /* SRC_DDFS_CORE_H_ */

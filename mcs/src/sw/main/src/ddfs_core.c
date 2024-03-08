@@ -7,7 +7,7 @@
 
 #include "ddfs_core.h"
 
-void Ddfs_set_carrier_freq(uint32_t slot_addr, int freq) {
+void ddfs_set_carrier_freq(uint32_t ddfs_addr, int freq) {
 	uint32_t p2n, fccw;
 	float tmp;
 
@@ -15,10 +15,10 @@ void Ddfs_set_carrier_freq(uint32_t slot_addr, int freq) {
 	tmp = (float)p2n / (float)SYS_CLK_FREQ;
 	fccw = (uint32_t)(freq * tmp);
 
-	io_write(slot_addr, FCCW_REG, fccw);
+	io_write(ddfs_addr, REG_FCCW, fccw);
 }
 
-void Ddfs_set_offset_freq(uint32_t slot_addr, int freq) {
+void ddfs_set_offset_freq(uint32_t ddfs_addr, int freq) {
 	uint32_t p2n, focw;
 	float tmp;
 
@@ -26,13 +26,13 @@ void Ddfs_set_offset_freq(uint32_t slot_addr, int freq) {
 	tmp = (float)p2n / (float)SYS_CLK_FREQ;
 	focw = (uint32_t)(freq * tmp);
 
-	io_write(slot_addr, FOCW_REG, focw);
+	io_write(ddfs_addr, REG_FOCW, focw);
 }
 
-void Ddfs_set_phase_degree(uint32_t slot_addr, int phase) {
+void ddfs_set_phase_degree(uint32_t ddfs_addr, int phase) {
 	uint32_t pha;
 
 	pha = SYS_CLK_FREQ * phase/360;
 
-	io_write(slot_addr, PHA_REG, pha);
+	io_write(ddfs_addr, REG_PHA, pha);
 }

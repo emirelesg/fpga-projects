@@ -18,7 +18,7 @@ module mmio_ddfs
     );
     
     logic [PW-1:0] pha_reg, fccw_reg, focw_reg;
-    logic wr_fccw, wr_focw, wr_pha;
+    logic wr_en, wr_fccw, wr_focw, wr_pha;
     
     ddfs ddfs_unit(
         .clk(clk),
@@ -46,8 +46,9 @@ module mmio_ddfs
         end
     end
     
-    assign wr_fccw = (addr[2:0] == 3'b000) & write;
-    assign wr_focw = (addr[2:0] == 3'b001) & write;
-    assign wr_pha = (addr[2:0] == 3'b010) & write;
+    assign wr_en = cs & write;
+    assign wr_fccw = (addr[2:0] == 3'b000) & wr_en;
+    assign wr_focw = (addr[2:0] == 3'b001) & wr_en;
+    assign wr_pha = (addr[2:0] == 3'b010) & wr_en;
     assign read_data = {16'h00000, pcm_out};
 endmodule

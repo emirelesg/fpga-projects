@@ -67,9 +67,6 @@ module mmio_top
     logic [15:0] env;
     logic [15:0] pcm_out;
     
-    initial
-        env = 16'h4000; // 1.0
-    
     mmio_ddfs mmio_ddfs_unit(
         .clk(clk),
         .reset_n(reset_n),
@@ -83,6 +80,22 @@ module mmio_top
         // External
         .env_ext(env),
         .pcm_out(pcm_out)
+    );
+    
+    // Slot 2: ADSR
+    
+    mmio_adsr mmio_adsr_unit(
+        .clk(clk),
+        .reset_n(reset_n),
+        // MMIO Slot
+        .cs(slot_cs_array[`IO_S2_ADSR]),
+        .read(slot_read_array[`IO_S2_ADSR]),
+        .write(slot_write_array[`IO_S2_ADSR]),
+        .addr(slot_reg_addr_array[`IO_S2_ADSR]),
+        .read_data(slot_read_data_array[`IO_S2_ADSR]),
+        .write_data(slot_write_data_array[`IO_S2_ADSR]),
+        // External
+        .env(env)
     );
     
     // DAC
@@ -103,7 +116,7 @@ module mmio_top
     // When trying to read from an unused slot, 0xffffffff is returned.
     generate
         genvar i;
-        for (i=2; i<64; i=i+1) begin: unused_slot_gen
+        for (i=3; i<64; i=i+1) begin: unused_slot_gen
             assign slot_read_data_array[i] = 32'hffff_ffff;
         end
     endgenerate
