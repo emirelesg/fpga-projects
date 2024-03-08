@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x47A8A4F72A68E65F",
+      "boundary_crc": "0xBA09428C1877347F",
       "device": "xc7a35ticsg324-1L",
       "name": "design_1",
       "synth_flow_mode": "Hierarchical",
@@ -9,7 +9,8 @@
       "validated": "true"
     },
     "design_tree": {
-      "microblaze_mcs_0": ""
+      "microblaze_mcs_0": "",
+      "clk_wiz_0": ""
     },
     "ports": {
       "clk": {
@@ -87,6 +88,30 @@
       },
       "IO_write_strobe": {
         "direction": "O"
+      },
+      "clk_i2s": {
+        "type": "clk",
+        "direction": "O",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "/clk_wiz_0_clk_out1",
+            "value_src": "ip_prop"
+          },
+          "FREQ_HZ": {
+            "value": "24573991"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "ip_prop"
+          }
+        }
+      },
+      "clk_locked": {
+        "direction": "O"
       }
     },
     "components": {
@@ -117,19 +142,57 @@
             "vlnv": "xilinx.com:interface:uart_rtl:1.0"
           }
         }
+      },
+      "clk_wiz_0": {
+        "vlnv": "xilinx.com:ip:clk_wiz:6.0",
+        "xci_name": "design_1_clk_wiz_0_0",
+        "parameters": {
+          "CLKOUT1_JITTER": {
+            "value": "448.322"
+          },
+          "CLKOUT1_PHASE_ERROR": {
+            "value": "335.207"
+          },
+          "CLKOUT1_REQUESTED_OUT_FREQ": {
+            "value": "24.576"
+          },
+          "CLKOUT1_USED": {
+            "value": "true"
+          },
+          "CLK_OUT1_PORT": {
+            "value": "clk_i2s"
+          },
+          "MMCM_CLKFBOUT_MULT_F": {
+            "value": "34.250"
+          },
+          "MMCM_CLKOUT0_DIVIDE_F": {
+            "value": "27.875"
+          },
+          "MMCM_DIVCLK_DIVIDE": {
+            "value": "5"
+          },
+          "RESET_PORT": {
+            "value": "resetn"
+          },
+          "RESET_TYPE": {
+            "value": "ACTIVE_LOW"
+          }
+        }
       }
     },
     "nets": {
       "microblaze_mcs_0_clk": {
         "ports": [
           "clk",
-          "microblaze_mcs_0/Clk"
+          "microblaze_mcs_0/Clk",
+          "clk_wiz_0/clk_in1"
         ]
       },
       "microblaze_mcs_0_reset_n": {
         "ports": [
           "reset_n",
-          "microblaze_mcs_0/Reset"
+          "microblaze_mcs_0/Reset",
+          "clk_wiz_0/resetn"
         ]
       },
       "microblaze_mcs_0_uart_rxd": {
@@ -190,6 +253,18 @@
         "ports": [
           "microblaze_mcs_0/IO_write_strobe",
           "IO_write_strobe"
+        ]
+      },
+      "clk_wiz_0_clk_i2s": {
+        "ports": [
+          "clk_wiz_0/clk_i2s",
+          "clk_i2s"
+        ]
+      },
+      "clk_wiz_0_locked": {
+        "ports": [
+          "clk_wiz_0/locked",
+          "clk_locked"
         ]
       }
     }

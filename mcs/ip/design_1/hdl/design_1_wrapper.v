@@ -1,7 +1,7 @@
 //Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-//Date        : Mon Mar  4 13:19:13 2024
+//Date        : Fri Mar  8 17:22:16 2024
 //Host        : PC-ENRIQUE running 64-bit major release  (build 9200)
 //Command     : generate_target design_1_wrapper.bd
 //Design      : design_1_wrapper
@@ -19,6 +19,8 @@ module design_1_wrapper
     IO_write_data,
     IO_write_strobe,
     clk,
+    clk_i2s,
+    clk_locked,
     reset_n,
     rx,
     tx);
@@ -31,6 +33,8 @@ module design_1_wrapper
   output [31:0]IO_write_data;
   output IO_write_strobe;
   input clk;
+  output clk_i2s;
+  output clk_locked;
   input reset_n;
   input rx;
   output tx;
@@ -44,6 +48,8 @@ module design_1_wrapper
   wire [31:0]IO_write_data;
   wire IO_write_strobe;
   wire clk;
+  wire clk_i2s;
+  wire clk_locked;
   wire reset_n;
   wire rx;
   wire tx;
@@ -58,6 +64,8 @@ module design_1_wrapper
         .IO_write_data(IO_write_data),
         .IO_write_strobe(IO_write_strobe),
         .clk(clk),
+        .clk_i2s(clk_i2s),
+        .clk_locked(clk_locked),
         .reset_n(reset_n),
         .rx(rx),
         .tx(tx));

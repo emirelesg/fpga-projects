@@ -3,5 +3,6 @@
 
 // Slot definition
 `define IO_S0_GPO 0
+`define IO_S1_DDFS 1
 
 `endif

@@ -2,6 +2,7 @@
 module mmio_top
     (
         input logic clk,
+        input logic clk_i2s,
         input logic reset_n,
         // MMIO bus
         input logic mmio_cs,
@@ -11,7 +12,11 @@ module mmio_top
         input logic [31:0] mmio_write_data,
         output logic [31:0] mmio_read_data,
         // External
-        output logic [3:0] led
+        output logic [3:0] led,
+        output logic audio_tx_mclk,
+        output logic audio_tx_sclk,
+        output logic audio_tx_lrclk,
+        output logic audio_tx_sd
     );
 
     logic [63:0] slot_cs_array;
@@ -52,16 +57,53 @@ module mmio_top
         .read_data(slot_read_data_array[`IO_S0_GPO]),
         .write_data(slot_write_data_array[`IO_S0_GPO]),
         // External
-        .dout(gpo)
+        .d_out(gpo)
     );
 
     assign led = gpo[3:0];
+    
+    // Slot 1: DDFS
+    
+    logic [15:0] env;
+    logic [15:0] pcm_out;
+    
+    initial
+        env = 16'h4000; // 1.0
+    
+    mmio_ddfs mmio_ddfs_unit(
+        .clk(clk),
+        .reset_n(reset_n),
+        // MMIO Slot
+        .cs(slot_cs_array[`IO_S1_DDFS]),
+        .read(slot_read_array[`IO_S1_DDFS]),
+        .write(slot_write_array[`IO_S1_DDFS]),
+        .addr(slot_reg_addr_array[`IO_S1_DDFS]),
+        .read_data(slot_read_data_array[`IO_S1_DDFS]),
+        .write_data(slot_write_data_array[`IO_S1_DDFS]),
+        // External
+        .env_ext(env),
+        .pcm_out(pcm_out)
+    );
+    
+    // DAC
+    
+    i2s i2s_unit(
+        .clk(clk),
+        .clk_i2s(clk_i2s),
+        .reset_n(reset_n),
+        .audio_l(pcm_out),
+        .audio_r(pcm_out),
+        .tx_mclk(audio_tx_mclk),
+        .tx_sclk(audio_tx_sclk),
+        .tx_lrclk(audio_tx_lrclk),
+        .tx_sd(audio_tx_sd)
+    );
 
     // Unused slots
     // When trying to read from an unused slot, 0xffffffff is returned.
     generate
         genvar i;
-        for (i=1; i<64; i=i+1) begin: unused_slot_gen
+        for (i=2; i<64; i=i+1) begin: unused_slot_gen
             assign slot_read_data_array[i] = 32'hffff_ffff;
         end
     endgenerate

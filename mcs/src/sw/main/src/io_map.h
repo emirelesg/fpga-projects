@@ -8,9 +8,13 @@
 #ifndef SRC_IO_MAP_H_
 #define SRC_IO_MAP_H_
 
-#define IO_BASE_ADDR 0xc0000000
+#include "xparameters.h"
+
+#define SYS_CLK_FREQ XPAR_CPU_CORE_CLOCK_FREQ_HZ
+#define IO_BASE_ADDR XPAR_MICROBLAZE_MCS_0_IOMODULE_0_IO_BASEADDR
 
 // Slot definition
 #define IO_S0_GPO 0
+#define IO_S1_DDFS 1
 
 #endif /* SRC_IO_MAP_H_ */

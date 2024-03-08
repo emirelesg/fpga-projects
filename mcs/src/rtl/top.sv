@@ -5,8 +5,15 @@ module top
         // External
         input logic uart_txd_in,
         output logic uart_rxd_out,
-        output logic [3:0] led
+        output logic [3:0] led,
+        output logic audio_tx_mclk,
+        output logic audio_tx_sclk,
+        output logic audio_tx_lrclk,
+        output logic audio_tx_sd
     );
+    
+    // Clocking Wizard
+    logic clk_i2s; // 24.576 MHz
 
     // uBlaze MCS I/O bus
     logic io_addr_strobe;
@@ -29,6 +36,8 @@ module top
     design_1 design_1_unit (
         .clk(clk),
         .reset_n(reset_n),
+        // Clocking Wizard
+        .clk_i2s(clk_i2s),
         // UART
         .rx(uart_txd_in),
         .tx(uart_rxd_out),
@@ -73,7 +82,12 @@ module top
         .mmio_write_data(mmio_write_data),
         .mmio_read_data(mmio_read_data),
         // External
-        .led(led)
+        .clk_i2s(clk_i2s),
+        .led(led),
+        .audio_tx_mclk(audio_tx_mclk),
+        .audio_tx_sclk(audio_tx_sclk),
+        .audio_tx_lrclk(audio_tx_lrclk),
+        .audio_tx_sd(audio_tx_sd)
     );
 
 endmodule
