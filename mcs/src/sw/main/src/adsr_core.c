@@ -50,6 +50,7 @@ void adsr_set_env(uint32_t adsr_base_addr, int attack_ms, int decay_ms, int sust
 
 int calc_note_freq(int note_i, int oct) {
 	const float NOTES[] = {
+			0,			// REST
 			16.3516,	// 0 C
 			17.3239,	// 1 C#
 			18.3541,	// 2 D

@@ -25,17 +25,18 @@ enum {
 };
 
 enum {
+	REST,
 	NOTE_C,
-	NOTE_Cs,
+	NOTE_CS,
 	NOTE_D,
-	NOTE_Ds,
+	NOTE_DS,
 	NOTE_E,
 	NOTE_F,
-	NOTE_Fs,
+	NOTE_FS,
 	NOTE_G,
-	NOTE_Gs,
+	NOTE_GS,
 	NOTE_A,
-	NOTE_As,
+	NOTE_AS,
 	NOTE_B
 };
 
