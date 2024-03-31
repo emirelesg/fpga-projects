@@ -11,9 +11,9 @@ module top
         output logic audio_tx_lrclk,
         output logic audio_tx_sd
     );
-    
+
     // Clocking Wizard
-    logic clk_i2s; // 24.576 MHz
+    logic clk_i2s; // 12.288 MHz
 
     // uBlaze MCS I/O bus
     logic io_addr_strobe;

@@ -13,23 +13,28 @@ module mmio_ddfs
         input logic [31:0] write_data,
         output logic [31:0] read_data,
         // External
+        input logic en,
         input logic [15:0] env_ext,
-        output logic [15:0] pcm_out
+        output logic [15:0] pcm_out,
+        output logic data_valid
     );
-    
+
     logic [PW-1:0] pha_reg, fccw_reg, focw_reg;
     logic wr_en, wr_fccw, wr_focw, wr_pha;
-    
+
     ddfs ddfs_unit(
         .clk(clk),
         .reset_n(reset_n),
+        .en(en),
         .fccw(fccw_reg),
         .focw(focw_reg),
         .pha(pha_reg),
         .env(env_ext),
-        .pcm_out(pcm_out)
+        // Outputs
+        .pcm_out(pcm_out),
+        .data_valid(data_valid)
     );
-    
+
     always_ff @(posedge clk, negedge reset_n) begin
         if (~reset_n) begin
             pha_reg <= 0;
@@ -45,7 +50,7 @@ module mmio_ddfs
                 pha_reg <= write_data[PW-1:0];
         end
     end
-    
+
     assign wr_en = cs & write;
     assign wr_fccw = (addr[2:0] == 3'b000) & wr_en;
     assign wr_focw = (addr[2:0] == 3'b001) & wr_en;

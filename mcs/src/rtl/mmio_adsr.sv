@@ -26,6 +26,7 @@ module mmio_adsr
         .sustain_time(sustain_time_reg),
         .sustain_level(sustain_level_reg),
         .release_step(release_step_reg),
+        // Outputs
         .env(env_out)
     );
 

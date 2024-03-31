@@ -61,12 +61,12 @@ module mmio_top
     );
 
     assign led = gpo[3:0];
-    
+
     // Slot 1: DDFS
-    
-    logic [15:0] env;
-    logic [15:0] pcm_out;
-    
+    logic ddfs_en, ddfs_data_valid;
+    logic [15:0] adsr_env;
+    logic [15:0] ddfs_pcm_out;
+
     mmio_ddfs mmio_ddfs_unit(
         .clk(clk),
         .reset_n(reset_n),
@@ -78,12 +78,13 @@ module mmio_top
         .read_data(slot_read_data_array[`IO_S1_DDFS]),
         .write_data(slot_write_data_array[`IO_S1_DDFS]),
         // External
-        .env_ext(env),
-        .pcm_out(pcm_out)
+        .en(ddfs_en),
+        .env_ext(adsr_env),
+        .pcm_out(ddfs_pcm_out),
+        .data_valid(ddfs_data_valid)
     );
-    
+
     // Slot 2: ADSR
-    
     mmio_adsr mmio_adsr_unit(
         .clk(clk),
         .reset_n(reset_n),
@@ -95,17 +96,19 @@ module mmio_top
         .read_data(slot_read_data_array[`IO_S2_ADSR]),
         .write_data(slot_write_data_array[`IO_S2_ADSR]),
         // External
-        .env(env)
+        .env(adsr_env)
     );
-    
-    // DAC
-    
-    i2s i2s_unit(
+
+    // i2s DAC
+    i2s_cdc i2s_cdc_unit(
         .clk(clk),
-        .clk_i2s(clk_i2s),
+        .clk_12_288(clk_i2s),
         .reset_n(reset_n),
-        .audio_l(pcm_out),
-        .audio_r(pcm_out),
+        .audio_l(ddfs_pcm_out),
+        .audio_r(ddfs_pcm_out),
+        .wr_en(ddfs_data_valid),
+        // Outputs
+        .wr_ready(ddfs_en),
         .tx_mclk(audio_tx_mclk),
         .tx_sclk(audio_tx_sclk),
         .tx_lrclk(audio_tx_lrclk),

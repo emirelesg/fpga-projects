@@ -12,7 +12,7 @@ void ddfs_set_carrier_freq(uint32_t ddfs_addr, int freq) {
 	float tmp;
 
 	p2n = 1 << PW;
-	tmp = (float)p2n / (float)SYS_CLK_FREQ;
+	tmp = (float)p2n / (float)DDFS_EN_FREQ;
 	fccw = (uint32_t)(freq * tmp);
 
 	io_write(ddfs_addr, REG_FCCW, fccw);
@@ -23,7 +23,7 @@ void ddfs_set_offset_freq(uint32_t ddfs_addr, int freq) {
 	float tmp;
 
 	p2n = 1 << PW;
-	tmp = (float)p2n / (float)SYS_CLK_FREQ;
+	tmp = (float)p2n / (float)DDFS_EN_FREQ;
 	focw = (uint32_t)(freq * tmp);
 
 	io_write(ddfs_addr, REG_FOCW, focw);
@@ -32,7 +32,7 @@ void ddfs_set_offset_freq(uint32_t ddfs_addr, int freq) {
 void ddfs_set_phase_degree(uint32_t ddfs_addr, int phase) {
 	uint32_t pha;
 
-	pha = SYS_CLK_FREQ * phase/360;
+	pha = DDFS_EN_FREQ * phase/360;
 
 	io_write(ddfs_addr, REG_PHA, pha);
 }

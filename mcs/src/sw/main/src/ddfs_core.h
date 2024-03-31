@@ -12,6 +12,7 @@
 #include "io_rw.h"
 
 #define PW 30 // Phase width
+#define DDFS_EN_FREQ 192000 // 192 kHz
 
 enum {
 	REG_FCCW = 0,
