@@ -177,13 +177,53 @@ void adsr_dracula() {
 	}
 }
 
+int read_int() {
+	char in_byte;
+	int num = 0;
+
+	while (1) {
+		in_byte = inbyte();
+		outbyte(in_byte);
+
+		if (in_byte == ',') {
+			break;
+		}
+
+		num *= 10;
+		num += in_byte- 0x30; // Subtract '0' to make value from 0 - 9.
+	}
+
+	return(num);
+}
+
 int main()
 {
+	char in_byte;
+	int freq, attack_ms, decay_ms, sustain_ms, release_ms;
+	float sustain_level;
+
     init_platform();
 
-    adsr_dracula();
+    while (1) {
+    	in_byte = inbyte();
+    	outbyte(in_byte);
 
-    while(1) {
+    	if (in_byte == 'a') {
+    		attack_ms = read_int();
+    		decay_ms = read_int();
+    		sustain_ms = read_int();
+    		release_ms = read_int();
+    		sustain_level = read_int() / 100.0;
 
+    		adsr_set_env(io_s2_adsr, attack_ms, decay_ms, sustain_ms, release_ms, sustain_level);
+    	} else if (in_byte == 'f') {
+    		freq = read_int();
+
+    		ddfs_set_offset_freq(io_s1_ddfs, 0);
+    		ddfs_set_phase_degree(io_s1_ddfs, 0);
+    		ddfs_set_carrier_freq(io_s1_ddfs, freq);
+    	} else if (in_byte == 'p') {
+			adsr_start(io_s2_adsr);
+		}
     }
 }

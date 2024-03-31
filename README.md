@@ -13,6 +13,7 @@ A collection of projects using an Arty A7-35T FPGA (XC7A35TICSG324-1L).
 - [:aquarius: i2s](/i2s/)
 - [:computer: mcs](/mcs/)
 - [:floppy_disk: ram](/ram/)
+- [:musical_score: ui](/ui/)
 - [template](/template/)
 
 ## Structure

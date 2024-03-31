@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main>
+        <section id="controls">
+            <button id="connect">connect</button>
+            <div class="slider-container">
+                <div class="slider-group">
+                    <input type="range" min="1" max="600" value="120" class="slider" id="bpm">
+                    <div class="slider-value" id="bpm-value"></div>
+                    <div class="slider-unit">bpm</div>
+                </div>
+                <div class="slider-group">
+                    <input type="range" min="1" max="300" value="50" class="slider" id="attack-ms">
+                    <div class="slider-value" id="attack-ms-value"></div>
+                    <div class="slider-unit">ms</div>
+                </div>
+                <div class="slider-group">
+                    <input type="range" min="1" max="300" value="50" class="slider" id="decay-ms">
+                    <div class="slider-value" id="decay-ms-value"></div>
+                    <div class="slider-unit">ms</div>
+                </div>
+                <div class="slider-group">
+                    <input type="range" min="1" max="300" value="50" class="slider" id="sustain-ms">
+                    <div class="slider-value" id="sustain-ms-value"></div>
+                    <div class="slider-unit">ms</div>
+                </div>
+                <div class="slider-group">
+                    <input type="range" min="1" max="300" value="50" class="slider" id="release-ms">
+                    <div class="slider-value" id="release-ms-value"></div>
+                    <div class="slider-unit">ms</div>
+                </div>
+                <div class="slider-group">
+                    <input type="range" min="1" max="100" value="50" class="slider" id="sustain-level">
+                    <div class="slider-value" id="sustain-level-value"></div>
+                    <div class="slider-unit">%</div>
+                </div>
+            </div>
+            <div class="drum-machine">
+                <div class="drum-pad">
+                    <input type="checkbox" class="beat-checkbox">
+                    <div class="slider-group">
+                        <input type="range" min="40" max="1000" value="400" class="slider" id="freq-1">
+                        <div class="slider-value" id="freq-1-value"></div>
+                        <div class="slider-unit">Hz</div>
+                    </div>
+                </div>
+                <div class="drum-pad">
+                    <input type="checkbox" class="beat-checkbox">
+                    <div class="slider-group">
+                        <input type="range" min="40" max="1000" value="400" class="slider" id="freq-2">
+                        <div class="slider-value" id="freq-2-value"></div>
+                        <div class="slider-unit">Hz</div>
+                    </div>
+                </div>
+                <div class="drum-pad">
+                    <input type="checkbox" class="beat-checkbox">
+                    <div class="slider-group">
+                        <input type="range" min="40" max="1000" value="400" class="slider" id="freq-3">
+                        <div class="slider-value" id="freq-3-value"></div>
+                        <div class="slider-unit">Hz</div>
+                    </div>
+                </div>
+                <div class="drum-pad">
+                    <input type="checkbox" class="beat-checkbox">
+                    <div class="slider-group">
+                        <input type="range" min="40" max="1000" value="400" class="slider" id="freq-4">
+                        <div class="slider-value" id="freq-4-value"></div>
+                        <div class="slider-unit">Hz</div>
+                    </div>
+                </div>
+                <div class="drum-pad">
+                    <input type="checkbox" class="beat-checkbox">
+                    <div class="slider-group">
+                        <input type="range" min="40" max="1000" value="400" class="slider" id="freq-5">
+                        <div class="slider-value" id="freq-5-value"></div>
+                        <div class="slider-unit">Hz</div>
+                    </div>
+                </div>
+                <div class="drum-pad">
+                    <input type="checkbox" class="beat-checkbox">
+                    <div class="slider-group">
+                        <input type="range" min="40" max="1000" value="400" class="slider" id="freq-6">
+                        <div class="slider-value" id="freq-6-value"></div>
+                        <div class="slider-unit">Hz</div>
+                    </div>
+                </div>
+                <div class="drum-pad">
+                    <input type="checkbox" class="beat-checkbox">
+                    <div class="slider-group">
+                        <input type="range" min="40" max="1000" value="400" class="slider" id="freq-7">
+                        <div class="slider-value" id="freq-7-value"></div>
+                        <div class="slider-unit">Hz</div>
+                    </div>
+                </div>
+                <div class="drum-pad">
+                    <input type="checkbox" class="beat-checkbox">
+                    <div class="slider-group">
+                        <input type="range" min="40" max="1000" value="400" class="slider" id="freq-8">
+                        <div class="slider-value" id="freq-8-value"></div>
+                        <div class="slider-unit">Hz</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="webserial.js"></script>
+</body>
+
+</html>
