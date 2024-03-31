@@ -1,117 +1,76 @@
 module top
-    (
-        input logic clk,
+	(
+		input logic clk,
         input logic reset_n,
         input logic [3:0] btn,
+        input logic [3:0] sw,
         output logic tx_mclk,
         output logic tx_sclk,
         output logic tx_lrclk,
         output logic tx_sd
-    );
+	);
 
-    /* ~~ Create design_1_wrapper unit ~~ */
-
-    localparam CLK_SYS = 100_000_000;
-    localparam CLK_I2S = 24_576_000;
-
-    logic clk_i2s;
+	logic clk_12_288;
 
     design_1_wrapper design_1_wrapper_unit (
         .clk(clk),
         .reset_n(reset_n),
         // Outputs
-        .clk_i2s(clk_i2s)
+        .clk_i2s(clk_12_288)
     );
 
-    /* ~~ Create debouncer_fsm unit ~~ */
-
-    localparam DB_MS = 0.010;
-
-    logic btn_db, btn_db_tick;
-
-    debouncer_fsm #(.DB_TIME(DB_MS), .CLK_FREQ(CLK_I2S)) debouncer_fsm_unit(
-        .clk(clk),
-        .reset_n(reset_n),
-        .sw(btn != 0), // OR all buttons
-        .db(btn_db),
-        .db_tick(btn_db_tick)
-    );
-
-    /* ~~ Create adsr unit ~~ */
-
-    localparam ADSR_MAX = 32'h7fff_ffff;
-    localparam CLK_PER_MS = 0.001 / (1.0 / CLK_SYS);
-    localparam ATTACK_MS = 5;
-    localparam DECAY_MS = 100;
-    localparam SUSTAIN_MS = 50;
-    localparam RELEASE_MS = 200;
-    localparam SUSTAIN_LEVEL = 0.25;
-    localparam SUSTAIN_ABS = $rtoi(ADSR_MAX * SUSTAIN_LEVEL);
-
-    logic [31:0] attack_step, decay_step, sustain_level, sustain_time, release_step;
+	logic [15:0] pcm_out;
+    logic [29:0] fccw, focw; // (2 ^ PHASE_WIDTH * freq / 192_000)
+    logic [29:0] pha;
     logic [15:0] env;
 
-    initial begin
-        attack_step = $rtoi(ADSR_MAX / (ATTACK_MS * CLK_PER_MS));
-        decay_step = $rtoi((ADSR_MAX - SUSTAIN_ABS) / (DECAY_MS * CLK_PER_MS));
-        sustain_level = SUSTAIN_ABS;
-        sustain_time = $rtoi(SUSTAIN_MS * CLK_PER_MS);
-        release_step = $rtoi(SUSTAIN_ABS / (RELEASE_MS * CLK_PER_MS));
+    always_comb begin
+        if (sw == 4'b0001)
+            fccw = 223_696; // 40 Hz
+        else
+            if (sw == 4'b0010)
+                fccw = 447_392; // 80 Hz
+             else
+                if (sw == 4'b0100)
+                    fccw = 671_088; // 120 Hz
+                else
+                    fccw = 2_460_658; // 440 Hz
     end
 
-    adsr adsr_unit(
-        .clk(clk),
-        .reset_n(reset_n),
-        .start(btn_db_tick),
-        .attack_step(attack_step),
-        .decay_step(decay_step),
-        .sustain_level(sustain_level),
-        .release_step(release_step),
-        .sustain_time(sustain_time),
-        // Outputs
-        .env(env)
-    );
-    
-    /* ~~ Create ddfs unit ~~ */
- 
-    logic [29:0] fccw;
-    logic [29:0] focw;
-    logic [29:0] pha;
-    logic [15:0] pcm_out;
-
     initial begin
-        // (2 ^ PHASE_WIDTH * freq / 100_000_000)
-        // fccw = 30513; // F4 349.2 Hz
-        // fccw = 28800; // E4 329.6 Hz
-        // fccw = 25664; // D4 293.7 Hz
-        fccw = 4295; // 400 Hz
         focw = 0;
         pha = 0;
+        env = 16'h4000; // 1.0
     end
 
+    logic wr_ready, wr_en;
+
+    // Example to generate a sine wave:
     ddfs ddfs_unit(
         .clk(clk),
         .reset_n(reset_n),
+        .en(wr_ready),
         .fccw(fccw),
         .focw(focw),
         .pha(pha),
         .env(env),
         // Outputs
-        .pcm_out(pcm_out)
+        .pcm_out(pcm_out),
+        .data_valid(wr_en)
     );
 
-    /* ~~ Create i2s unit ~~ */
-    
-    i2s i2s_unit(
+	i2s_cdc i2s_cdc_unit(
         .clk(clk),
-        .clk_i2s(clk_i2s),
-        .reset_n(reset_n),
-        .audio_l(pcm_out),
+		.clk_12_288(clk_12_288),
+		.reset_n(reset_n),
+		.audio_l(pcm_out),
         .audio_r(pcm_out),
-        // Outputs
+        .wr_en(wr_en),
+		// Outputs
+		.wr_ready(wr_ready),
         .tx_mclk(tx_mclk),
         .tx_sclk(tx_sclk),
         .tx_lrclk(tx_lrclk),
         .tx_sd(tx_sd)
-    );
+	);
 endmodule

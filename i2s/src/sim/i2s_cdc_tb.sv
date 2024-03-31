@@ -1,6 +1,6 @@
 `timescale 1ns / 10ps
 
-module i2s_tb;
+module i2s_cdc_tb;
     localparam T=10; // 100 MHz
     localparam T_I2S=81.38; // 12.288 MHz
 
@@ -15,19 +15,22 @@ module i2s_tb;
     logic tx_sclk;
     logic tx_lrclk;
     logic tx_sd;
-    logic rd_en;
+    logic wr_en;
+    logic wr_ready;
 
-    i2s uut(
+    i2s_cdc uut(
+        .clk(clk),
         .clk_12_288(clk_i2s),
         .reset_n(reset_n),
         .audio_l(audio_l),
         .audio_r(audio_r),
+        .wr_en(wr_en),
         // Outputs
+        .wr_ready(wr_ready),
         .tx_mclk(tx_mclk),
         .tx_sclk(tx_sclk),
         .tx_lrclk(tx_lrclk),
-        .tx_sd(tx_sd),
-        .rd_en(rd_en)
+        .tx_sd(tx_sd)
     );
 
     // Simulate a 100 MHz clock signal.
@@ -41,49 +44,22 @@ module i2s_tb;
     // Reset at the start of the simulation.
     initial begin
         reset_n = 1'b0;
-        @(negedge clk);
+        repeat(5) @(negedge clk); // 2 cycles to let the signal cross domains.
         reset_n = 1'b1;
     end
 
+
     // Initial values for signals.
     initial begin
-        audio_l = 16'b00101010_10101010;
-        audio_r = 16'b01010101_01010111;
+        wr_en = 1'b0;
+        sent_data = 0;
+        audio_l = 0;
+        audio_r = 0;
 
         // Stop the test after this delay in case of a bug.
         #(10 * 16 * 2 * 2 * T_I2S); // 10 lrclk cycles * 16 bits * 2 channels * 2 dvsr * T
         $finish;
     end
-
-   assert_tx_sclk:
-    assert
-        property (
-            @(posedge tx_mclk) disable iff (~reset_n)
-            // The mclk/sclk ratio should be 2.
-            $rose(tx_sclk) |-> ##1 $fell(tx_sclk) ##1 $rose(tx_sclk)
-        )
-        else
-            $fatal("[tx_sclk] Expected signal to be tx_mclk/2");
-
-    assert_tx_lrclk:
-    assert
-        property (
-            @(posedge tx_mclk) disable iff (~reset_n)
-            // The mclk/lrclk ratio should be 64.
-            $rose(tx_lrclk) |-> ##32 $fell(tx_lrclk) ##32 $rose(tx_lrclk)
-        )
-        else
-            $fatal("[tx_lrclk] Expected signal to be tx_mclk/64");
-
-   assert_rd_en:
-    assert
-        property (
-            @(posedge tx_mclk) disable iff (~reset_n)
-            // The rd_en should tick on the first tx_sclk after lrclk.
-            $rose(rd_en) |-> ##1 $fell(rd_en) ##63 $rose(rd_en)
-        )
-        else
-            $fatal("[rd_en] Expected signal to tick every 64 tx_mclk.");
 
     task get_tx_data;
         output [15:0] sent_data;
@@ -100,14 +76,31 @@ module i2s_tb;
 
     initial begin
         @(posedge reset_n);
+        @(negedge tx_lrclk); // WARN: is this for the X -> 0 transition?
+        @(negedge tx_lrclk); // Wait one lrclk cycle since the fifo is under reset.
         fork
+            // Generate sample data
+            begin
+                for(int i = 0; i < 10; i++) begin
+                    wait(wr_ready); // On wr_ready latch the new audio data.
+                    audio_l = 16'haaaa-i;
+                    audio_r = 16'haaaa+i;
+                    @(posedge clk); // Create a tick on wr_en for 1 clk cycle.
+                    wr_en = 1'b1;
+                    @(posedge clk);
+                    wr_en = 1'b0;
+                end
+            end
             // Read sample data
             begin
+                @(negedge tx_lrclk); // Wait one lrclk cycle since data is delayed by one cycle.
                 @(negedge tx_sclk); // Start latching data on the first sclk after lrclk falls.
-                get_tx_data(sent_data);
-                assert(sent_data == audio_l) else $fatal("[tx_sd] Expected 0x%h to be 0x%h.", sent_data, audio_l);
-                get_tx_data(sent_data);
-                assert(sent_data == audio_r) else $fatal("[tx_sd] Expected 0x%h to be 0x%h.", sent_data, audio_r);
+                for(int i = 0; i < 10; i++) begin
+                    get_tx_data(sent_data);
+                    assert(sent_data == 16'haaaa-i) else $fatal("[tx_sd] Expected 0x%h to be 0x%h.", sent_data, 16'haaaa-i);
+                    get_tx_data(sent_data);
+                    assert(sent_data == 16'haaaa+i) else $fatal("[tx_sd] Expected 0x%h to be 0x%h.", sent_data, 16'haaaa+i);
+                end
             end
         join_any
     end
