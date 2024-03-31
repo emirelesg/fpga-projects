@@ -7,7 +7,7 @@ const fs = require('fs');
 
 const MEM_FILE = path.join(__dirname, 'sin_rom.mem');
 
-const NUM_SAMPLES = 2 ** 8; // 256
+const NUM_SAMPLES = 2 ** 11; // 2048
 const AMPLITUDE = 2 ** (16 - 1) - 1; // 32767
 
 const sin16 = Buffer.alloc(2);
