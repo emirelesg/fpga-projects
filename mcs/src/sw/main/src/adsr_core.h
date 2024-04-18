@@ -9,7 +9,7 @@
 #define SRC_ADSR_CORE_H_
 
 #include <stdio.h>
-#include "io_rw.h"
+#include "io_init.h"
 
 enum {
 	REG_START = 0,

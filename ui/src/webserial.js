@@ -101,13 +101,12 @@ const beat = async () => {
     }
 
     // Choose the next beat:
-    currentBeat = Math.floor(beatCheckboxes.length * Math.random());
-    /*
+    // currentBeat = Math.floor(beatCheckboxes.length * Math.random());
+
     currentBeat += 1;
     if (currentBeat >= beatCheckboxes.length) {
         currentBeat = 0;
     }
-    */
 
     setTimeout(beat, 60000 / bpmSlider.value);
 }
@@ -141,3 +140,11 @@ document.addEventListener("keydown", async (event) => {
         await write('p');
     }
 });
+
+// Env
+
+const envSlider = new Slider('env');
+
+envSlider.onUpdate = async () => {
+    await write(`e${envSlider.value},`);
+}

@@ -201,6 +201,7 @@ int main()
 	char in_byte;
 	int freq, attack_ms, decay_ms, sustain_ms, release_ms;
 	float sustain_level;
+	float env;
 
     init_platform();
 
@@ -215,6 +216,7 @@ int main()
     		release_ms = read_int();
     		sustain_level = read_int() / 100.0;
 
+    		ddfs_set_env_source(io_s1_ddfs, 1); // Select external envelope.
     		adsr_set_env(io_s2_adsr, attack_ms, decay_ms, sustain_ms, release_ms, sustain_level);
     	} else if (in_byte == 'f') {
     		freq = read_int();
@@ -224,6 +226,11 @@ int main()
     		ddfs_set_carrier_freq(io_s1_ddfs, freq);
     	} else if (in_byte == 'p') {
 			adsr_start(io_s2_adsr);
+		} else if (in_byte == 'e') {
+			env = read_int();
+
+			ddfs_set_env_source(io_s1_ddfs, 0); // Select internal envelope.
+			ddfs_set_env(io_s1_ddfs, env / 100.0);
 		}
     }
 }

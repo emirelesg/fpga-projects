@@ -9,17 +9,22 @@
 #define SRC_DDFS_CORE_H_
 
 #include <stdio.h>
-#include "io_rw.h"
+#include "io_init.h"
 
 #define PW 30 // Phase width
 #define DDFS_EN_FREQ 192000 // 192 kHz
+#define ENV_MAX 0x4000 // // 2^15
 
 enum {
 	REG_FCCW = 0,
 	REG_FOCW = 1,
-	REG_PHA = 2
+	REG_PHA = 2,
+	REG_ENV = 3,
+	REG_CTRL = 4
 };
 
+void ddfs_set_env_source(uint32_t ddfs_addr, int channel);
+void ddfs_set_env(uint32_t ddfs_addr, float env);
 void ddfs_set_carrier_freq(uint32_t ddfs_addr, int freq);
 void ddfs_set_offset_freq(uint32_t ddfs_addr, int freq);
 void ddfs_set_phase_degree(uint32_t ddfs_addr, int phase);

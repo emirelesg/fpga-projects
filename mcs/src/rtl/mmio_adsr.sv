@@ -59,6 +59,6 @@ module mmio_adsr
     assign wr_sustain_time = (addr[2:0] == 3'b011) & wr_en;
     assign wr_sustain_level = (addr[2:0] == 3'b100) & wr_en;
     assign wr_release_step = (addr[2:0] == 3'b101) & wr_en;
-    assign read_data = 0;
+    assign read_data = 0; // No data to read from the adsr module.
     assign env = env_out;
 endmodule

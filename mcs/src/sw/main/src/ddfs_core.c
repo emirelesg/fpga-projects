@@ -7,6 +7,30 @@
 
 #include "ddfs_core.h"
 
+void ddfs_set_env_source(uint32_t ddfs_addr, int channel) {
+	uint32_t ctrl_reg;
+
+	ctrl_reg = io_read(ddfs_addr, 0) & 0x0000000f;
+
+	if (channel == 1) {
+		bit_set(ctrl_reg, 0);
+	} else {
+		bit_clear(ctrl_reg, 0);
+	}
+
+	io_write(ddfs_addr, REG_CTRL, ctrl_reg);
+}
+
+void ddfs_set_env(uint32_t ddfs_addr, float env) {
+	int32_t env_q214;
+	float max_amp;
+
+	max_amp = (float)(ENV_MAX);
+	env_q214 = (int)(env * max_amp);
+
+	io_write(ddfs_addr, REG_ENV, env_q214);
+}
+
 void ddfs_set_carrier_freq(uint32_t ddfs_addr, int freq) {
 	uint32_t p2n, fccw;
 	float tmp;
