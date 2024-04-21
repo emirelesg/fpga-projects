@@ -199,7 +199,7 @@ int read_int() {
 int main()
 {
 	char in_byte;
-	int freq, attack_ms, decay_ms, sustain_ms, release_ms;
+	int freq, attack_ms, decay_ms, sustain_ms, release_ms, wave_type;
 	float sustain_level;
 	float env;
 
@@ -231,6 +231,10 @@ int main()
 
 			ddfs_set_env_source(io_s1_ddfs, 0); // Select internal envelope.
 			ddfs_set_env(io_s1_ddfs, env / 100.0);
+		} else if (in_byte == 'w') {
+			wave_type = read_int();
+
+			ddfs_set_wave_type(io_s1_ddfs, wave_type);
 		}
     }
 }

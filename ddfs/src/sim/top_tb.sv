@@ -11,6 +11,7 @@ module top_tb;
     logic [29:0] pha;
     logic [15:0] env;
     logic [15:0] pcm_out;
+    logic [2:0] wave_type;
     logic data_valid;
 
     ddfs uut(
@@ -21,6 +22,7 @@ module top_tb;
         .focw(focw),
         .pha(pha),
         .env(env),
+        .wave_type(wave_type),
         // Outputs
         .pcm_out(pcm_out),
         .data_valid(data_valid)
@@ -52,13 +54,22 @@ module top_tb;
         focw = 0;
         pha = 0;
         env = 16'h4000; // 1.0
+        wave_type = 3'b001;
     end
 
     initial begin
         @(posedge reset_n); // Wait for the reset.
         @(negedge clk);
 
-        #2ms; // 1 full wave cycle at 1 kHz
+        #1ms; // 1 full wave cycle at 1 kHz
+        wave_type = 3'b010;
+        #1ms;
+        wave_type = 3'b011;
+        #1ms;
+        wave_type = 3'b100;
+        #1ms;
+        wave_type = 3'b000;
+        #1ms;
         $finish;
     end
 endmodule

@@ -11,26 +11,27 @@ module ddfs
         input logic [PHASE_WIDTH-1:0] focw, // Frequency offset control word
         input logic [PHASE_WIDTH-1:0] pha,  // Phase offset
         input logic [15:0] env, // Q2.14    // Envelope
+        input logic [2:0] wave_type,        // Wave selection control
         output logic [15:0] pcm_out,
         output logic pulse_out,
         output logic data_valid
     );
 
     logic [ADDR_WIDTH-1:0] p2a_r_addr;
-    logic [15:0] amp;
 
     logic [PHASE_WIDTH-1:0] pcw;
     logic [PHASE_WIDTH-1:0] fcw;
     logic [PHASE_WIDTH-1:0] p_reg, p_next;
 
     logic signed [31:0] modulated; // Q18.14
+    logic [15:0] wave, sine, saw, triangle, square; // Q16.0
     logic [15:0] pcm_reg, pcm_next; // Q16.0
     logic valid_reg, valid_next;
 
     sin_rom #(.ADDR_WIDTH(ADDR_WIDTH)) sin_rom_unit(
         .clk(clk),
         .r_addr(p2a_r_addr),
-        .r_data(amp)
+        .r_data(sine)
     );
 
     always_ff @(posedge clk, negedge reset_n)
@@ -55,8 +56,30 @@ module ddfs
     // Use the ADDR_WIDTH MSBs of the PCW value as the address to look-up the SINE value.
     assign p2a_r_addr = pcw[PHASE_WIDTH-1:PHASE_WIDTH-ADDR_WIDTH];
 
+    // Sawtooth generation
+    // The singal is identical to the upper 16 bits of the accomulator.
+    assign saw = pcw[PHASE_WIDTH-1:PHASE_WIDTH-16];
+
+    // Triangle generation
+    // The signal uses the sawtooth's MSB to detect the rising or falling cycle of the triangle wave.
+    assign triangle = saw[15] ? {saw[14], ~saw[13:0], 1'b1} : {~saw[14], saw[13:0], 1'b0};
+
+    // Square generation
+    assign square = {~saw[15], {15{saw[15]}}};
+
+    // Wave MUX
+    always_comb begin
+        unique case (wave_type)
+            3'b001: wave = sine;
+            3'b010: wave = saw;
+            3'b011: wave = triangle;
+            3'b100: wave = square;
+            default: wave = 0; // No wave.
+        endcase
+    end
+
     // Amplitude modulation
-    assign modulated = $signed(env) * $signed(amp);
+    assign modulated = $signed(env) * $signed(wave);
 
     always_comb begin
         p_next = p_reg;

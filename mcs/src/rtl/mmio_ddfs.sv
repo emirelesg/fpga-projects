@@ -19,11 +19,14 @@ module mmio_ddfs
         output logic data_valid
     );
 
-    logic [3:0] ctrl_reg;
+    logic [31:0] ctrl_reg;
     // Bit 0: env source select
-    // Bit 1-15: unused
+    // Bit 1-3: unused
+    // Bit 4-6: wave type select
+    // Bit 7-15: unused
 
     logic [PW-1:0] pha_reg, fccw_reg, focw_reg;
+    logic [2:0] wave_type;
     logic [15:0] env, env_reg;
     logic wr_en, wr_ctrl, wr_env, wr_fccw, wr_focw, wr_pha;
 
@@ -35,6 +38,7 @@ module mmio_ddfs
         .focw(focw_reg),
         .pha(pha_reg),
         .env(env),
+        .wave_type(wave_type),
         // Outputs
         .pcm_out(pcm_out),
         .data_valid(data_valid)
@@ -58,11 +62,12 @@ module mmio_ddfs
             if (wr_env)
                 env_reg <= write_data[15:0];
             if (wr_ctrl)
-                ctrl_reg <= write_data[3:0];
+                ctrl_reg <= write_data;
         end
     end
 
     assign env = ctrl_reg[0] ? env_ext : env_reg;
+    assign wave_type = ctrl_reg[6:4];
 
     assign wr_en = cs & write;
     assign wr_fccw = (addr[2:0] == 3'b000) & wr_en;
@@ -70,5 +75,5 @@ module mmio_ddfs
     assign wr_pha = (addr[2:0] == 3'b010) & wr_en;
     assign wr_env = (addr[2:0] == 3'b011) & wr_en;
     assign wr_ctrl = (addr[2:0] == 3'b100) & wr_en;
-    assign read_data = {28'h0000000, ctrl_reg};
+    assign read_data = ctrl_reg;
 endmodule

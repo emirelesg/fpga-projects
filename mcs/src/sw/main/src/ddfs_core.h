@@ -23,6 +23,7 @@ enum {
 	REG_CTRL = 4
 };
 
+void ddfs_set_wave_type(uint32_t ddfs_addr, int wave_type);
 void ddfs_set_env_source(uint32_t ddfs_addr, int channel);
 void ddfs_set_env(uint32_t ddfs_addr, float env);
 void ddfs_set_carrier_freq(uint32_t ddfs_addr, int freq);

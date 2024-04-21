@@ -21,6 +21,31 @@ class Slider {
     }
 }
 
+class Radio {
+    constructor(name) {
+        this.onUpdate = undefined;
+        this.value = 0;
+        this.radioElements = document.getElementsByName(name);
+
+        this.update();
+        this.radioElements.forEach((element) => element.addEventListener('input', () => this.update()));
+    }
+
+    update() {
+        this.radioElements.forEach((element) => {
+            if (element.checked) {
+                this.value = element.value;
+            }
+        })
+
+        if (this.onUpdate) {
+            this.onUpdate();
+        }
+    }
+}
+
+const waveSelect = new Radio('wave-type');
+
 const adsrSliders = {
     attackMs: new Slider("attack-ms"),
     decayMs: new Slider("decay-ms"),
@@ -65,13 +90,19 @@ Object.values(adsrSliders).forEach((slider) => {
     slider.onUpdate = updateAdsr;
 });
 
+const updateWaveType = async () => {
+    await write(`w${waveSelect.value},`);
+}
+
+waveSelect.onUpdate = updateWaveType;
+
 // Beat
 
 let currentBeat = 0;
 const beatCheckboxes = document.querySelectorAll('.beat-checkbox');
 
 const bpmSlider = new Slider('bpm');
-const freqSliders = new Array(8).fill(0).map((_, i) => new Slider(`freq-${i + 1}`));
+const freqSliders = new Array(12).fill(0).map((_, i) => new Slider(`freq-${i + 1}`));
 
 const updateSliders = () => {
     beatCheckboxes.forEach((beatCheckbox, i) => {
@@ -116,6 +147,7 @@ const beat = async () => {
 connectButton.addEventListener('click', async () => {
     await init();
     await updateAdsr();
+    await updateWaveType();
     beat(); // Start the beat!
 });
 

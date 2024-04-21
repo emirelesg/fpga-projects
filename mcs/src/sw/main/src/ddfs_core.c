@@ -7,10 +7,23 @@
 
 #include "ddfs_core.h"
 
+void ddfs_set_wave_type(uint32_t ddfs_addr, int wave_type) {
+	uint32_t ctrl_reg;
+	uint32_t mask;
+
+	ctrl_reg = io_read(ddfs_addr, 0);
+	mask = 0x7 << 4; // Set bits 4-6.
+
+	// Clear bits 4-6 and set with wave_type value.
+	ctrl_reg = (ctrl_reg & ~mask) | ((wave_type & 0x7) << 4);
+
+	io_write(ddfs_addr, REG_CTRL, ctrl_reg);
+}
+
 void ddfs_set_env_source(uint32_t ddfs_addr, int channel) {
 	uint32_t ctrl_reg;
 
-	ctrl_reg = io_read(ddfs_addr, 0) & 0x0000000f;
+	ctrl_reg = io_read(ddfs_addr, 0);
 
 	if (channel == 1) {
 		bit_set(ctrl_reg, 0);
