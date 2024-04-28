@@ -12,7 +12,7 @@
 #include "io_init.h"
 
 #define PW 30 // Phase width
-#define DDFS_EN_FREQ 192000 // 192 kHz
+#define DDFS_EN_FREQ 96000 // 96 kHz
 #define ENV_MAX 0x4000 // // 2^15
 
 enum {

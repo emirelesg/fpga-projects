@@ -1,7 +1,7 @@
 module ddfs
     #(
         parameter   PHASE_WIDTH = 30,   // 30-bit phase accumulator
-                    ADDR_WIDTH = 11     // 2048 values
+                    ADDR_WIDTH = 11     // 2048 bytes
     )
     (
         input logic clk,

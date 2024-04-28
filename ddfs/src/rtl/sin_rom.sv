@@ -1,7 +1,7 @@
 module sin_rom
     #(
         parameter   DATA_WIDTH = 16,    // 16-bit data
-                    ADDR_WIDTH = 9      // 512 bytes
+                    ADDR_WIDTH = 11     // 2048 bytes
     )
     (
         input logic clk,
@@ -11,7 +11,7 @@ module sin_rom
 
     (* ram_style = "block" *) logic [DATA_WIDTH-1:0] ram [0:2**ADDR_WIDTH-1];
 
-    // Loads 256 16-bit signed integers representing a full cycle of a SINE wave.
+    // Loads 16-bit signed integers representing a full cycle of a SINE wave.
     initial
         $readmemh("sin_rom.mem", ram);
 
