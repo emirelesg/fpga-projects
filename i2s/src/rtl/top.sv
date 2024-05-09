@@ -1,76 +1,79 @@
 module top
 	(
-		input logic clk,
-        input logic reset_n,
-        input logic [3:0] btn,
-        input logic [3:0] sw,
-        output logic tx_mclk,
-        output logic tx_sclk,
-        output logic tx_lrclk,
-        output logic tx_sd
+		input   logic       i_clk,
+        input   logic       i_reset_n,
+        input   logic [3:0] i_btn,
+        input   logic [3:0] i_sw,
+        output  logic       o_tx_mclk,
+        output  logic       o_tx_sclk,
+        output  logic       o_tx_lrclk,
+        output  logic       o_tx_sd
 	);
 
 	logic clk_12_288;
 
     design_1_wrapper design_1_wrapper_unit (
-        .clk(clk),
-        .reset_n(reset_n),
+        .clk(i_clk),
+        .reset_n(i_reset_n),
         // Outputs
         .clk_i2s(clk_12_288)
     );
 
 	logic [15:0] pcm_out;
-    logic [29:0] fccw, focw; // (2 ^ PHASE_WIDTH * freq / 192_000)
+    logic [29:0] fccw, focw; // (2 ^ PHASE_WIDTH * freq / 96_000)
     logic [29:0] pha;
     logic [15:0] env;
+    logic [2:0] wave_type;
 
     always_comb begin
-        if (sw == 4'b0001)
-            fccw = 223_696; // 40 Hz
+        if (i_sw == 4'b0001)
+            fccw = 447_392; // 40 Hz
         else
-            if (sw == 4'b0010)
-                fccw = 447_392; // 80 Hz
+            if (i_sw == 4'b0010)
+                fccw = 671_088; // 80 Hz
              else
-                if (sw == 4'b0100)
-                    fccw = 671_088; // 120 Hz
+                if (i_sw == 4'b0100)
+                    fccw = 2_460_658; // 120 Hz
                 else
-                    fccw = 2_460_658; // 440 Hz
+                    fccw = 4_921_316; // 440 Hz
     end
 
     initial begin
         focw = 0;
         pha = 0;
         env = 16'h4000; // 1.0
+        wave_type = 3'b001; // Sine
     end
 
-    logic wr_ready, wr_en;
+    logic data_ready, data_valid;
 
     // Example to generate a sine wave:
     ddfs ddfs_unit(
-        .clk(clk),
-        .reset_n(reset_n),
-        .en(wr_ready),
+        .clk(i_clk),
+        .reset_n(i_reset_n),
+        .en(data_ready),
         .fccw(fccw),
         .focw(focw),
         .pha(pha),
         .env(env),
+        .wave_type(wave_type),
         // Outputs
         .pcm_out(pcm_out),
-        .data_valid(wr_en)
+        .data_valid(data_valid)
     );
 
 	i2s_cdc i2s_cdc_unit(
-        .clk(clk),
-		.clk_12_288(clk_12_288),
-		.reset_n(reset_n),
-		.audio_l(pcm_out),
-        .audio_r(pcm_out),
-        .wr_en(wr_en),
+        .i_clk(i_clk),
+		.i_clk_12_288(clk_12_288),
+		.i_reset_n(i_reset_n),
+		.i_audio_l(pcm_out),
+        .i_audio_r(pcm_out),
+        .i_data_valid(data_valid),
 		// Outputs
-		.wr_ready(wr_ready),
-        .tx_mclk(tx_mclk),
-        .tx_sclk(tx_sclk),
-        .tx_lrclk(tx_lrclk),
-        .tx_sd(tx_sd)
+		.o_data_ready(data_ready),
+        .o_tx_mclk(o_tx_mclk),
+        .o_tx_sclk(o_tx_sclk),
+        .o_tx_lrclk(o_tx_lrclk),
+        .o_tx_sd(o_tx_sd)
 	);
 endmodule

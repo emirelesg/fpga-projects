@@ -3,43 +3,43 @@ module i2s
         parameter	DATA_BIT = 16
     )
     (
-		input logic clk_12_288,
-		input logic reset_n,
-		input logic [DATA_BIT-1:0] audio_l,
-        input logic [DATA_BIT-1:0] audio_r,
-		output logic tx_mclk,
-        output logic tx_sclk,
-        output logic tx_lrclk,
-        output logic tx_sd,
-        output logic rd_en
+		input	logic					i_clk_12_288,
+		input	logic					i_reset_n,
+		input	logic [DATA_BIT-1:0]	i_audio_l,
+        input	logic [DATA_BIT-1:0]	i_audio_r,
+		output	logic					o_tx_mclk,
+        output	logic					o_tx_sclk,
+        output	logic					o_tx_lrclk,
+        output	logic					o_tx_sd,
+        output	logic					o_data_ready
     );
 
     logic sclk;
-    logic _rd_en;
+    logic data_ready;
 
 	i2s_clk i2s_clk_unit (
-		.clk_12_288(clk_12_288),
-		.reset_n(reset_n),
+		.i_clk_12_288(i_clk_12_288),
+		.i_reset_n(i_reset_n),
 		// Outputs
-		.rd_en(_rd_en),
-		.mclk(tx_mclk),
-		.sclk(sclk),
-		.lrclk(tx_lrclk)
+		.o_data_ready(data_ready),
+		.o_mclk(o_tx_mclk),
+		.o_sclk(sclk),
+		.o_lrclk(o_tx_lrclk)
 	);
 
 	i2s_tx #(
 	   .DATA_BIT(DATA_BIT)
 	) i2s_tx_unit (
-		.clk_12_288(clk_12_288),
-		.reset_n(reset_n),
-		.rd_en(_rd_en),
-		.audio_l(audio_l),
-		.audio_r(audio_r),
-		.sclk(sclk),
+		.i_clk_12_288(i_clk_12_288),
+		.i_reset_n(i_reset_n),
+		.i_data_valid(data_ready),
+		.i_audio_l(i_audio_l),
+		.i_audio_r(i_audio_r),
+		.i_sclk(sclk),
 		// Outputs
-		.sd(tx_sd)
+		.o_sd(o_tx_sd)
 	);
 
-	assign rd_en = _rd_en;
-	assign tx_sclk = sclk;
+	assign o_data_ready = data_ready;
+	assign o_tx_sclk = sclk;
 endmodule

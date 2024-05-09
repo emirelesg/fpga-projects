@@ -15,19 +15,19 @@ module i2s_tb;
     logic tx_sclk;
     logic tx_lrclk;
     logic tx_sd;
-    logic rd_en;
+    logic data_ready;
 
     i2s uut(
-        .clk_12_288(clk_i2s),
-        .reset_n(reset_n),
-        .audio_l(audio_l),
-        .audio_r(audio_r),
+        .i_clk_12_288(clk_i2s),
+        .i_reset_n(reset_n),
+        .i_audio_l(audio_l),
+        .i_audio_r(audio_r),
         // Outputs
-        .tx_mclk(tx_mclk),
-        .tx_sclk(tx_sclk),
-        .tx_lrclk(tx_lrclk),
-        .tx_sd(tx_sd),
-        .rd_en(rd_en)
+        .o_tx_mclk(tx_mclk),
+        .o_tx_sclk(tx_sclk),
+        .o_tx_lrclk(tx_lrclk),
+        .o_tx_sd(tx_sd),
+        .o_data_ready(data_ready)
     );
 
     // Simulate a 100 MHz clock signal.
@@ -69,21 +69,21 @@ module i2s_tb;
     assert
         property (
             @(posedge tx_mclk) disable iff (~reset_n)
-            // The mclk/lrclk ratio should be 64.
-            $rose(tx_lrclk) |-> ##32 $fell(tx_lrclk) ##32 $rose(tx_lrclk)
+            // The mclk/lrclk ratio should be 128.
+            $rose(tx_lrclk) |-> ##64 $fell(tx_lrclk) ##64 $rose(tx_lrclk)
         )
         else
-            $fatal("[tx_lrclk] Expected signal to be tx_mclk/64");
+            $fatal("[tx_lrclk] Expected signal to be tx_mclk/128");
 
-   assert_rd_en:
+   assert_data_ready:
     assert
         property (
             @(posedge tx_mclk) disable iff (~reset_n)
-            // The rd_en should tick on the first tx_sclk after lrclk.
-            $rose(rd_en) |-> ##1 $fell(rd_en) ##63 $rose(rd_en)
+            // The data_ready should tick on the first tx_sclk after lrclk.
+            $rose(data_ready) |-> ##1 $fell(data_ready) ##127 $rose(data_ready)
         )
         else
-            $fatal("[rd_en] Expected signal to tick every 64 tx_mclk.");
+            $fatal("[data_ready] Expected signal to tick every 128 tx_mclk.");
 
     task get_tx_data;
         output [15:0] sent_data;
@@ -103,9 +103,15 @@ module i2s_tb;
         fork
             // Read sample data
             begin
-                @(negedge tx_sclk); // Start latching data on the first sclk after lrclk falls.
+                @(negedge tx_lrclk); // Wait for lrclk to fall and one sclk cycle.
+                @(posedge tx_sclk);
+
                 get_tx_data(sent_data);
                 assert(sent_data == audio_l) else $fatal("[tx_sd] Expected 0x%h to be 0x%h.", sent_data, audio_l);
+
+                @(posedge tx_lrclk); // Wait for lrclk to rise and one sclk cycle.
+                @(posedge tx_sclk);
+
                 get_tx_data(sent_data);
                 assert(sent_data == audio_r) else $fatal("[tx_sd] Expected 0x%h to be 0x%h.", sent_data, audio_r);
             end

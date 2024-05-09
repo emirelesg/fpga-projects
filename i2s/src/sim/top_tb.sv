@@ -14,14 +14,14 @@ module top_tb;
     logic tx_sd;
 
     top uut(
-        .clk(clk),
-        .reset_n(reset_n),
-        .btn(btn),
+        .i_clk(clk),
+        .i_reset_n(reset_n),
+        .i_btn(btn),
         // Outputs
-        .tx_mclk(tx_mclk),
-        .tx_sclk(tx_sclk),
-        .tx_lrclk(tx_lrclk),
-        .tx_sd(tx_sd)
+        .o_tx_mclk(tx_mclk),
+        .o_tx_sclk(tx_sclk),
+        .o_tx_lrclk(tx_lrclk),
+        .o_tx_sd(tx_sd)
     );
 
     // Simulate a 100 Mhz clock signal.
