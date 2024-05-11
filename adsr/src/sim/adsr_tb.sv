@@ -21,16 +21,16 @@ module adsr_tb;
     logic [15:0] env;
 
     adsr uut(
-        .clk(clk),
-        .reset_n(reset_n),
-        .start(start),
-        .attack_step(attack_step),
-        .decay_step(decay_step),
-        .sustain_level(sustain_level),
-        .release_step(release_step),
-        .sustain_time(sustain_time),
+        .i_clk(clk),
+        .i_reset_n(reset_n),
+        .i_start(start),
+        .i_attack_step(attack_step),
+        .i_decay_step(decay_step),
+        .i_sustain_level(sustain_level),
+        .i_release_step(release_step),
+        .i_sustain_time(sustain_time),
         // Outputs
-        .env(env)
+        .o_env(env)
     );
 
     // Simulate a 100 Mhz clock signal.

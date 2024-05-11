@@ -86,17 +86,17 @@ module mmio_top
 
     // Slot 2: ADSR
     mmio_adsr mmio_adsr_unit(
-        .clk(clk),
-        .reset_n(reset_n),
+        .i_clk(clk),
+        .i_reset_n(reset_n),
         // MMIO Slot
-        .cs(slot_cs_array[`IO_S2_ADSR]),
-        .read(slot_read_array[`IO_S2_ADSR]),
-        .write(slot_write_array[`IO_S2_ADSR]),
-        .addr(slot_reg_addr_array[`IO_S2_ADSR]),
-        .read_data(slot_read_data_array[`IO_S2_ADSR]),
-        .write_data(slot_write_data_array[`IO_S2_ADSR]),
+        .i_cs(slot_cs_array[`IO_S2_ADSR]),
+        .i_write(slot_write_array[`IO_S2_ADSR]),
+        .i_read(slot_read_array[`IO_S2_ADSR]),
+        .i_addr(slot_reg_addr_array[`IO_S2_ADSR]),
+        .i_write_data(slot_write_data_array[`IO_S2_ADSR]),
+        .o_read_data(slot_read_data_array[`IO_S2_ADSR]),
         // External
-        .env(adsr_env)
+        .o_env(adsr_env)
     );
 
     // i2s DAC

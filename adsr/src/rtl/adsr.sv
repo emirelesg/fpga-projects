@@ -1,11 +1,11 @@
 module adsr
     (
-        input logic clk,
-        input logic reset_n,
-        input logic start,
-        input logic [31:0] attack_step, decay_step, sustain_level, release_step,
-        input logic [31:0] sustain_time,
-        output logic [15:0] env // Q2.14
+        input   logic           i_clk,
+        input   logic           i_reset_n,
+        input   logic           i_start,
+        input   logic [31:0]    i_attack_step, i_decay_step, i_sustain_level, i_release_step,
+        input   logic [31:0]    i_sustain_time,
+        output  logic [15:0]    o_env // Q2.14
     );
 
     localparam MAX = 32'h8000_0000;
@@ -17,8 +17,8 @@ module adsr
     logic [31:0] a_tmp;             // Temporary storage for calculations on a_next.
     logic [31:0] t_reg, t_next;     // The number of clk cycles in the sustain phase.
 
-    always_ff @(posedge clk, negedge reset_n) begin
-        if (~reset_n) begin
+    always_ff @(posedge i_clk, negedge i_reset_n) begin
+        if (~i_reset_n) begin
             state_reg <= idle;
             a_reg <= 0;
             t_reg <= 0;
@@ -38,7 +38,7 @@ module adsr
 
         case (state_reg)
             idle: begin
-                if (start)
+                if (i_start)
                     state_next = launch;
             end
             launch: begin
@@ -47,10 +47,10 @@ module adsr
                 t_next = 0;
             end
             attack: begin
-                if (start)
+                if (i_start)
                     state_next = launch; // Restart operation.
                 else begin
-                    a_tmp = a_reg + attack_step; // Increate a_reg by attack_step until MAX.
+                    a_tmp = a_reg + i_attack_step; // Increate a_reg by attack_step until MAX.
                     if (a_tmp < MAX)
                         a_next = a_tmp;
                     else
@@ -58,38 +58,38 @@ module adsr
                 end
             end
             decay: begin
-                if (start)
+                if (i_start)
                     state_next = launch; // Restart operation.
                 else begin
-                    a_tmp = a_reg - decay_step; // Decreate a_reg by decay_step until sustain_level.
-                    if (a_tmp > sustain_level)
+                    a_tmp = a_reg - i_decay_step; // Decreate a_reg by decay_step until sustain_level.
+                    if (a_tmp > i_sustain_level)
                         a_next = a_tmp;
                     else begin
-                        a_next = sustain_level; // Keep it exactly at sustain_level.
+                        a_next = i_sustain_level; // Keep it exactly at sustain_level.
                         state_next = sustain;
                     end
                 end
             end
             sustain: begin
-                if (start)
+                if (i_start)
                     state_next = launch; // Restart operation.
                 else
-                    if (t_reg < sustain_time)
+                    if (t_reg < i_sustain_time)
                         t_next = t_reg + 1;
                     else
                         state_next = rel;
             end
             rel: begin
-                if (start)
+                if (i_start)
                     state_next = launch; // Restart operation.
                 else
-                    if (a_reg > release_step)
-                        a_next = a_reg - release_step;
+                    if (a_reg > i_release_step)
+                        a_next = a_reg - i_release_step;
                     else
                         state_next = idle;
             end
         endcase
     end
 
-    assign env = {1'b0, a_reg[31:17]}; // Convert to Q2.14.
+    assign o_env = {1'b0, a_reg[31:17]}; // Convert to Q2.14.
 endmodule
