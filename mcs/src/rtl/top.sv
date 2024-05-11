@@ -1,15 +1,15 @@
 module top
     (
-        input logic clk,
-        input logic reset_n,
+        input   logic       i_clk,
+        input   logic       i_reset_n,
         // External
-        input logic uart_txd_in,
-        output logic uart_rxd_out,
-        output logic [3:0] led,
-        output logic audio_tx_mclk,
-        output logic audio_tx_sclk,
-        output logic audio_tx_lrclk,
-        output logic audio_tx_sd
+        input   logic       i_uart_txd_in,
+        output  logic       o_uart_rxd_out,
+        output  logic [3:0] o_led,
+        output  logic       o_audio_tx_mclk,
+        output  logic       o_audio_tx_sclk,
+        output  logic       o_audio_tx_lrclk,
+        output  logic       o_audio_tx_sd
     );
 
     // Clocking Wizard
@@ -34,13 +34,13 @@ module top
     logic [31:0] mmio_read_data;
 
     design_1 design_1_unit (
-        .clk(clk),
-        .reset_n(reset_n),
+        .clk(i_clk),
+        .reset_n(i_reset_n),
         // Clocking Wizard
         .clk_i2s(clk_i2s),
         // UART
-        .rx(uart_txd_in),
-        .tx(uart_rxd_out),
+        .rx(i_uart_txd_in),
+        .tx(o_uart_rxd_out),
         // uBlaze MCS I/O bus
         .IO_addr_strobe(io_addr_strobe),
         .IO_address(io_address),
@@ -54,40 +54,40 @@ module top
 
     io_mmio_bridge io_mmio_bridge_unit(
         // uBlaze MCS I/O bus
-        .io_addr_strobe(io_addr_strobe),
-        .io_read_strobe(io_read_strobe),
-        .io_write_strobe(io_write_strobe),
-        .io_byte_enable(io_byte_enable),
-        .io_address(io_address),
-        .io_write_data(io_write_data),
-        .io_read_data(io_read_data),
-        .io_ready(io_ready),
+        .i_io_addr_strobe(io_addr_strobe),
+        .i_io_read_strobe(io_read_strobe),
+        .i_io_write_strobe(io_write_strobe),
+        .i_io_byte_enable(io_byte_enable),
+        .i_io_address(io_address),
+        .i_io_write_data(io_write_data),
+        .o_io_read_data(io_read_data),
+        .o_io_ready(io_ready),
         // MMIO bus
-        .mmio_cs(mmio_cs),
-        .mmio_write(mmio_write),
-        .mmio_read(mmio_read),
-        .mmio_addr(mmio_addr),
-        .mmio_write_data(mmio_write_data),
-        .mmio_read_data(mmio_read_data)
+        .o_mmio_cs(mmio_cs),
+        .o_mmio_write(mmio_write),
+        .o_mmio_read(mmio_read),
+        .o_mmio_addr(mmio_addr),
+        .o_mmio_write_data(mmio_write_data),
+        .i_mmio_read_data(mmio_read_data)
     );
 
     mmio_top mmio_top_unit(
-        .clk(clk),
-        .reset_n(reset_n),
+        .i_clk(i_clk),
+        .i_reset_n(i_reset_n),
         // MMIO bus
-        .mmio_cs(mmio_cs),
-        .mmio_write(mmio_write),
-        .mmio_read(mmio_read),
-        .mmio_addr(mmio_addr),
-        .mmio_write_data(mmio_write_data),
-        .mmio_read_data(mmio_read_data),
+        .i_mmio_cs(mmio_cs),
+        .i_mmio_write(mmio_write),
+        .i_mmio_read(mmio_read),
+        .i_mmio_addr(mmio_addr),
+        .i_mmio_write_data(mmio_write_data),
+        .o_mmio_read_data(mmio_read_data),
         // External
-        .clk_i2s(clk_i2s),
-        .led(led),
-        .audio_tx_mclk(audio_tx_mclk),
-        .audio_tx_sclk(audio_tx_sclk),
-        .audio_tx_lrclk(audio_tx_lrclk),
-        .audio_tx_sd(audio_tx_sd)
+        .i_clk_i2s(clk_i2s),
+        .o_led(o_led),
+        .o_audio_tx_mclk(o_audio_tx_mclk),
+        .o_audio_tx_sclk(o_audio_tx_sclk),
+        .o_audio_tx_lrclk(o_audio_tx_lrclk),
+        .o_audio_tx_sd(o_audio_tx_sd)
     );
 
 endmodule

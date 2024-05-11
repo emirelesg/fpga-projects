@@ -1,29 +1,29 @@
 module mmio_gpo
     (
-        input logic clk,
-        input logic reset_n,
+        input   logic           i_clk,
+        input   logic           i_reset_n,
         // MMIO slot
-        input logic cs,
-        input logic write,
-        input logic read,
-        input logic [4:0] addr,
-        input logic [31:0] write_data,
-        output logic [31:0] read_data,
+        input   logic           i_cs,
+        input   logic           i_write,
+        input   logic           i_read,
+        input   logic [4:0]     i_addr,
+        input   logic [31:0]    i_write_data,
+        output  logic [31:0]    o_read_data,
         // External
-        output logic [31:0] d_out
+        output  logic [31:0]    o_gpo
     );
 
-    logic [31:0] d_out_reg;
+    logic [31:0] gpo_reg;
     logic wr_en;
 
-    always_ff @(posedge clk, negedge reset_n)
-        if (~reset_n)
-            d_out_reg <= 0;
+    always_ff @(posedge i_clk, negedge i_reset_n)
+        if (~i_reset_n)
+            gpo_reg <= 0;
         else
             if (wr_en)
-                d_out_reg <= write_data;
+                gpo_reg <= i_write_data;
 
-    assign wr_en = cs & write;
-    assign read_data = 0; // No data to read from the gpo module.
-    assign d_out = d_out_reg;
+    assign wr_en = i_cs & i_write;
+    assign o_read_data = 0; // No data to read from the gpo module.
+    assign o_gpo = gpo_reg;
 endmodule
