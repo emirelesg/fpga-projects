@@ -101,18 +101,18 @@ module mmio_top
 
     // i2s DAC
     i2s_cdc i2s_cdc_unit(
-        .clk(clk),
-        .clk_12_288(clk_i2s),
-        .reset_n(reset_n),
-        .audio_l(ddfs_pcm_out),
-        .audio_r(ddfs_pcm_out),
-        .wr_en(ddfs_data_valid),
+        .i_clk(clk),
+        .i_clk_12_288(clk_i2s),
+        .i_reset_n(reset_n),
+        .i_audio_l(ddfs_pcm_out),
+        .i_audio_r(ddfs_pcm_out),
+        .i_data_valid(ddfs_data_valid),
         // Outputs
-        .wr_ready(ddfs_en),
-        .tx_mclk(audio_tx_mclk),
-        .tx_sclk(audio_tx_sclk),
-        .tx_lrclk(audio_tx_lrclk),
-        .tx_sd(audio_tx_sd)
+        .o_data_ready(ddfs_en),
+        .o_tx_mclk(audio_tx_mclk),
+        .o_tx_sclk(audio_tx_sclk),
+        .o_tx_lrclk(audio_tx_lrclk),
+        .o_tx_sd(audio_tx_sd)
     );
 
     // Unused slots
