@@ -4,9 +4,9 @@ module sin_rom
                     ADDR_WIDTH = 11     // 2048 bytes
     )
     (
-        input logic clk,
-        input logic [ADDR_WIDTH-1:0] r_addr,
-        output logic [DATA_WIDTH-1:0] r_data
+        input   logic                   i_clk,
+        input   logic [ADDR_WIDTH-1:0]  i_r_addr,
+        output  logic [DATA_WIDTH-1:0]  o_r_data
     );
 
     (* ram_style = "block" *) logic [DATA_WIDTH-1:0] ram [0:2**ADDR_WIDTH-1];
@@ -15,6 +15,6 @@ module sin_rom
     initial
         $readmemh("sin_rom.mem", ram);
 
-    always_ff @(posedge clk)
-        r_data <= ram[r_addr];
+    always_ff @(posedge i_clk)
+        o_r_data <= ram[i_r_addr];
 endmodule

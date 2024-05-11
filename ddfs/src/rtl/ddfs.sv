@@ -1,20 +1,20 @@
 module ddfs
     #(
         parameter   PHASE_WIDTH = 30,   // 30-bit phase accumulator
-                    ADDR_WIDTH = 11     // 2048 bytes
+                    ADDR_WIDTH  = 11    // 2048 bytes
     )
     (
-        input logic clk,
-        input logic reset_n,
-        input logic en,                     // Enable signal to generate a new sample.
-        input logic [PHASE_WIDTH-1:0] fccw, // Carrier frequency control word
-        input logic [PHASE_WIDTH-1:0] focw, // Frequency offset control word
-        input logic [PHASE_WIDTH-1:0] pha,  // Phase offset
-        input logic [15:0] env, // Q2.14    // Envelope
-        input logic [2:0] wave_type,        // Wave selection control
-        output logic [15:0] pcm_out,
-        output logic pulse_out,
-        output logic data_valid
+        input   logic                   i_clk,
+        input   logic                   i_reset_n,
+        input   logic                   i_en,           // Enable signal to generate a new sample.
+        input   logic [PHASE_WIDTH-1:0] i_fccw,         // Carrier frequency control word
+        input   logic [PHASE_WIDTH-1:0] i_focw,         // Frequency offset control word
+        input   logic [PHASE_WIDTH-1:0] i_pha,          // Phase offset
+        input   logic [15:0]            i_env,          // Q2.14 Envelope
+        input   logic [2:0]             i_wave_type,    // Wave selection control
+        output  logic [15:0]            o_pcm_out,
+        output  logic                   o_pulse_out,
+        output  logic                   o_data_valid
     );
 
     logic [ADDR_WIDTH-1:0] p2a_r_addr;
@@ -29,13 +29,13 @@ module ddfs
     logic valid_reg, valid_next;
 
     sin_rom #(.ADDR_WIDTH(ADDR_WIDTH)) sin_rom_unit(
-        .clk(clk),
-        .r_addr(p2a_r_addr),
-        .r_data(sine)
+        .i_clk(i_clk),
+        .i_r_addr(p2a_r_addr),
+        .o_r_data(sine)
     );
 
-    always_ff @(posedge clk, negedge reset_n)
-        if (~reset_n) begin
+    always_ff @(posedge i_clk, negedge i_reset_n)
+        if (~i_reset_n) begin
             p_reg <= 0;
             pcm_reg <= 0;
             valid_reg <= 1'b0;
@@ -47,10 +47,10 @@ module ddfs
         end
 
     // Frequence modulation
-    assign fcw = fccw + focw;
+    assign fcw = i_fccw + i_focw;
 
     // Phase modulation
-    assign pcw = p_reg + pha;
+    assign pcw = p_reg + i_pha;
 
     // Phase to amplitude mapping address
     // Use the ADDR_WIDTH MSBs of the PCW value as the address to look-up the SINE value.
@@ -69,7 +69,7 @@ module ddfs
 
     // Wave MUX
     always_comb begin
-        unique case (wave_type)
+        unique case (i_wave_type)
             3'b001: wave = sine;
             3'b010: wave = saw;
             3'b011: wave = triangle;
@@ -79,14 +79,14 @@ module ddfs
     end
 
     // Amplitude modulation
-    assign modulated = $signed(env) * $signed(wave);
+    assign modulated = $signed(i_env) * $signed(wave);
 
     always_comb begin
         p_next = p_reg;
         pcm_next = pcm_reg;
         valid_next = 1'b0;
 
-        if (en) begin
+        if (i_en) begin
             // Phase accumulation
             p_next = p_reg + fcw;
 
@@ -99,7 +99,7 @@ module ddfs
         end
     end
 
-    assign pcm_out = pcm_reg;
-    assign pulse_out = p_reg[PHASE_WIDTH-1];
-    assign data_valid = valid_reg;
+    assign o_pcm_out = pcm_reg;
+    assign o_pulse_out = p_reg[PHASE_WIDTH-1];
+    assign o_data_valid = valid_reg;
 endmodule

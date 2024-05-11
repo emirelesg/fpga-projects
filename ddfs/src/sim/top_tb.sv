@@ -15,17 +15,17 @@ module top_tb;
     logic data_valid;
 
     ddfs uut(
-        .clk(clk),
-        .reset_n(reset_n),
-        .en(en),
-        .fccw(fccw),
-        .focw(focw),
-        .pha(pha),
-        .env(env),
-        .wave_type(wave_type),
+        .i_clk(clk),
+        .i_reset_n(reset_n),
+        .i_en(en),
+        .i_fccw(fccw),
+        .i_focw(focw),
+        .i_pha(pha),
+        .i_env(env),
+        .i_wave_type(wave_type),
         // Outputs
-        .pcm_out(pcm_out),
-        .data_valid(data_valid)
+        .o_pcm_out(pcm_out),
+        .o_data_valid(data_valid)
     );
 
     // Simulate a 100 MHz clock signal.

@@ -68,20 +68,20 @@ module mmio_top
     logic [15:0] ddfs_pcm_out;
 
     mmio_ddfs mmio_ddfs_unit(
-        .clk(clk),
-        .reset_n(reset_n),
+        .i_clk(clk),
+        .i_reset_n(reset_n),
         // MMIO Slot
-        .cs(slot_cs_array[`IO_S1_DDFS]),
-        .read(slot_read_array[`IO_S1_DDFS]),
-        .write(slot_write_array[`IO_S1_DDFS]),
-        .addr(slot_reg_addr_array[`IO_S1_DDFS]),
-        .read_data(slot_read_data_array[`IO_S1_DDFS]),
-        .write_data(slot_write_data_array[`IO_S1_DDFS]),
+        .i_cs(slot_cs_array[`IO_S1_DDFS]),
+        .i_write(slot_write_array[`IO_S1_DDFS]),
+        .i_read(slot_read_array[`IO_S1_DDFS]),
+        .i_addr(slot_reg_addr_array[`IO_S1_DDFS]),
+        .i_write_data(slot_write_data_array[`IO_S1_DDFS]),
+        .o_read_data(slot_read_data_array[`IO_S1_DDFS]),
         // External
-        .en(ddfs_en),
-        .env_ext(adsr_env),
-        .pcm_out(ddfs_pcm_out),
-        .data_valid(ddfs_data_valid)
+        .i_en(ddfs_en),
+        .i_env_ext(adsr_env),
+        .o_pcm_out(ddfs_pcm_out),
+        .o_data_valid(ddfs_data_valid)
     );
 
     // Slot 2: ADSR
