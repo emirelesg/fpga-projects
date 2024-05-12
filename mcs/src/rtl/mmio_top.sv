@@ -1,4 +1,5 @@
 `include "io_mmio_map.svh"
+`include "i2s_map.svh"
 module mmio_top
     (
         input   logic           i_clk,
@@ -13,12 +14,20 @@ module mmio_top
         output  logic [31:0]    o_mmio_read_data,
         // External
         output  logic [3:0]     o_led,
-        output  logic           o_audio_tx_mclk,
-        output  logic           o_audio_tx_sclk,
-        output  logic           o_audio_tx_lrclk,
-        output  logic           o_audio_tx_sd
+        // Audio
+        output  logic           o_audio_mclk,
+        output  logic           o_audio_sclk,
+        output  logic           o_audio_lrclk,
+        output  logic           o_audio_tx_sd,
+        input   logic           i_audio_rx_sd
     );
 
+    // Audio
+    logic [`DATA_BIT-1:0] audio_l_out, audio_r_out;
+    logic audio_valid_out;
+    logic audio_96_tick;
+
+    // MMIO bus
     logic [63:0] slot_cs_array;
     logic [63:0] slot_read_array;
     logic [63:0] slot_write_array;
@@ -63,7 +72,7 @@ module mmio_top
     assign o_led = gpo[3:0];
 
     // Slot 1: DDFS
-    logic ddfs_en, ddfs_data_valid;
+    logic ddfs_data_valid;
     logic [15:0] adsr_env;
     logic [15:0] ddfs_pcm_out;
 
@@ -78,7 +87,7 @@ module mmio_top
         .i_write_data(slot_write_data_array[`IO_S1_DDFS]),
         .o_read_data(slot_read_data_array[`IO_S1_DDFS]),
         // External
-        .i_en(ddfs_en),
+        .i_en(audio_96_tick),
         .i_env_ext(adsr_env),
         .o_pcm_out(ddfs_pcm_out),
         .o_data_valid(ddfs_data_valid)
@@ -106,14 +115,19 @@ module mmio_top
         .i_reset_n(i_reset_n),
         .i_audio_l(ddfs_pcm_out),
         .i_audio_r(ddfs_pcm_out),
-        .i_data_valid(ddfs_data_valid),
+        .i_audio_valid(ddfs_data_valid),
         // Outputs
-        .o_data_ready(ddfs_en),
-        .o_tx_mclk(o_audio_tx_mclk),
-        .o_tx_sclk(o_audio_tx_sclk),
-        .o_tx_lrclk(o_audio_tx_lrclk),
-        .o_tx_sd(o_audio_tx_sd)
+        .o_audio_l(audio_l_out),
+		.o_audio_r(audio_r_out),
+		.o_audio_valid(audio_valid_out),
+        .o_mclk(o_audio_mclk),
+        .o_sclk(o_audio_sclk),
+        .o_lrclk(o_audio_lrclk),
+        .o_tx_sd(o_audio_tx_sd),
+        .i_rx_sd(i_audio_rx_sd)
     );
+
+    assign audio_96_tick = audio_valid_out;
 
     // Unused slots
     // When trying to read from an unused slot, 0xffffffff is returned.

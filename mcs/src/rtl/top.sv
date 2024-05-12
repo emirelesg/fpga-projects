@@ -9,7 +9,11 @@ module top
         output  logic       o_audio_tx_mclk,
         output  logic       o_audio_tx_sclk,
         output  logic       o_audio_tx_lrclk,
-        output  logic       o_audio_tx_sd
+        output  logic       o_audio_tx_sd,
+        output  logic       o_audio_rx_mclk,
+        output  logic       o_audio_rx_sclk,
+        output  logic       o_audio_rx_lrclk,
+        input   logic       i_audio_rx_sd
     );
 
     // Clocking Wizard
@@ -32,6 +36,11 @@ module top
     logic [20:0] mmio_addr;
     logic [31:0] mmio_write_data;
     logic [31:0] mmio_read_data;
+
+    // Audio
+    logic audio_mclk;
+    logic audio_sclk;
+    logic audio_lrclk;
 
     design_1 design_1_unit (
         .clk(i_clk),
@@ -84,10 +93,15 @@ module top
         // External
         .i_clk_i2s(clk_i2s),
         .o_led(o_led),
-        .o_audio_tx_mclk(o_audio_tx_mclk),
-        .o_audio_tx_sclk(o_audio_tx_sclk),
-        .o_audio_tx_lrclk(o_audio_tx_lrclk),
-        .o_audio_tx_sd(o_audio_tx_sd)
+        // Audio
+        .o_audio_mclk(audio_mclk),
+        .o_audio_sclk(audio_sclk),
+        .o_audio_lrclk(audio_lrclk),
+        .o_audio_tx_sd(o_audio_tx_sd),
+        .i_audio_rx_sd(i_audio_rx_sd)
     );
 
+    assign o_audio_tx_mclk = audio_mclk;
+    assign o_audio_tx_sclk = audio_sclk;
+    assign o_audio_tx_lrclk = audio_lrclk;
 endmodule
