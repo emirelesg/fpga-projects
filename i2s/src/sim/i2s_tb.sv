@@ -8,26 +8,26 @@ module i2s_tb;
     logic clk_i2s;
     logic reset_n;
 
-    logic [15:0] sent_data;
-    logic [15:0] audio_l;
-    logic [15:0] audio_r;
-    logic tx_mclk;
-    logic tx_sclk;
-    logic tx_lrclk;
-    logic tx_sd;
-    logic data_ready;
+    logic [63:0] rx_data, tx_data;
+    logic [15:0] audio_l, audio_r;
+    logic audio_valid;
+    logic mclk, sclk, lrclk;
+    logic tx_sd, rx_sd;
 
     i2s uut(
         .i_clk_12_288(clk_i2s),
         .i_reset_n(reset_n),
         .i_audio_l(audio_l),
         .i_audio_r(audio_r),
+        .i_rx_sd(rx_sd),
         // Outputs
-        .o_tx_mclk(tx_mclk),
-        .o_tx_sclk(tx_sclk),
-        .o_tx_lrclk(tx_lrclk),
-        .o_tx_sd(tx_sd),
-        .o_data_ready(data_ready)
+        .o_audio_l(audio_l),
+        .o_audio_r(audio_r),
+        .o_audio_valid(audio_valid),
+        .o_mclk(mclk),
+        .o_sclk(sclk),
+        .o_lrclk(lrclk),
+        .o_tx_sd(tx_sd)
     );
 
     // Simulate a 100 MHz clock signal.
@@ -47,73 +47,111 @@ module i2s_tb;
 
     // Initial values for signals.
     initial begin
-        audio_l = 16'b00101010_10101010;
-        audio_r = 16'b01010101_01010111;
+        tx_data = 0;
+        rx_data = 0;
+        rx_sd = 1'b0;
 
         // Stop the test after this delay in case of a bug.
-        #(10 * 16 * 2 * 2 * T_I2S); // 10 lrclk cycles * 16 bits * 2 channels * 2 dvsr * T
+        #(13 * 64 * 2 * T_I2S); // 13 lrclk cycles * 64 bits per frame * 2 dvsr * T
         $finish;
     end
 
    assert_tx_sclk:
     assert
         property (
-            @(posedge tx_mclk) disable iff (~reset_n)
+            @(posedge mclk) disable iff (~reset_n)
             // The mclk/sclk ratio should be 2.
-            $rose(tx_sclk) |-> ##1 $fell(tx_sclk) ##1 $rose(tx_sclk)
+            $rose(sclk) |-> ##1 $fell(sclk) ##1 $rose(sclk)
         )
         else
-            $fatal("[tx_sclk] Expected signal to be tx_mclk/2");
+            $fatal("[tx_sclk] Expected signal to be mclk/2");
 
     assert_tx_lrclk:
     assert
         property (
-            @(posedge tx_mclk) disable iff (~reset_n)
-            // The mclk/lrclk ratio should be 128.
-            $rose(tx_lrclk) |-> ##64 $fell(tx_lrclk) ##64 $rose(tx_lrclk)
+            @(posedge mclk) disable iff (~reset_n)
+            // The mclk/lrclk ratio should be SCLK_MCLK_RATIO.
+            $rose(lrclk) |-> ##64 $fell(lrclk) ##64 $rose(lrclk)
         )
         else
-            $fatal("[tx_lrclk] Expected signal to be tx_mclk/128");
+            $fatal("[tx_lrclk] Expected signal to be mclk/64");
 
    assert_data_ready:
     assert
         property (
-            @(posedge tx_mclk) disable iff (~reset_n)
-            // The data_ready should tick on the first tx_sclk after lrclk.
-            $rose(data_ready) |-> ##1 $fell(data_ready) ##127 $rose(data_ready)
+            @(posedge mclk) disable iff (~reset_n)
+            // The audio_valid should tick on the first tx_sclk after lrclk.
+            $rose(audio_valid) |-> ##1 $fell(audio_valid) ##127 $rose(audio_valid)
         )
         else
-            $fatal("[data_ready] Expected signal to tick every 128 tx_mclk.");
+            $fatal("[data_ready] Expected signal to tick every 128 mclk.");
 
     task get_tx_data;
-        output [15:0] sent_data;
+        output [63:0] tx_data;
         begin
-            sent_data = 0;
-            for (int i = 15; i >= 0; i--) begin
-                @(posedge tx_sclk);
-                $display("%t [tx_sd] %2d: %b", $time, i, tx_sd);
-                sent_data[i] = tx_sd;
+            tx_data = 0;
+            for (int i = 63; i >= 0; i--) begin
+                @(posedge sclk);
+                tx_data[i] = tx_sd;
+                $display("%t [tx] %2d: %b", $time, i, tx_sd);
             end
-            $display("[tx_sd] Sent 0x%h", sent_data);
+            $display("[tx] Received 0x%h", tx_data);
+        end
+    endtask
+
+    task set_rx_data;
+        input [15:0] rx_audio_l;
+        input [15:0] rx_audio_r;
+
+        rx_data = {rx_audio_l, 16'd0, rx_audio_r, 16'd0};
+
+        begin
+            for (int i = 63; i >= 0; i--) begin
+                @(negedge sclk);
+                rx_sd = rx_data[i];
+                $display("%t [rx] %2d: %b", $time, i, rx_sd);
+            end
+            $display("[rx] Sent 0x%h", rx_data);
         end
     endtask
 
     initial begin
         @(posedge reset_n);
+
         fork
-            // Read sample data
+            // Simulate data to be received.
             begin
-                @(negedge tx_lrclk); // Wait for lrclk to fall and one sclk cycle.
-                @(posedge tx_sclk);
+                for (int i = 0; i < 10; i++) begin
+                    @(posedge sclk);
 
-                get_tx_data(sent_data);
-                assert(sent_data == audio_l) else $fatal("[tx_sd] Expected 0x%h to be 0x%h.", sent_data, audio_l);
+                    set_rx_data(16'hc000 + i, i[3:0]);
+                end
 
-                @(posedge tx_lrclk); // Wait for lrclk to rise and one sclk cycle.
-                @(posedge tx_sclk);
+                set_rx_data(16'd0, 16'd0);
+            end
+            // Test i2s_rx is receiving data.
+            begin
+                @(negedge lrclk); // Waits for the simulated data to be received.
 
-                get_tx_data(sent_data);
-                assert(sent_data == audio_r) else $fatal("[tx_sd] Expected 0x%h to be 0x%h.", sent_data, audio_r);
+                for (int i = 0; i < 10; i++) begin
+                    @(posedge audio_valid);
+
+                    assert(audio_l == 16'hc000 + i) else $fatal("[rx/left] Expected 0x%h to be 0x%h.", audio_l, 16'hc000 + i);
+                    assert(audio_r == i) else $fatal("[rx/right] Expected 0x%h to be 0x%h.", audio_r, i);
+               end
+            end
+            // Test i2s_tx is sending data.
+            begin
+                @(negedge lrclk); // Wait for the simulated data to be received.
+                @(negedge lrclk); // Waits for the data to be loaded for transmission.
+                @(posedge sclk);  // Wait for the frame to end.
+
+                for (int i = 0; i < 10; i++) begin
+                    get_tx_data(tx_data);
+
+                    assert(tx_data[63:48] == 16'hc000 + i) else $fatal("[tx/left] Expected 0x%h to be 0x%h.", tx_data[63:48], 16'hc000 + i);
+                    assert(tx_data[31:16] == i) else $fatal("[tx/right] Expected 0x%h to be 0x%h.", tx_data[31:16], i);
+               end
             end
         join_any
     end

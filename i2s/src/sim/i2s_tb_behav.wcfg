@@ -11,17 +11,17 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="52083200001fs"></ZoomEndTime>
-      <Cursor1Time time="52083200000fs"></Cursor1Time>
+      <ZoomStartTime time="27248963138fs"></ZoomStartTime>
+      <ZoomEndTime time="157049791373fs"></ZoomEndTime>
+      <Cursor1Time time="135416320000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="161"></NameColumnWidth>
-      <ValueColumnWidth column_width="118"></ValueColumnWidth>
+      <NameColumnWidth column_width="217"></NameColumnWidth>
+      <ValueColumnWidth column_width="111"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="4" />
    <wave_markers>
-      <marker time="5167630000" label="" />
+      <marker time="5057432000" label="" />
    </wave_markers>
    <wvobject fp_name="/i2s_tb/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
@@ -45,60 +45,104 @@
       <obj_property name="label">i2s</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/i2s_tb/tx_mclk" type="logic">
-         <obj_property name="ElementShortName">tx_mclk</obj_property>
-         <obj_property name="ObjectShortName">tx_mclk</obj_property>
-         <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/o_mclk" type="logic">
+         <obj_property name="ElementShortName">o_mclk</obj_property>
+         <obj_property name="ObjectShortName">o_mclk</obj_property>
+         <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject fp_name="/i2s_tb/tx_sclk" type="logic">
-         <obj_property name="ElementShortName">tx_sclk</obj_property>
-         <obj_property name="ObjectShortName">tx_sclk</obj_property>
-         <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/o_sclk" type="logic">
+         <obj_property name="ElementShortName">o_sclk</obj_property>
+         <obj_property name="ObjectShortName">o_sclk</obj_property>
+         <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject fp_name="/i2s_tb/tx_lrclk" type="logic">
-         <obj_property name="ElementShortName">tx_lrclk</obj_property>
-         <obj_property name="ObjectShortName">tx_lrclk</obj_property>
-         <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/o_lrclk" type="logic">
+         <obj_property name="ElementShortName">o_lrclk</obj_property>
+         <obj_property name="ObjectShortName">o_lrclk</obj_property>
+         <obj_property name="CustomSignalColor">#E0FFFF</obj_property>
          <obj_property name="UseCustomSignalColor">true</obj_property>
       </wvobject>
-      <wvobject fp_name="/i2s_tb/tx_sd" type="logic">
-         <obj_property name="ElementShortName">tx_sd</obj_property>
-         <obj_property name="ObjectShortName">tx_sd</obj_property>
-         <obj_property name="CustomSignalColor">#FFFF00</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="group162" type="group">
+         <obj_property name="label">i2s_clk</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/clk_divider" type="array">
+            <obj_property name="ElementShortName">clk_divider[6:0]</obj_property>
+            <obj_property name="ObjectShortName">clk_divider[6:0]</obj_property>
+            <obj_property name="CustomSignalColor">#008080</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/s_reg" type="array">
+            <obj_property name="ElementShortName">s_reg[5:0]</obj_property>
+            <obj_property name="ObjectShortName">s_reg[5:0]</obj_property>
+            <obj_property name="CustomSignalColor">#008080</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/o_count" type="array">
+            <obj_property name="ElementShortName">o_count[3:0]</obj_property>
+            <obj_property name="ObjectShortName">o_count[3:0]</obj_property>
+            <obj_property name="CustomSignalColor">#008080</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/o_count_valid" type="logic">
+            <obj_property name="ElementShortName">o_count_valid</obj_property>
+            <obj_property name="ObjectShortName">o_count_valid</obj_property>
+            <obj_property name="CustomSignalColor">#008080</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/s_start" type="logic">
+            <obj_property name="ElementShortName">s_start</obj_property>
+            <obj_property name="ObjectShortName">s_start</obj_property>
+            <obj_property name="CustomSignalColor">#008080</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/i2s_tb/uut/i2s_clk_unit/o_finish" type="logic">
+            <obj_property name="ElementShortName">o_finish</obj_property>
+            <obj_property name="ObjectShortName">o_finish</obj_property>
+            <obj_property name="CustomSignalColor">#008080</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
       </wvobject>
-      <wvobject fp_name="/i2s_tb/data_ready" type="logic">
-         <obj_property name="ElementShortName">data_ready</obj_property>
-         <obj_property name="ObjectShortName">data_ready</obj_property>
-         <obj_property name="CustomSignalColor">#FFFF00</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="group97" type="group">
+         <obj_property name="label">i2s_tx</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject fp_name="/i2s_tb/rx_data" type="array">
+            <obj_property name="ElementShortName">rx_data[63:0]</obj_property>
+            <obj_property name="ObjectShortName">rx_data[63:0]</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/i2s_tb/tx_sd" type="logic">
+            <obj_property name="ElementShortName">tx_sd</obj_property>
+            <obj_property name="ObjectShortName">tx_sd</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
       </wvobject>
-      <wvobject fp_name="/i2s_tb/uut/i2s_tx_unit/s_reg" type="array">
-         <obj_property name="ElementShortName">s_reg[5:0]</obj_property>
-         <obj_property name="ObjectShortName">s_reg[5:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-         <obj_property name="CustomSignalColor">#F0E68C</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/i2s_tb/audio_l" type="array">
-         <obj_property name="ElementShortName">audio_l[15:0]</obj_property>
-         <obj_property name="ObjectShortName">audio_l[15:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/i2s_tb/audio_r" type="array">
-         <obj_property name="ElementShortName">audio_r[15:0]</obj_property>
-         <obj_property name="ObjectShortName">audio_r[15:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
-      </wvobject>
-      <wvobject fp_name="/i2s_tb/sent_data" type="array">
-         <obj_property name="ElementShortName">sent_data[15:0]</obj_property>
-         <obj_property name="ObjectShortName">sent_data[15:0]</obj_property>
-         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
-         <obj_property name="UseCustomSignalColor">true</obj_property>
+      <wvobject fp_name="group89" type="group">
+         <obj_property name="label">i2s_rx</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject fp_name="/i2s_tb/rx_sd" type="logic">
+            <obj_property name="ElementShortName">rx_sd</obj_property>
+            <obj_property name="ObjectShortName">rx_sd</obj_property>
+            <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/i2s_tb/uut/i2s_rx_unit/o_audio_l" type="array">
+            <obj_property name="ElementShortName">o_audio_l[15:0]</obj_property>
+            <obj_property name="ObjectShortName">o_audio_l[15:0]</obj_property>
+            <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/i2s_tb/uut/i2s_rx_unit/o_audio_r" type="array">
+            <obj_property name="ElementShortName">o_audio_r[15:0]</obj_property>
+            <obj_property name="ObjectShortName">o_audio_r[15:0]</obj_property>
+            <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
       </wvobject>
    </wvobject>
 </wave_config>
