@@ -1,21 +1,19 @@
+`include "i2s_map.svh"
 module i2s_tx
-	#(
-        parameter	DATA_BIT = 16
-    )
 	(
 		input   logic                           i_clk_12_288,
 		input   logic                           i_reset_n,
 		input   logic                           i_finish,
-		input   logic [DATA_BIT-1:0]            i_audio_l,
-        input   logic [DATA_BIT-1:0]            i_audio_r,
+		input   logic [`DATA_BIT-1:0]           i_audio_l,
+        input   logic [`DATA_BIT-1:0]           i_audio_r,
         input   logic                           i_sclk,
-        input   logic [$clog2(DATA_BIT)-1:0]    i_count,
+        input   logic [$clog2(`DATA_BIT)-1:0]   i_count,
 		input   logic                           i_count_valid,
 		input   logic                           i_count_lrclk,
 		output  logic                           o_sd
 	);
 
-	logic [DATA_BIT-1:0]
+	logic [`DATA_BIT-1:0]
 	   audio_l_reg, audio_l_next,
 	   audio_r_reg, audio_r_next;
     logic sd;

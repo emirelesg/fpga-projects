@@ -1,3 +1,4 @@
+`include "i2s_map.svh"
 module top
 	(
 		input   logic       i_clk,
@@ -11,7 +12,7 @@ module top
         output  logic       o_rx_mclk,
         output  logic       o_rx_sclk,
         output  logic       o_rx_lrclk,
-        input  logic        i_rx_sd
+        input   logic       i_rx_sd
 	);
 
 	logic clk_12_288;
@@ -22,11 +23,12 @@ module top
         // Outputs
         .clk_i2s(clk_12_288)
     );
-    
+
     logic audio_valid_in, audio_valid_out;
-    logic [15:0] audio_l_in, audio_r_in;
-    logic [15:0] audio_l_out, audio_r_out;
-    
+    logic [`DATA_BIT-1:0]
+        audio_l_in, audio_r_in,
+        audio_l_out, audio_r_out;
+
     logic ddfs_data_valid;
 	logic [15:0] pcm_out;
     logic [29:0] fccw, focw; // (2 ^ PHASE_WIDTH * freq / 96_000)

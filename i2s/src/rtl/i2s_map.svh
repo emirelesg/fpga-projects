@@ -1,0 +1,8 @@
+`ifndef _I2S_MAP_INCLUDED
+`define _I2S_MAP_INCLUDED
+
+`define MCLK_LRCLK_RATIO 128
+`define SCLK_LRCLK_RATIO 64
+`define DATA_BIT 16
+
+`endif

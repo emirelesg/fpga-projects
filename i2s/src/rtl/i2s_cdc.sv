@@ -1,17 +1,15 @@
+`include "i2s_map.svh"
 module i2s_cdc
-    #(
-        parameter	DATA_BIT = 16
-    )
     (
         input   logic                   i_clk,
         input   logic                   i_clk_12_288,
         input   logic                   i_reset_n,
-        input   logic [DATA_BIT-1:0]    i_audio_l,
-        input   logic [DATA_BIT-1:0]    i_audio_r,
+        input   logic [`DATA_BIT-1:0]   i_audio_l,
+        input   logic [`DATA_BIT-1:0]   i_audio_r,
         input   logic                   i_audio_valid,
         input   logic                   i_rx_sd,
-        output  logic [DATA_BIT-1:0]    o_audio_l,
-        output  logic [DATA_BIT-1:0]    o_audio_r,
+        output  logic [`DATA_BIT-1:0]   o_audio_l,
+        output  logic [`DATA_BIT-1:0]   o_audio_r,
         output  logic                   o_audio_valid,
         output  logic                   o_mclk,
         output  logic                   o_sclk,
@@ -31,12 +29,12 @@ module i2s_cdc
     end
 
     logic fifo_in_rst, fifo_in_wr_en, fifo_in_rd_en, fifo_in_wr_rst_busy, fifo_in_rd_rst_busy;
-    logic [(2*DATA_BIT)-1:0]
+    logic [(2*`DATA_BIT)-1:0]
         fifo_in_din, fifo_in_dout,
         fifo_out_din, fifo_out_dout;
 
     logic i2s_reset_n, i2s_audio_valid_out;
-    logic [DATA_BIT-1:0]
+    logic [`DATA_BIT-1:0]
         i2s_audio_l_in, i2s_audio_r_in,
         i2s_audio_l_out, i2s_audio_r_out;
 
@@ -45,8 +43,8 @@ module i2s_cdc
         .CDC_SYNC_STAGES(2),
         .FIFO_MEMORY_TYPE("block"),
         .FIFO_WRITE_DEPTH(16),
-        .WRITE_DATA_WIDTH(2*DATA_BIT),
-        .READ_DATA_WIDTH(2*DATA_BIT),
+        .WRITE_DATA_WIDTH(2*`DATA_BIT),
+        .READ_DATA_WIDTH(2*`DATA_BIT),
         .READ_MODE("fwft"),
         .ECC_MODE("no_ecc")
     ) xpm_fifo_async_unit (
@@ -86,7 +84,7 @@ module i2s_cdc
     // Move the i2s_audio_l_out and i2s_audio_r_out to the clk domain.
     xpm_cdc_array_single #(
         .DEST_SYNC_FF(2),
-        .WIDTH(2*DATA_BIT)
+        .WIDTH(2*`DATA_BIT)
     ) xpm_cdc_array_single_unit (
         .src_clk(i_clk_12_288),
         .src_in(fifo_out_din),
@@ -98,9 +96,7 @@ module i2s_cdc
     // i2s data is delayed by 1 sample.
     // Data is latched when rd_en rises. Since the fifo has a 1 clk delay on the dout,
     // it will be read in the next i2s cycle.
-    i2s #(
-	   .DATA_BIT(DATA_BIT)
-	) i2s_unit(
+    i2s i2s_unit(
 		.i_clk_12_288(i_clk_12_288),
 		.i_reset_n(i2s_reset_n),
 		.i_audio_l(i2s_audio_l_in),
@@ -122,11 +118,11 @@ module i2s_cdc
 
     // Pack and unpack the input audio.
     assign fifo_in_din = {i_audio_l, i_audio_r};
-	assign i2s_audio_l_in = fifo_in_dout[(2*DATA_BIT)-1:DATA_BIT]; // Unpack i_audio_l and i_audio_r.
-    assign i2s_audio_r_in = fifo_in_dout[DATA_BIT-1:0];
+	assign i2s_audio_l_in = fifo_in_dout[(2*`DATA_BIT)-1:`DATA_BIT]; // Unpack i_audio_l and i_audio_r.
+    assign i2s_audio_r_in = fifo_in_dout[`DATA_BIT-1:0];
 
     // Pack and unpack the output audio.
     assign fifo_out_din = {i2s_audio_l_out, i2s_audio_r_out};
-	assign o_audio_l = fifo_out_dout[(2*DATA_BIT)-1:DATA_BIT];
-    assign o_audio_r = fifo_out_dout[DATA_BIT-1:0];
+	assign o_audio_l = fifo_out_dout[(2*`DATA_BIT)-1:`DATA_BIT];
+    assign o_audio_r = fifo_out_dout[`DATA_BIT-1:0];
 endmodule
