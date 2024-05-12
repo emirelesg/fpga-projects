@@ -9,12 +9,12 @@ module fifo_ctrl
         parameter   ADDR_WIDTH = 2
     )
     (
-        input logic clk,
-        input logic reset_n,
-        input logic rd, wr,
-        output logic empty, full,
-        output logic [ADDR_WIDTH-1:0] w_addr,
-        output logic [ADDR_WIDTH-1:0] r_addr
+        input   logic                   i_clk,
+        input   logic                   i_reset_n,
+        input   logic                   i_rd, i_wr,
+        output  logic                   o_empty, o_full,
+        output  logic [ADDR_WIDTH-1:0]  o_w_addr,
+        output  logic [ADDR_WIDTH-1:0]  o_r_addr
     );
 
     logic full_reg, full_next;
@@ -22,8 +22,8 @@ module fifo_ctrl
     logic [ADDR_WIDTH-1:0] w_ptr_reg, w_ptr_next, w_ptr_inc;
     logic [ADDR_WIDTH-1:0] r_ptr_reg, r_ptr_next, r_ptr_inc;
 
-    always_ff @(posedge clk, negedge reset_n) begin
-        if (~reset_n) begin
+    always_ff @(posedge i_clk, negedge i_reset_n) begin
+        if (~i_reset_n) begin
             w_ptr_reg <= 0;
             r_ptr_reg <= 0;
             full_reg <= 1'b0;
@@ -47,7 +47,7 @@ module fifo_ctrl
         w_ptr_inc = w_ptr_reg + 1;
         r_ptr_inc = r_ptr_reg + 1;
 
-        unique case ({wr, rd})
+        unique case ({i_wr, i_rd})
             // Read if fifo is not empty.
             2'b01:
                 if (~empty_reg) begin
@@ -74,8 +74,8 @@ module fifo_ctrl
         endcase
     end
 
-    assign w_addr = w_ptr_reg;
-    assign r_addr = r_ptr_reg;
-    assign full = full_reg;
-    assign empty = empty_reg;
+    assign o_w_addr = w_ptr_reg;
+    assign o_r_addr = r_ptr_reg;
+    assign o_full = full_reg;
+    assign o_empty = empty_reg;
 endmodule

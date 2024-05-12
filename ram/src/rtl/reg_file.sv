@@ -10,19 +10,19 @@ module reg_file
                     ADDR_WIDTH = 2
     )
     (
-        input logic clk,
-        input logic reset_n,
-        input logic wr_en,
-        input logic [ADDR_WIDTH-1:0] w_addr, r_addr,
-        input logic [DATA_WIDTH-1:0] w_data,
-        output logic [DATA_WIDTH-1:0] r_data
+        input   logic                   i_clk,
+        input   logic                   i_reset_n,
+        input   logic                   i_wr_en,
+        input   logic [ADDR_WIDTH-1:0]  i_w_addr, i_r_addr,
+        input   logic [DATA_WIDTH-1:0]  i_w_data,
+        output  logic [DATA_WIDTH-1:0]  o_r_data
     );
 
     logic [DATA_WIDTH-1:0] array_reg [0:2**ADDR_WIDTH-1];
 
-    always_ff @(posedge clk)
-        if (wr_en)
-            array_reg[w_addr] <= w_data;
+    always_ff @(posedge i_clk)
+        if (i_wr_en)
+            array_reg[i_w_addr] <= i_w_data;
 
-    assign r_data = array_reg[r_addr];
+    assign o_r_data = array_reg[i_r_addr];
 endmodule

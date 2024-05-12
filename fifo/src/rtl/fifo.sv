@@ -10,41 +10,42 @@ module fifo
                     ADDR_WIDTH = 2
     )
     (
-        input logic clk,
-        input logic reset_n,
-        input logic rd, wr,
-        input logic [DATA_WIDTH-1:0] w_data,
-        output logic empty, full,
-        output logic [DATA_WIDTH-1:0] r_data
+        input   logic                   i_clk,
+        input   logic                   i_reset_n,
+        input   logic                   i_rd, i_wr,
+        input   logic [DATA_WIDTH-1:0]  i_w_data,
+        output  logic                   o_empty, o_full,
+        output  logic [DATA_WIDTH-1:0]  o_r_data
     );
 
     logic [ADDR_WIDTH-1:0] w_addr, r_addr;
     logic wr_en;
 
-    /* ~~ Initialize fifo_ctrl unit ~~ */
-
-    fifo_ctrl #(.ADDR_WIDTH(ADDR_WIDTH)) fifo_ctrl_unit(
+    fifo_ctrl #(
+        .ADDR_WIDTH(ADDR_WIDTH)
+    ) fifo_ctrl_unit(
         .*,
-        .rd(rd),
-        .wr(wr),
+        .i_rd(i_rd),
+        .i_wr(i_wr),
         // Outputs
-        .empty(empty),
-        .full(full),
-        .w_addr(w_addr),
-        .r_addr(r_addr)
+        .o_empty(o_empty),
+        .o_full(o_full),
+        .o_w_addr(w_addr),
+        .o_r_addr(r_addr)
     );
 
-    /* ~~ Initialize reg_file unit ~~ */
+    assign wr_en = i_wr & ~o_full;
 
-    assign wr_en = wr & ~full;
-
-    reg_file #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH)) reg_file_unit(
+    reg_file #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .ADDR_WIDTH(ADDR_WIDTH)
+    ) reg_file_unit(
         .*,
-        .wr_en(wr_en),
-        .w_addr(w_addr),
-        .r_addr(r_addr),
-        .w_data(w_data),
+        .i_wr_en(wr_en),
+        .i_w_addr(w_addr),
+        .i_r_addr(r_addr),
+        .i_w_data(i_w_data),
         // Outputs
-        .r_data(r_data)
+        .o_r_data(o_r_data)
     );
 endmodule

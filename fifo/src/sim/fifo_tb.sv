@@ -6,8 +6,6 @@ module fifo_tb;
     logic clk;
     logic reset_n;
 
-    // Parameters and signals for UUT
-
     localparam DATA_WIDTH = 8;
     localparam ADDR_WIDTH = 3;
 
@@ -15,22 +13,29 @@ module fifo_tb;
     logic empty, full;
     logic [DATA_WIDTH-1:0] w_data, r_data;
 
-    fifo #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH)) uut(.*);
+    fifo #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .ADDR_WIDTH(ADDR_WIDTH)
+    ) uut(
+        .i_clk(clk),
+        .i_reset_n(reset_n),
+        .i_rd(rd),
+        .i_wr(wr),
+        .i_w_data(w_data),
+        .o_full(full),
+        .o_empty(empty),
+        .o_r_data(r_data)
+    );
 
     // Simulate a 100 Mhz clock signal.
-    always begin
-        clk = 1'b0;
-        #(T/2);
-        clk = 1'b1;
-        #(T/2);
-    end
+    initial clk = 0;
+    always clk = #(T/2) ~clk;
 
     // Reset at the start of the simulation.
     initial begin
         reset_n = 1'b0;
-        #(T/2);
+        @(negedge clk);
         reset_n = 1'b1;
-        #(T);
     end
 
     initial begin
@@ -60,6 +65,6 @@ module fifo_tb;
 
         @(posedge clk);
 
-        $stop;
+        $finish;
     end
 endmodule
