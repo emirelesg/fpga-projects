@@ -6,7 +6,6 @@ module i2s_tx
 		input   logic                           i_finish,
 		input   logic [`DATA_BIT-1:0]           i_audio_l,
         input   logic [`DATA_BIT-1:0]           i_audio_r,
-        input   logic                           i_sclk,
         input   logic [$clog2(`DATA_BIT)-1:0]   i_count,
 		input   logic                           i_count_valid,
 		input   logic                           i_count_lrclk,

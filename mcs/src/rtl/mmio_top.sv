@@ -23,9 +23,11 @@ module mmio_top
     );
 
     // Audio
-    logic [`DATA_BIT-1:0] audio_l_out, audio_r_out;
-    logic audio_valid_out;
+    logic audio_valid_in, audio_valid_out;
     logic audio_96_tick;
+    logic [`DATA_BIT-1:0]
+        audio_l_in, audio_r_in,
+        audio_l_out, audio_r_out;
 
     // MMIO bus
     logic [63:0] slot_cs_array;
@@ -108,14 +110,14 @@ module mmio_top
         .o_env(adsr_env)
     );
 
-    // i2s DAC
+    // Audio
     i2s_cdc i2s_cdc_unit(
         .i_clk(i_clk),
         .i_clk_12_288(i_clk_i2s),
         .i_reset_n(i_reset_n),
-        .i_audio_l(ddfs_pcm_out),
-        .i_audio_r(ddfs_pcm_out),
-        .i_audio_valid(ddfs_data_valid),
+        .i_audio_l(audio_l_in),
+        .i_audio_r(audio_r_in),
+        .i_audio_valid(audio_valid_in),
         // Outputs
         .o_audio_l(audio_l_out),
 		.o_audio_r(audio_r_out),
@@ -127,6 +129,9 @@ module mmio_top
         .i_rx_sd(i_audio_rx_sd)
     );
 
+    assign audio_l_in = ddfs_pcm_out;
+    assign audio_r_in = ddfs_pcm_out;
+    assign audio_valid_in = ddfs_data_valid;
     assign audio_96_tick = audio_valid_out;
 
     // Unused slots

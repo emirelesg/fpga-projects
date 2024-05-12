@@ -102,6 +102,9 @@ module top
     );
 
     assign o_audio_tx_mclk = audio_mclk;
+    assign o_audio_rx_mclk = audio_mclk;
     assign o_audio_tx_sclk = audio_sclk;
+    assign o_audio_rx_sclk = audio_sclk;
     assign o_audio_tx_lrclk = audio_lrclk;
+    assign o_audio_rx_lrclk = audio_lrclk;
 endmodule

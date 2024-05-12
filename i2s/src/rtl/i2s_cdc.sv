@@ -28,7 +28,7 @@ module i2s_cdc
             c_reg <= c_reg << 1;
     end
 
-    logic fifo_in_rst, fifo_in_wr_en, fifo_in_rd_en, fifo_in_wr_rst_busy, fifo_in_rd_rst_busy;
+    logic fifo_in_rst, fifo_in_wr_en, fifo_in_rd_en;
     logic [(2*`DATA_BIT)-1:0]
         fifo_in_din, fifo_in_dout,
         fifo_out_din, fifo_out_dout;
@@ -55,9 +55,7 @@ module i2s_cdc
         .rd_clk(i_clk_12_288),
         .rd_en(fifo_in_rd_en),
         // Outputs
-        .dout(fifo_in_dout),
-        .rd_rst_busy(fifo_in_rd_rst_busy),
-        .wr_rst_busy(fifo_in_wr_rst_busy)
+        .dout(fifo_in_dout)
     );
 
     // Move the i_reset_n signal to the i2s domain.

@@ -39,7 +39,6 @@ module i2s
 		.i_finish(finish),
 		.i_audio_l(i_audio_l),
 		.i_audio_r(i_audio_r),
-		.i_sclk(sclk),
 		.i_count(count),
 		.i_count_valid(count_valid),
 		.i_count_lrclk(count_lrclk),
