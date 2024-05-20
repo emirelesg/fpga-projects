@@ -6,8 +6,6 @@ module reg_file_tb;
     logic clk;
     logic reset_n;
 
-    // Parameters and signals for UUT
-
     localparam DATA_WIDTH = 8;
     localparam ADDR_WIDTH = 3;
 
@@ -15,32 +13,49 @@ module reg_file_tb;
     logic [ADDR_WIDTH-1:0] w_addr, r_addr;
     logic [DATA_WIDTH-1:0] w_data, r_data;
 
-    reg_file #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH)) uut(.*);
+    reg_file #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .ADDR_WIDTH(ADDR_WIDTH),
+        .MEMORY_FILE("bram_file.mem")
+    ) uut(
+        .i_clk(clk),
+        .i_reset_n(reset_n),
+        .i_wr_en(wr_en),
+        .i_w_addr(w_addr),
+        .i_r_addr(r_addr),
+        .i_w_data(w_data),
+        .o_r_data(r_data)
+    );
 
     // Simulate a 100 Mhz clock signal.
-    always begin
-        clk = 1'b0;
-        #(T/2);
-        clk = 1'b1;
-        #(T/2);
-    end
+    initial clk = 0;
+    always clk = #(T/2) ~clk;
 
     // Reset at the start of the simulation.
     initial begin
         reset_n = 1'b0;
-        #(T/2);
+        @(negedge clk);
         reset_n = 1'b1;
-        #(T);
     end
 
+    // Initial values for signals.
     initial begin
         wr_en = 1'b0;
         w_addr = 2'b00;
         w_data = 8'h00;
         r_addr = 2'b00;
-
+    end
+    
+    initial begin
         @(posedge reset_n); // Wait for the reset.
         @(negedge clk);
+        
+        // Read all addresses.
+        for (logic [DATA_WIDTH-1:0] i=0; i < 2**ADDR_WIDTH; i++) begin
+            r_addr = i;
+            @(negedge clk); // Wait for the data.
+            assert(r_data == 8'hc0 + i) else $fatal("Expected r_data to be 0x%2h.", 8'hc0 + i);
+        end
 
         // Write to all addresses a byte.
         wr_en = 1'b1;
@@ -60,6 +75,6 @@ module reg_file_tb;
             assert(r_data == 8'hf0 + i) else $fatal("Expected r_data to be 0x%2h.", 8'hf0 + i);
         end
 
-        $stop;
+        $finish;
     end
 endmodule
