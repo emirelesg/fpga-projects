@@ -1,3 +1,4 @@
+`include "i2s_map.svh"
 module ddfs
     #(
         parameter   PHASE_WIDTH = 30,   // 30-bit phase accumulator
@@ -24,11 +25,16 @@ module ddfs
     logic [PHASE_WIDTH-1:0] p_reg, p_next;
 
     logic signed [31:0] modulated; // Q18.14
-    logic [15:0] wave, sine, saw, triangle, square; // Q16.0
-    logic [15:0] pcm_reg, pcm_next; // Q16.0
+    logic [`DATA_BIT-1:0] wave, sine, saw, triangle, square; // Q16.0
+    logic [`DATA_BIT-1:0] pcm_reg, pcm_next; // Q16.0
     logic valid_reg, valid_next;
 
-    sin_rom #(.ADDR_WIDTH(ADDR_WIDTH)) sin_rom_unit(
+    reg_file #(
+        .ADDR_WIDTH(ADDR_WIDTH),
+        .DATA_WIDTH(`DATA_BIT),
+        .MEMORY_TYPE("block"),
+        .MEMORY_FILE("sin_rom.mem")
+    ) sin_rom_unit(
         .i_clk(i_clk),
         .i_r_addr(p2a_r_addr),
         .o_r_data(sine)
@@ -92,7 +98,7 @@ module ddfs
 
             // To trim the multiplication of two 16-bit signed integers,
             // use the 16 MSBs of the modulated value.
-            pcm_next = modulated[29:14];
+            pcm_next = trim_mul_16(modulated);
 
             // Generate a tick when the data changes. Used to interface with a fifo as a wr_en signal.
             valid_next = 1'b1;

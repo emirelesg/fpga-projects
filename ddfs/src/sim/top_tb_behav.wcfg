@@ -11,13 +11,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="3720000000001fs"></ZoomEndTime>
-      <Cursor1Time time="1735005000000fs"></Cursor1Time>
+      <ZoomStartTime time="1700857988826fs"></ZoomStartTime>
+      <ZoomEndTime time="5659852402235fs"></ZoomEndTime>
+      <Cursor1Time time="5000020000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="182"></NameColumnWidth>
-      <ValueColumnWidth column_width="91"></ValueColumnWidth>
+      <ValueColumnWidth column_width="87"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="4" />
    <wvobject fp_name="/top_tb/clk" type="logic">
@@ -42,11 +42,6 @@
       <obj_property name="label">ddfs</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/top_tb/uut/pcm_out" type="array">
-         <obj_property name="ElementShortName">pcm_out[15:0]</obj_property>
-         <obj_property name="ObjectShortName">pcm_out[15:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      </wvobject>
       <wvobject fp_name="/top_tb/uut/sine" type="array">
          <obj_property name="ElementShortName">sine[15:0]</obj_property>
          <obj_property name="ObjectShortName">sine[15:0]</obj_property>
