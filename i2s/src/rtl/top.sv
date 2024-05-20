@@ -79,7 +79,7 @@ module top
 		.i_clk_12_288(clk_12_288),
 		.i_reset_n(i_reset_n),
 		.i_audio_l(audio_l_in),
-        .i_audio_r(audio_l_in),
+        .i_audio_r(audio_r_in),
         .i_audio_valid(audio_valid_in),
 		// Outputs
 		.o_audio_l(audio_l_out),
@@ -91,11 +91,44 @@ module top
         .o_tx_sd(o_tx_sd),
         .i_rx_sd(i_rx_sd)
 	);
+	
+	// Delay effect
+	logic signed [`DATA_BIT-1:0] audio_m_delay;
+	logic signed [`DATA_BIT:0] a1;
+	logic signed [`DATA_BIT-1:0] a1_clamped;
+	
+	delay #(
+	   .ADDR_WIDTH(14) // 2^14 = 16384 samples / 96 KHz = 170.666 ms
+	) delay_unit(
+	   .i_clk(i_clk),
+	   .i_reset_n(i_reset_n),
+	   .i_delay(8191),
+	   .i_feedback(16'h1000),
+	   .i_wet(16'h2000),
+	   .i_dry(16'h3000),
+	   .i_audio(a1_clamped),
+	   .i_audio_valid(audio_valid_out),
+	   // Outputs
+	   .o_audio(audio_m_delay)
+	);
+    
+    assign a1 = $signed(audio_l_out) + $signed(pcm_out);
+    assign a1_clamped = clamp_16(a1);
 
-    assign audio_l_in = pcm_out;
-    assign audio_r_in = pcm_out;
-    assign audio_valid_in = ddfs_data_valid;
+    assign audio_l_in = audio_m_delay;
+    assign audio_r_in = audio_l_in;
+    assign audio_valid_in = audio_valid_out;
     assign audio_96_tick = audio_valid_out;
+    
+    // Uncomment for passing audio output to the DAC.
+    // assign audio_l_in = audio_l_out;
+    // assign audio_r_in = audio_r_out;
+    // assign audio_valid_in = audio_96_tick;
+    
+    // Uncomment for passing ddfs output to the DAC.
+    // assign audio_l_in = pcm_out;
+    // assign audio_r_in = pcm_out;
+    // assign audio_valid_in = ddfs_data_valid;
 
 	assign o_tx_mclk = mclk;
     assign o_rx_mclk = mclk;

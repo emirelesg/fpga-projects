@@ -9,6 +9,7 @@ A collection of projects using an Arty A7-35T FPGA (XC7A35TICSG324-1L).
 - [:sound: ddfs](/ddfs/)
 - [:sparkler: debounce](/debounce/)
 - [:1234: decoder](/decoder/)
+- [:clock4: delay](/delay/)
 - [:file_folder: fifo](/fifo/)
 - [:aquarius: i2s](/i2s/)
 - [:computer: mcs](/mcs/)

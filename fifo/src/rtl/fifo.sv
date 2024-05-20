@@ -6,8 +6,10 @@
 
 module fifo
     #(
-        parameter   DATA_WIDTH = 8,
-                    ADDR_WIDTH = 2
+        parameter   DATA_WIDTH  = 8,
+                    ADDR_WIDTH  = 2,
+                    MEMORY_TYPE = "distributed",
+                    MEMORY_FILE = ""
     )
     (
         input   logic                   i_clk,
@@ -38,7 +40,9 @@ module fifo
 
     reg_file #(
         .DATA_WIDTH(DATA_WIDTH),
-        .ADDR_WIDTH(ADDR_WIDTH)
+        .ADDR_WIDTH(ADDR_WIDTH),
+        .MEMORY_TYPE(MEMORY_TYPE),
+        .MEMORY_FILE(MEMORY_FILE)
     ) reg_file_unit(
         .*,
         .i_wr_en(wr_en),
